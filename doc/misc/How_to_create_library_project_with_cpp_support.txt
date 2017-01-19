@@ -1,0 +1,88 @@
+Step 1 ----  Create a library project
+
+
+1.1  Create a normal porject with c++ support
+
+     the project location is ../sdk
+
+     Choose empty activity, and need not select layout
+     
+     Then finish.
+
+
+1.2  Edit the AndroidManifest.xml
+
+     Delele all content in the "<application>" tag, left it be empty.
+
+
+1.3  Rename module name  
+
+     Initially we'll focus on our library project. Annoyingly Android Studio automatically creates you a module called app. 
+     
+     Modules really should be uniquely named, so you'll need to right click on the module name, 
+
+     click refactor and rename to something useful. We call "lolila_sdk"
+
+
+1.4  Rename the folder name of module if need
+
+
+1.5  Edit build.gradle
+
+     Open the build.gradle for the module. You'll need to change the first line :
+
+     apply plugin: 'com.android.application'
+
+     to say:
+
+     apply plugin: 'com.android.library'
+
+
+     You'll also need to remove applicationId in defaultConfig
+
+     Click sync and wait for gradle to synchronise again.
+
+     Normally, you will receive a error msg says something path not found! 
+ 
+     Don't worry, go on.
+
+
+1.6  Important!!  Delete the    ".externalNativeBuild"  folder in the module dir.
+
+     Because we change the module name in step 1.3,  and the CMakeCache file record the old path before.
+
+     So, you need to delete the whole temp gen folder.
+
+     Then Sync and clean the projct again.
+
+
+Step 2  ---- Import the library project
+
+
+2.1  Edit the settings.gradle file, add below line:
+
+     include ":lolila_sdk"
+     project(":lolila_sdk").projectDir=new File("../sdk/lolila_sdk")
+
+     Important!!-1:   You must set the actual path of module(../sdk/lolila_sdk), do not set the root dir of this module(../sdk)
+
+                      If set root dir of this module, the Android studio can not find the build.gradle of this module.
+
+     Important!!-2:   You must import the library project handly by editting the setting.gradle.
+
+                      Do not use project structure menu.
+
+2.2  Edit the build.gradle of the app module, add these line:
+
+     compile project(':lolila_sdk')
+
+
+OK!! That is all.           
+ 
+
+     
+
+ 
+
+     
+   
