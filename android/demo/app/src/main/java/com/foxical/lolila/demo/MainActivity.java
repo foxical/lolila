@@ -15,5 +15,7 @@ public class MainActivity extends Activity {
 
         TextView tvTitle = (TextView) findViewById(R.id.tv_title);
         tvTitle.setText(IndexApi.getStr());
+
+        // this
     }
 }
