@@ -1,6 +1,6 @@
 #include <jni.h>
 #include <string>
-#include <GLES3/gl3.h>
+
 #include <android/asset_manager_jni.h>
 #include <android/log.h>
 
