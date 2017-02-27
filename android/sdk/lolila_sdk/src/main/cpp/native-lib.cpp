@@ -4,6 +4,7 @@
 #include <android/asset_manager_jni.h>
 #include <android/log.h>
 
+#include <GLES3/gl3.h>
 
 extern "C"
 jstring
