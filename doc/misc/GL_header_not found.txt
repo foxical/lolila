@@ -1,0 +1,2 @@
+Android ndk-bundle has openglES3 since api 18
+So, the min sdk verson must greater than 18

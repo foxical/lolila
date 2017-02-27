@@ -19,7 +19,7 @@ add_library( # Sets the name of the library.
              # Associated headers in the same location as their source
              # file are automatically included.
              src/main/cpp/native-lib.cpp
-             src/main/cpp/base/math/GeneralVector.cpp)
+             src/main/cpp/base/math/Vector.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by
@@ -47,5 +47,6 @@ target_link_libraries( # Specifies the target library.
                        # Links the target library to the log library
                        # included in the NDK.
                        ${log-lib}
+                       android
                        EGL
                        GLESv3 )
