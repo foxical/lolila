@@ -19,10 +19,11 @@ public:
     const float y()const;
     const float z()const;
     const float length()const;
+    const float dot(const Vector&)const;
 
 public:
 
-    Vector dot(const Vector&)const;
+    static const float dot(const Vector&, const Vector&);
 
 private:
     Vector();

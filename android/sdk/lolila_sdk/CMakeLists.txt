@@ -49,4 +49,4 @@ target_link_libraries( # Specifies the target library.
                        ${log-lib}
                        android
                        EGL
-                       GLESv3 )
+                       GLESv2 )

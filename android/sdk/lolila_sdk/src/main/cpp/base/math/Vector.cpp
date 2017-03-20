@@ -24,6 +24,10 @@ Vector::Vector(const Vector& generalVector) {
     }
 }
 
+Vector::~Vector() {
+
+}
+
 const float Vector::x() const {
     return _components[0];
 }
@@ -44,4 +48,15 @@ const float Vector::length() const {
     return sqrtf(result);
 }
 
+const float Vector::dot(const Vector& a, const Vector& b){
+    float  result=0;
+    for( int d=0;d<a._dim;++d){
+        result += a._components[d] * b._components[d];
+    }
+    return result;
+}
+
+const float Vector::dot(const Vector& a) const{
+     return dot(*this,a);
+}
 
