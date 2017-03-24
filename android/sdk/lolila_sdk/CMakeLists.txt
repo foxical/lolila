@@ -19,7 +19,9 @@ add_library( # Sets the name of the library.
              # Associated headers in the same location as their source
              # file are automatically included.
              src/main/cpp/native-lib.cpp
-             src/main/cpp/base/math/Vector.cpp)
+             src/main/cpp/base/geometry/Vector.cpp
+             src/main/cpp/base/geometry/Line.cpp
+             src/main/cpp/base/geometry/Ray.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by
