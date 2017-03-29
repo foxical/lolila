@@ -9,6 +9,7 @@
 #include "base/geometry/Vector.h"
 #include "base/geometry/Line.h"
 #include "base/geometry/Ray.h"
+#include "base/math/Matrix.h"
 #include <exception>
 #include <stdexcept>
 
@@ -38,7 +39,15 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         Vector p2(1,0);
         Vector p3(1,3);
         Ray l2(p1,Vector::minus(p2,p1));
-        sprintf(buff," distance between line and p3 is:%g\n", l2.distance(p3));
+
+        Matrix m(3,3);
+        m.set(0,0,1);
+        m.set(1,1,1);
+        m.set(2,2,1);
+
+        //sprintf(buff," distance between line and p3 is:%g\n", l2.distance(p3));
+
+        sprintf(buff," M :%s\n", m.toString().c_str());
 
     }catch (exception& e){
         sprintf(buff,"exception: %s\n", e.what());

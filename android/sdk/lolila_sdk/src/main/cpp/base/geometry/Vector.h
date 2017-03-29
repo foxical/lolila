@@ -25,7 +25,7 @@ public:
     float length()const;
     float dot(const Vector&)const;
     Vector cross(const Vector&)const;
-    Vector multiply( const float&)const;
+    Vector scalarMultiply(const float &)const;
     Vector proj(const Vector&)const;
     Vector perp(const Vector&)const;
     Vector add(const Vector&)const;
@@ -43,7 +43,7 @@ public:
 
     static float dot(const Vector&, const Vector&);
     static Vector cross(const Vector&,const Vector&);
-    static Vector multiply( const Vector&,const float&);
+    static Vector scalarMultiply( const Vector&,const float&);
     static Vector proj(const Vector& P,const Vector& Q);
     static Vector perp(const Vector& P,const Vector& Q);
     static Vector add(const Vector&,const Vector&);

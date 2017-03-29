@@ -106,7 +106,7 @@ string Vector::toString() const {
     return result;
 }
 
-Vector Vector::multiply( const Vector& a,const float& val){
+Vector Vector::scalarMultiply( const Vector& a,const float& val){
     Vector result(a);
     for(int d=0;d<a._dim;++d){
         result._components[d] = a._components[d]*val;
@@ -114,12 +114,12 @@ Vector Vector::multiply( const Vector& a,const float& val){
     return result;
 }
 
-Vector Vector::multiply( const float& val)const{
-    return multiply(*this,val);
+Vector Vector::scalarMultiply(const float &val)const{
+    return scalarMultiply(*this,val);
 }
 
 Vector Vector::proj(const Vector& P,const Vector& Q){
-    return multiply(Q,dot(P,Q)/powf(Q.length(),2.0));
+    return scalarMultiply(Q,dot(P,Q)/powf(Q.length(),2.0));
 }
 
 Vector Vector::proj(const Vector& Q)const{
@@ -165,7 +165,7 @@ Vector Vector::perp(const Vector& Q)const{
 }
 
 Vector Vector::normalize(const Vector& a){
-    return multiply(a, 1/a.length());
+    return scalarMultiply(a, 1/a.length());
 }
 
 Vector Vector::normalize()const{

@@ -21,7 +21,7 @@ Vector Line::pointAt(const float &t) const {
     if( t<0.0||t>1.0){
         throw out_of_range(" 0<t<1");
     }
-    return Vector::add(Vector::multiply(_point1,1-t),Vector::multiply(_point2,t));
+    return Vector::add(Vector::scalarMultiply(_point1,1-t),Vector::scalarMultiply(_point2,t));
 }
 
 float Line::distance(const Vector& Q)const{
