@@ -40,10 +40,16 @@ float Vector::x() const {
 }
 
 float Vector::y() const {
+    if( _dim<2){
+        throw runtime_error("Vector must has 2 dims!");
+    }
     return _components[1];
 }
 
 float Vector::z() const {
+    if( _dim<3){
+        throw runtime_error("Vector must has 3 dims!");
+    }
     return _components[2];
 }
 

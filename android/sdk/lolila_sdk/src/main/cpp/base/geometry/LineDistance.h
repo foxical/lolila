@@ -5,8 +5,6 @@
 #ifndef __LINEDISTANCE_H__
 #define __LINEDISTANCE_H__
 
-#include <string>
-using namespace std;
 
 class Line;
 class Ray;
