@@ -18,13 +18,18 @@ Line::~Line() {
 }
 
 Vector Line::pointAt(const float &t) const {
-    if( t<0.0||t>1.0){
-        throw out_of_range(" 0<t<1");
-    }
     return Vector::add(Vector::scalarMultiply(_point1,1-t),Vector::scalarMultiply(_point2,t));
 }
 
 float Line::distance(const Vector& Q)const{
     const Ray innerRay(_point1,Vector::minus(_point2,_point1));
     return innerRay.distance(Q);
+}
+
+const Vector& Line::point1()const{
+    return _point1;
+}
+
+const Vector& Line::point2()const{
+    return _point2;
 }

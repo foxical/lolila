@@ -20,12 +20,15 @@ Matrix::Matrix(const Matrix & o):_col(o._col),_row(o._row),_items(new float[o._c
     }
 }
 
+
+// * Fucking float array
 Matrix::Matrix(const int& row,const int& col,const float items[]):_col(col),_row(row),_items(new float[col*row]){
     const int itemCount = _col*_row;
     for(int i=0;i<itemCount;++i){
         _items[i] = items[i];
     }
 }
+
 
 Matrix::~Matrix() {
     delete[] _items;
@@ -91,6 +94,7 @@ Matrix Matrix::scalarMultiply(const float& scalar)const{
 string Matrix::toString()const{
     char buff[128];
     string result;
+    result.append("\n");
     for( int r=0;r<_row;r++){
         result.append("|");
         for(int c=0;c<_col;++c){
@@ -104,6 +108,10 @@ string Matrix::toString()const{
         result.append("|\n");
     }
     return result;
+}
+
+const char* Matrix::c_str() const {
+    return toString().c_str();
 }
 
 Matrix& Matrix::operator=(const Matrix& A){

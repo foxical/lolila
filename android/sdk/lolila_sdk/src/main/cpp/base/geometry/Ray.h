@@ -16,6 +16,8 @@ public:
 public:
     Vector pointAt(const float& t)const;
     float distance(const Vector& Q)const;
+    const Vector& endPoint()const;
+    const Vector& direction()const;
 private:
     Ray();
 private:

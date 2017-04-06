@@ -36,6 +36,7 @@ public:
 public:
 
     string toString()const;
+    const char* c_str()const;
 public:
     Vector& operator=(const Vector&);
 

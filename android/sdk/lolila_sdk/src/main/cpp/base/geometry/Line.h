@@ -16,6 +16,8 @@ public:
 public:
     Vector pointAt(const float& t)const;
     float distance(const Vector& Q)const;
+    const Vector& point1()const;
+    const Vector& point2()const;
 private:
     Line();
 private:

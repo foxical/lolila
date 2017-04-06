@@ -22,7 +22,9 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/geometry/Vector.cpp
              src/main/cpp/base/geometry/Line.cpp
              src/main/cpp/base/geometry/Ray.cpp
-             src/main/cpp/base/math/Matrix.cpp)
+             src/main/cpp/base/geometry/LineDistance.cpp
+             src/main/cpp/base/math/Matrix.cpp
+             src/main/cpp/base/utils/LogQueue.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by

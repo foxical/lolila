@@ -53,6 +53,8 @@ public:
 public:
 
     string toString()const;
+    const char* c_str() const;
+
 public:
     void set(const int& rowIdx,const int& colIdx,const float& val);
     float get(const int& rowIdx,const int& colIdx)const;

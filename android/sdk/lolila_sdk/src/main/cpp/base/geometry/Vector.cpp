@@ -106,6 +106,10 @@ string Vector::toString() const {
     return result;
 }
 
+const char* Vector::c_str() const {
+    return toString().c_str();
+}
+
 Vector Vector::scalarMultiply( const Vector& a,const float& val){
     Vector result(a);
     for(int d=0;d<a._dim;++d){
@@ -141,11 +145,8 @@ Vector Vector::minus(const Vector& a,const Vector& b){
     if( a._dim != b._dim){
         throw  runtime_error("Dim A not equal with B!");
     }
-    Vector result(a);
-    for(int d=0;d<a._dim;++d){
-        result._components[d] = a._components[d] - b._components[d];
-    }
-    return result;
+    const Vector fb = Vector::scalarMultiply(b,-1.0);
+    return add(a,fb);
 }
 
 Vector Vector::add(const Vector& a)const{
