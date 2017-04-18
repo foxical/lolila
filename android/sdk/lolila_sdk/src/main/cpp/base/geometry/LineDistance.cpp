@@ -13,6 +13,14 @@ Ray LineDistance::line2ray(const Line& l){
     return Ray(l.point1(),Vector::minus(l.point2(),l.point1()));
 }
 
+bool LineDistance::isParallel(const Vector& V1,const Vector& V2){
+    const float V1V2 = Vector::dot(V1,V2);
+    Matrix M(2,2);
+    M.set(0,0,Vector::dot(V1,V1));M.set(0,1,-1.0*V1V2);
+    M.set(1,0,V1V2);              M.set(1,1,-1.0*Vector::dot(V2,V2));
+    return M.determinant() == 0;
+}
+
 float LineDistance::calc(const Ray& l1,const Ray& l2){
     LogQueue::push("LineDistance::calc begin...\n");
 

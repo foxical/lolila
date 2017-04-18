@@ -8,6 +8,7 @@
 
 class Line;
 class Ray;
+class Vector;
 
 class LineDistance{
 public:
@@ -19,6 +20,8 @@ public:
     static float calc(const Line& l1, const Ray& l2);
     static float calc(const Ray& l1,const Line& l2);
 
+
+    static bool isParallel(const Vector&,const Vector&);
 
 private:
     LineDistance();

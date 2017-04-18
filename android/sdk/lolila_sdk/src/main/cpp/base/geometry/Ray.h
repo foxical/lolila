@@ -12,6 +12,7 @@
 class Ray{
 public:
     Ray(const Vector& S,const Vector& V);
+    Ray(const Ray&);
     ~Ray();
 public:
     Vector pointAt(const float& t)const;

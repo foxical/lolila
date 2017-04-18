@@ -23,6 +23,7 @@ public:
     }
 public:
     static bool  pointLiesInPlane(const Plane &, const Vector &);
+
 private:
     Plane();
 private:

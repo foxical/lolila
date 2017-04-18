@@ -32,6 +32,7 @@ public:
     Vector minus(const Vector&)const;
     Vector normalize()const;
     int dim()const;
+    bool isZero()const;
 
 public:
 

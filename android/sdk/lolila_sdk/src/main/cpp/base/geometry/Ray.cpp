@@ -12,6 +12,10 @@ Ray::Ray(const Vector &S, const Vector &V):_endpoint(S),_direction(V) {
     }
 }
 
+Ray::Ray(const Ray& r):_endpoint(r._endpoint),_direction(r._direction) {
+
+}
+
 Ray::~Ray() {
 
 }

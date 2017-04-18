@@ -2,6 +2,7 @@
 // Created by tam on 2017/1/21.
 //
 #include "Vector.h"
+#include "../utils/FloatUtils.h"
 #include <math.h>
 #include <stdexcept>
 
@@ -78,6 +79,15 @@ float Vector::dot(const Vector& a) const{
 
 int Vector::dim()const{
     return _dim;
+}
+
+bool Vector::isZero() const {
+    for( int d=0;d<_dim;++d){
+        if(FloatUtils::isEqual(_components[d],0)==false){
+            return false;
+        }
+    }
+    return true;
 }
 
 Vector Vector::cross(const Vector& A,const Vector& B){

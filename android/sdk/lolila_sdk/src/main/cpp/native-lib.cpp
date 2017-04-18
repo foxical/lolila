@@ -22,6 +22,7 @@
 
 using namespace std;
 
+extern Vector v_perp_to_n_and_not_perp_to_m(const Vector& N, const Vector& M,const Vector& P,const float& dot );
 
 static void testLineDistance(){
     Vector p1_1(-2,-2,1);
@@ -35,17 +36,39 @@ static void testLineDistance(){
 
 static void testPlanes(){
 
-    Vector N(0,0,1);
-    Vector P(0,0,0);
-    Plane plane(N,P);
+    Vector N1(1,0,0);
+    Vector P1(0,0,0);
+    Plane plane1(N1,P1);
 
-    Vector p2_1(1.7890,0,0);
-    Vector p2_2(2,0,1);
-    Line l2(p2_1,p2_2);
+    Vector N2(1,-1,1);
+    Vector P2(0,0,0);
+    Plane plane2(N2,P2);
 
-    LogQueue::push("Point lies in plane: %d\n",plane.pointLiesInPlane(Vector(-1.45454,0.1998,0.00)));
-    LogQueue::push("Line isParallel to plane: %d\n",PlaneIntersection::isParallel(plane,l2));
-    LogQueue::push("Line interrects to plane at point:%s\n",PlaneIntersection::intersects(plane,l2).c_str());
+    Ray RC(PlaneIntersection::intersects(plane1,plane2));
+
+    string s1 = RC.endPoint().toString();
+    string s2 = RC.direction().toString();
+    LogQueue::push("RC  S:%s,V:%s\n",s1.c_str(),s2.c_str());
+
+    for(float t=0;t<1.0;t+=0.1){
+        Vector p = RC.pointAt(t);
+        LogQueue::push("Point at RC:%s, lies in plane1:%d, lies in plane2:%d\n",p.c_str(),plane1.pointLiesInPlane(p),plane2.pointLiesInPlane(p));
+
+    }
+
+//    LogQueue::push("Line isParallel to plane: %d\n",PlaneIntersection::isParallel(plane,l2));
+//    LogQueue::push("Line interrects to plane at point:%s\n",PlaneIntersection::intersects(plane,l2).c_str());
+
+
+//    Vector N(2,0,2);
+//    Vector M(4,0,1);
+//    Vector P(1,0,1);
+//
+//    Vector v1 = v_perp_to_n_and_not_perp_to_m(N,M,P,1);
+//    LogQueue::push("v1 is %s, dot with N is:%g, dot with M is:%g\n",v1.c_str(),Vector::dot(v1,N),Vector::dot(v1,M));
+//    Vector v2 = v_perp_to_n_and_not_perp_to_m(N,M,P,2);
+//    LogQueue::push("v2 is %s\n",v2.c_str());
+
 }
 
 extern "C"
