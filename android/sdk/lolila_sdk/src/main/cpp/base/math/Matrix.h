@@ -57,16 +57,18 @@ public:
 
 public:
     void set(const int& rowIdx,const int& colIdx,const float& val);
+    void set(const int& idx,const float& val);
     float get(const int& rowIdx,const int& colIdx)const;
+    float get(const int& idx)const;
 
 public:
-    Matrix& operator=(const Matrix&);
+    //Matrix& operator=(const Matrix&);
 
 private:
     Matrix();
 private:
-    int _row;
-    int _col;
+    const int _row;
+    const int _col;
     float* _items;
 };
 

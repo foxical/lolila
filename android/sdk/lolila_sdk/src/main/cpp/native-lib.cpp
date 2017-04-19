@@ -27,7 +27,7 @@ extern Vector v_perp_to_n_and_not_perp_to_m(const Vector& N, const Vector& M,con
 static void testLineDistance(){
     Vector p1_1(-2,-2,1);
     Vector p1_2(2,2,1);
-    Vector p2_1(0,0,0);
+    Vector p2_1(0.451898,0,0);
     Vector p2_2(2,0,0);
     Line l1(p1_1,p1_2);
     Line l2(p2_1,p2_2);
@@ -40,21 +40,27 @@ static void testPlanes(){
     Vector P1(0,0,0);
     Plane plane1(N1,P1);
 
-    Vector N2(1,-1,1);
+    Vector N2(0,1,0);
     Vector P2(0,0,0);
     Plane plane2(N2,P2);
 
-    Ray RC(PlaneIntersection::intersects(plane1,plane2));
+    Vector N3(0,0,1);
+    Vector P3(0,0,0);
+    Plane plane3(N3,P3);
 
-    string s1 = RC.endPoint().toString();
-    string s2 = RC.direction().toString();
-    LogQueue::push("RC  S:%s,V:%s\n",s1.c_str(),s2.c_str());
+    PlaneIntersection::intersects(plane1,plane2,plane3);
 
-    for(float t=0;t<1.0;t+=0.1){
-        Vector p = RC.pointAt(t);
-        LogQueue::push("Point at RC:%s, lies in plane1:%d, lies in plane2:%d\n",p.c_str(),plane1.pointLiesInPlane(p),plane2.pointLiesInPlane(p));
-
-    }
+//    Ray RC(PlaneIntersection::intersects(plane1,plane2));
+//
+//    string s1 = RC.endPoint().toString();
+//    string s2 = RC.direction().toString();
+//    LogQueue::push("RC  S:%s,V:%s\n",s1.c_str(),s2.c_str());
+//
+//    for(float t=0;t<1.0;t+=0.1){
+//        Vector p = RC.pointAt(t);
+//        LogQueue::push("Point at RC:%s, lies in plane1:%d, lies in plane2:%d\n",p.c_str(),plane1.pointLiesInPlane(p),plane2.pointLiesInPlane(p));
+//
+//    }
 
 //    LogQueue::push("Line isParallel to plane: %d\n",PlaneIntersection::isParallel(plane,l2));
 //    LogQueue::push("Line interrects to plane at point:%s\n",PlaneIntersection::intersects(plane,l2).c_str());
@@ -81,7 +87,8 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
 
         LogQueue::clear();
 
-        testPlanes();
+        testLineDistance();
+        //testPlanes();
 
         return env->NewStringUTF( LogQueue::c_str());
 

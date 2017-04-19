@@ -101,7 +101,7 @@ string Matrix::toString()const{
             if(c>0){
                 result.append(",");
             }
-            sprintf(buff,"%g",_items[c+r*_row]);
+            sprintf(buff,"%g",get(r,c));
             result.append(buff);
 
         }
@@ -114,6 +114,7 @@ const char* Matrix::c_str() const {
     return toString().c_str();
 }
 
+/*
 Matrix& Matrix::operator=(const Matrix& A){
 
     const int oldItemCount = itemCount();
@@ -129,6 +130,14 @@ Matrix& Matrix::operator=(const Matrix& A){
     }
     return *this;
 }
+*/
+
+void Matrix::set(const int& idx,const float & val){
+    if( idx<0||idx>=itemCount()){
+        throw out_of_range("index is out of range!");
+    }
+    _items[ idx] = val;
+}
 
 void Matrix::set(const int& rowIdx,const int& colIdx,const float & val){
     if( colIdx<0||colIdx>=_col){
@@ -137,7 +146,14 @@ void Matrix::set(const int& rowIdx,const int& colIdx,const float & val){
     if( rowIdx<0||rowIdx>=_row){
         throw out_of_range("row index is out of range!");
     }
-    _items[ rowIdx*_row + colIdx] = val;
+    set( rowIdx*_col + colIdx, val);
+}
+
+float Matrix::get(const int& idx)const{
+    if( idx<0||idx>=itemCount()){
+        throw out_of_range("index is out of range!");
+    }
+    return _items[idx];
 }
 
 float Matrix::get(const int& rowIdx,const int& colIdx)const{
@@ -147,7 +163,7 @@ float Matrix::get(const int& rowIdx,const int& colIdx)const{
     if( rowIdx<0||rowIdx>=_row){
         throw out_of_range("rowIdx is out of range!");
     }
-    return _items[ rowIdx*_row+colIdx];
+    return get( rowIdx*_col+colIdx);
 }
 
 Matrix  Matrix::multiply(const Matrix& A,const Matrix& B){

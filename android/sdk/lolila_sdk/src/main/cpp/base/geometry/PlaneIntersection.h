@@ -18,6 +18,7 @@ public:
     static Vector  intersects(const Plane&, const Line& );
 
     static Ray intersects(const Plane& plane1,const Plane& plane2);
+    static Vector intersects(const Plane& plane1,const Plane& plane2,const Plane& plane3);
 
 private:
     PlaneIntersection();

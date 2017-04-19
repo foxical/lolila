@@ -73,3 +73,33 @@ Ray PlaneIntersection::intersects(const Plane& plane1,const Plane& plane2){
 
     return Ray(IP,IV);
 }
+
+Vector PlaneIntersection::intersects(const Plane& plane1,const Plane& plane2,const Plane& plane3){
+
+    const Vector& N1 = plane1.N();
+    const Vector& N2 = plane2.N();
+    const Vector& N3 = plane3.N();
+
+    Matrix M(3,3);
+    M.set(0,0,N1.x());M.set(0,1,N1.y());M.set(0,2,N1.z());
+    M.set(1,0,N2.x());M.set(1,1,N2.y());M.set(1,2,N2.z());
+    M.set(2,0,N3.x());M.set(2,1,N3.y());M.set(2,2,N3.z());
+    LogQueue::push("M is:%s",M.c_str());
+
+    const int detM = M.determinant();
+    LogQueue::push("detM is:%d\n",detM);
+    if( detM==0){
+        throw runtime_error("The three planes do not intersect at a point.");
+    }
+
+    Matrix D(3,1);
+    D.set(0,0,-1.0*plane1.D());
+    D.set(1,0,-1.0*plane2.D());
+    D.set(2,0,-1.0*plane3.D());
+    LogQueue::push("D is:%s",D.c_str());
+
+    const Matrix Q = Matrix::multiply(Matrix::scalarMultiply(M.cofactors(),1.0/detM),D);
+    LogQueue::push("Q is: %s",Q.c_str());
+
+    return Vector(Q.get(0,0),Q.get(1,0),Q.get(2,0));
+}
