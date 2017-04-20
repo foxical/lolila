@@ -20,7 +20,11 @@ bool PlaneIntersection::isParallel(const Plane& plane, const Ray& ray ){
 }
 
 bool PlaneIntersection::isParallel(const Plane& plane, const Line& line){
-    return isParallel(plane,LineDistance::line2ray(line));
+    return isParallel(plane,Line::line2ray(line));
+}
+
+bool PlaneIntersection::isParallel(const Plane& p1, const Plane& p2){
+    return LineDistance::isParallel(p1.N(),p2.N());
 }
 
 Vector  PlaneIntersection::intersects(const Plane& plane, const Ray& ray){
@@ -40,7 +44,7 @@ Vector  PlaneIntersection::intersects(const Plane& plane, const Ray& ray){
 }
 
 Vector  PlaneIntersection::intersects(const Plane& plane, const Line& line ){
-    return intersects(plane,LineDistance::line2ray(line));
+    return intersects(plane,Line::line2ray(line));
 }
 
 // 求任意两个平面交线的算法
@@ -72,6 +76,29 @@ Ray PlaneIntersection::intersects(const Plane& plane1,const Plane& plane2){
     //LogQueue::push("IP:%s\n",IP.c_str());
 
     return Ray(IP,IV);
+}
+
+// 求两平面交线的第二个方法
+// IV的求法是一样的
+// 这次以IV作为法向量，以座标原点O作为平面原点
+// 求这个平面和两个平面的交点Q
+// 射线《Q,IV》即为所求
+Ray PlaneIntersection::intersects_v2(const Plane& plane1,const Plane& plane2){
+
+    const Vector& N1 = plane1.N();
+    const Vector& N2 = plane2.N();
+
+    if( LineDistance::isParallel(N1,N2)){
+        throw runtime_error("the two planes is parallel!");
+    }
+
+    const Vector IV = Vector::cross(N1,N2);
+
+    const Plane plane3(IV,Vector(0,0,0));
+
+    const Vector Q(intersects(plane1,plane2,plane3));
+
+    return Ray(Q,IV);
 }
 
 Vector PlaneIntersection::intersects(const Plane& plane1,const Plane& plane2,const Plane& plane3){

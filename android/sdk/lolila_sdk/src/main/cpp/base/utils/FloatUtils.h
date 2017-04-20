@@ -11,6 +11,12 @@ public:
         const float x = f1-f2;
         return ((x >= - EPSINON)&& (x <= EPSINON));
     }
+    static float minus(const float& f1, const float& f2){
+        if(isEqual(f1,f2)){
+            return 0;
+        }
+        return f1-f2;
+    }
 private:
     static const float EPSINON;//=0.00001;
 

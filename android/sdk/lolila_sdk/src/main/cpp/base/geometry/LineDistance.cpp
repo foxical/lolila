@@ -7,11 +7,8 @@
 #include "Ray.h"
 #include "../math/Matrix.h"
 #include "../utils/LogQueue.h"
+#include "../utils/FloatUtils.h"
 
-
-Ray LineDistance::line2ray(const Line& l){
-    return Ray(l.point1(),Vector::minus(l.point2(),l.point1()));
-}
 
 bool LineDistance::isParallel(const Vector& V1,const Vector& V2){
     const float V1V2 = Vector::dot(V1,V2);
@@ -78,7 +75,7 @@ float LineDistance::calc(const Ray& l1,const Ray& l2){
     LogQueue::push("point at L2: %s\n",p2.c_str());
 
 
-    const float distance = Vector::dot(p1,p1) + Vector::dot(p2,p2) - 2.0*(Vector::dot(p1,p2));
+    const float distance = FloatUtils::minus(Vector::dot(p1,p1) + Vector::dot(p2,p2), 2.0*(Vector::dot(p1,p2)));
     const float  result = sqrtf(distance);
     LogQueue::push("distance between L1 and L2 is:%g\n",result);
     //LogQueue::push("distance v2 between L1 and L2 is:%g\n",Vector::minus(p1,p2).length());
@@ -87,13 +84,25 @@ float LineDistance::calc(const Ray& l1,const Ray& l2){
 }
 
 float LineDistance::calc(const Line& l1, const Line& l2){
-    return calc(line2ray(l1),line2ray(l2));
+    return calc(Line::line2ray(l1),Line::line2ray(l2));
 }
 
 float LineDistance::calc(const Line& l1, const Ray& l2){
-    return calc(line2ray(l1),l2);
+    return calc(Line::line2ray(l1),l2);
 }
 
 float LineDistance::calc(const Ray& l1,const Line& l2){
-    return calc(l1,line2ray(l2));
+    return calc(l1,Line::line2ray(l2));
+}
+
+// 判断点是否在直线上的另一种方法，判断Q-S是否和V平行
+bool LineDistance::pointLiesInRay(const Vector& Q, const Ray& ray){
+    const Vector& S = ray.endPoint();
+    const Vector& V = ray.direction();
+    const Vector Q_S = Vector::minus(Q,S);
+    return isParallel(Q_S,V);
+}
+
+bool LineDistance::pointLiesInLine(const Vector& Q, const Line& line){
+    return pointLiesInRay(Q,Line::line2ray(line));
 }

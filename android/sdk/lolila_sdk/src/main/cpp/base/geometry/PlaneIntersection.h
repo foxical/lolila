@@ -14,10 +14,14 @@ class PlaneIntersection{
 public:
     static bool isParallel(const Plane&, const Ray& );
     static bool isParallel(const Plane&, const Line& );
+    static bool isParallel(const Plane&, const Plane& );
+
     static Vector  intersects(const Plane&, const Ray& );
     static Vector  intersects(const Plane&, const Line& );
 
     static Ray intersects(const Plane& plane1,const Plane& plane2);
+    static Ray intersects_v2(const Plane& plane1,const Plane& plane2);
+
     static Vector intersects(const Plane& plane1,const Plane& plane2,const Plane& plane3);
 
 private:

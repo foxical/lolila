@@ -9,6 +9,7 @@
 #include "Vector.h"
 #endif//__VECTOR_H__
 
+class Ray;
 class Line{
 public:
     Line(const Vector& p1,const Vector& p2);
@@ -18,6 +19,9 @@ public:
     float distance(const Vector& Q)const;
     const Vector& point1()const;
     const Vector& point2()const;
+    bool pointLiesInLine(const Vector& Q)const;
+public:
+    static Ray line2ray(const Line&);
 private:
     Line();
 private:

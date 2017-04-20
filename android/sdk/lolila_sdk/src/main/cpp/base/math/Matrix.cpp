@@ -3,6 +3,7 @@
 //
 
 #include "Matrix.h"
+#include "../utils/FloatUtils.h"
 #include <stdexcept>
 #include <math.h>
 
@@ -69,7 +70,7 @@ Matrix Matrix::minus(const Matrix& A,const Matrix& B){
     Matrix result(A.row(),A.col());
     const int itemCount = result.itemCount();
     for(int i=0;i<itemCount;++i){
-        result._items[i] = A._items[i]-B._items[i];
+        result._items[i] = FloatUtils::minus(A._items[i],B._items[i]);
     }
     return result;
 }

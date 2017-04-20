@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <math.h>
 #include "Ray.h"
+#include "../utils/FloatUtils.h"
+#include "../utils/LogQueue.h"
 
 Ray::Ray(const Vector &S, const Vector &V):_endpoint(S),_direction(V) {
     if( S.dim()!=V.dim()){
@@ -29,7 +31,12 @@ float Ray::distance(const Vector &Q) const {
     const Vector& V = _direction;
     const Vector Q_S = Vector::minus(Q,S);
     const Vector proj_Q_S_V = Vector::proj(Q_S,V);
-    return sqrtf( powf(Q_S.length(),2.0) - powf(proj_Q_S_V.length(),2.0) );
+    // 如果f1和和f2相同的话，直接相减会出现误差，而不是0，因此需要使用工具函数
+    const float f1 = powf(Q_S.length(),2.0);
+    //LogQueue::push("f1:%g\n",f1);
+    const float f2 = powf(proj_Q_S_V.length(),2.0);
+    //LogQueue::push("f2:%g\n",f2);
+    return sqrtf( FloatUtils::minus(f1,f2));
 }
 
 const Vector& Ray::endPoint()const{
@@ -38,4 +45,15 @@ const Vector& Ray::endPoint()const{
 
 const Vector& Ray::direction()const{
     return _direction;
+}
+
+bool Ray::pointLiesInRay(const Vector& Q)const{
+    /*
+    const Vector& S = _endpoint;
+    const Vector& V = _direction;
+    const Vector Q_S = Vector::minus(Q,S);
+    const Vector proj_Q_S_V = Vector::proj(Q_S,V);
+    return FloatUtils::isEqual(Q_S.length(),proj_Q_S_V.length());
+     */
+   return FloatUtils::isEqual(distance(Q),0);
 }

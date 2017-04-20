@@ -19,6 +19,9 @@ public:
     float distance(const Vector& Q)const;
     const Vector& endPoint()const;
     const Vector& direction()const;
+    bool pointLiesInRay(const Vector& Q)const;
+
+
 private:
     Ray();
 private:

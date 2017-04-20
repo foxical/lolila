@@ -22,8 +22,7 @@ Vector Line::pointAt(const float &t) const {
 }
 
 float Line::distance(const Vector& Q)const{
-    const Ray innerRay(_point1,Vector::minus(_point2,_point1));
-    return innerRay.distance(Q);
+    return line2ray(*this).distance(Q);
 }
 
 const Vector& Line::point1()const{
@@ -32,4 +31,12 @@ const Vector& Line::point1()const{
 
 const Vector& Line::point2()const{
     return _point2;
+}
+
+Ray Line::line2ray(const Line& l){
+    return Ray(l.point1(),Vector::minus(l.point2(),l.point1()));
+}
+
+bool Line::pointLiesInLine(const Vector& Q)const{
+    return line2ray(*this).pointLiesInRay(Q);
 }
