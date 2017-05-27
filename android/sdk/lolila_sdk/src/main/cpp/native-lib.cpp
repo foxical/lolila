@@ -16,6 +16,7 @@
 #include "base/utils/FloatUtils.h"
 #include "base/geometry/Plane.h"
 #include "base/geometry/PlaneIntersection.h"
+#include "base/geometry/ViewFrustum.h"
 #include <exception>
 #include <stdexcept>
 #include <math.h>
@@ -100,7 +101,9 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
 
         //testLineDistance();
         //testPointLies();
-        testPlanes();
+        //testPlanes();
+
+        LogQueue::push("b is %g\n",ViewFrustum::getVerticalViewAngle(1280,1024,75.0f));
 
         return env->NewStringUTF( LogQueue::c_str());
 
