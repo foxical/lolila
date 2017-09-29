@@ -11,21 +11,21 @@ using namespace std;
 class Vector{
 
 public:
-    Vector(const float& x);
-    Vector(const float& x,const float& y);
-    Vector(const float& x,const float& y,const float& z);
+    Vector(const double& x);
+    Vector(const double& x,const double& y);
+    Vector(const double& x,const double& y,const double& z);
     Vector(const Vector&);
     ~Vector();
 
 public:
 
-    float x()const;
-    float y()const;
-    float z()const;
-    float length()const;
-    float dot(const Vector&)const;
+    double x()const;
+    double y()const;
+    double z()const;
+    double length()const;
+    double dot(const Vector&)const;
     Vector cross(const Vector&)const;
-    Vector scalarMultiply(const float &)const;
+    Vector scalarMultiply(const double &)const;
     Vector proj(const Vector&)const;
     Vector perp(const Vector&)const;
     Vector add(const Vector&)const;
@@ -43,9 +43,9 @@ public:
 
 public:
 
-    static float dot(const Vector&, const Vector&);
+    static double dot(const Vector&, const Vector&);
     static Vector cross(const Vector&,const Vector&);
-    static Vector scalarMultiply( const Vector&,const float&);
+    static Vector scalarMultiply( const Vector&,const double&);
     static Vector proj(const Vector& P,const Vector& Q);
     static Vector perp(const Vector& P,const Vector& Q);
     static Vector add(const Vector&,const Vector&);
@@ -56,7 +56,7 @@ private:
     Vector();
 
 private:
-    float _components[3];
+    double _components[3];
     int _dim;
 
 };

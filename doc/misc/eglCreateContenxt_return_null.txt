@@ -1,0 +1,8 @@
+某些机型就算是4.4，也不支持ES3， eglCreateContext会返回null, 错误是EGL_BAD_ATTR，即不支持ES3
+使用三星NOTE4, 5.01就可以了
+可以通过以下代码检测ES版本
+ ActivityManager am =(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        ConfigurationInfo info = am.getDeviceConfigurationInfo();
+        String s = info.reqGlEsVersion+"";
+        String ver = Integer.toHexString(Integer.parseInt(s));
+        Toast.makeText(this,"reqGlEsVersion = " + ver,Toast.LENGTH_LONG).show();

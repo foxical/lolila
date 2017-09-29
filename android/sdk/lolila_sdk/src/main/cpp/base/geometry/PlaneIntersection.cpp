@@ -16,7 +16,7 @@
 bool PlaneIntersection::isParallel(const Plane& plane, const Ray& ray ){
     const Vector& V = ray.direction();
     const Vector& N = plane.N();
-    return FloatUtils::isEqual(Vector::dot(N,V),0);
+    return FloatUtils::isEqual(Vector::dot(N,V),0.0);
 }
 
 bool PlaneIntersection::isParallel(const Plane& plane, const Line& line){
@@ -32,14 +32,14 @@ Vector  PlaneIntersection::intersects(const Plane& plane, const Ray& ray){
     const Vector& V = ray.direction();
     const Vector& N = plane.N();
     const Vector& P = plane.P();
-    const float D = -1.0*Vector::dot(N,P);
+    const double D = -1.0*Vector::dot(N,P);
 
-    const float NV = Vector::dot(N,V);
+    const double NV = Vector::dot(N,V);
     if( FloatUtils::isEqual(NV,0)){
         throw runtime_error("Line is parallel to plane!");
     }
 
-    const float t = -1.0*(Vector::dot(N,S)+D)/NV;
+    const double t = -1.0*(Vector::dot(N,S)+D)/NV;
     return ray.pointAt(t);
 }
 
@@ -113,9 +113,9 @@ Vector PlaneIntersection::intersects(const Plane& plane1,const Plane& plane2,con
     M.set(2,0,N3.x());M.set(2,1,N3.y());M.set(2,2,N3.z());
     LogQueue::push("M is:%s",M.c_str());
 
-    const int detM = M.determinant();
-    LogQueue::push("detM is:%d\n",detM);
-    if( detM==0){
+    const double detM = M.determinant();
+    LogQueue::push("detM is:%.8lf\n",detM);
+    if( FloatUtils::isEqual(detM,0.0)){
         throw runtime_error("The three planes do not intersect at a point.");
     }
 

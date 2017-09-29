@@ -7,18 +7,18 @@
 #include <stdexcept>
 
 
-Vector::Vector(const float &x) {
+Vector::Vector(const double &x) {
     _dim= 1;
     _components[0] = x;
 }
 
-Vector::Vector(const float &x, const float &y) {
+Vector::Vector(const double &x, const double &y) {
     _dim= 2;
     _components[0] = x;
     _components[1] = y;
 }
 
-Vector::Vector(const float &x, const float &y, const float &z) {
+Vector::Vector(const double &x, const double &y, const double &z) {
     _dim=3;
     _components[0] = x;
     _components[1] = y;
@@ -36,33 +36,33 @@ Vector::~Vector() {
 
 }
 
-float Vector::x() const {
+double Vector::x() const {
     return _components[0];
 }
 
-float Vector::y() const {
+double Vector::y() const {
     if( _dim<2){
         throw runtime_error("Vector must has 2 dims!");
     }
     return _components[1];
 }
 
-float Vector::z() const {
+double Vector::z() const {
     if( _dim<3){
         throw runtime_error("Vector must has 3 dims!");
     }
     return _components[2];
 }
 
-float Vector::length() const {
+double Vector::length() const {
     float result=0;
     for(int d=0;d<_dim;++d){
-        result += powf(_components[d],2.0);
+        result += pow(_components[d],2.0);
     }
-    return sqrtf(result);
+    return sqrt(result);
 }
 
-float Vector::dot(const Vector& a, const Vector& b){
+double Vector::dot(const Vector& a, const Vector& b){
     if( a._dim != b._dim){
         throw  runtime_error("Dim A not equal with B!");
     }
@@ -73,7 +73,7 @@ float Vector::dot(const Vector& a, const Vector& b){
     return result;
 }
 
-float Vector::dot(const Vector& a) const{
+double Vector::dot(const Vector& a) const{
      return dot(*this,a);
 }
 
@@ -83,7 +83,7 @@ int Vector::dim()const{
 
 bool Vector::isZero() const {
     for( int d=0;d<_dim;++d){
-        if(FloatUtils::isEqual(_components[d],0)==false){
+        if(FloatUtils::isEqual(_components[d],0.0)==false){
             return false;
         }
     }
@@ -110,11 +110,11 @@ string Vector::toString() const {
     string result;
     result.append("<");
     if( _dim>0){
-        sprintf(buff,"%g",_components[0]);
+        sprintf(buff,"%.8lf",_components[0]);
         result.append(buff);
         for( int d=1;d<_dim;++d){
             result.append(",");
-            sprintf(buff,"%g",_components[d]);
+            sprintf(buff,"%.8lf",_components[d]);
             result.append(buff);
         }
     }
@@ -126,7 +126,7 @@ const char* Vector::c_str() const {
     return toString().c_str();
 }
 
-Vector Vector::scalarMultiply( const Vector& a,const float& val){
+Vector Vector::scalarMultiply( const Vector& a,const double& val){
     Vector result(a);
     for(int d=0;d<a._dim;++d){
         result._components[d] = a._components[d]*val;
@@ -134,12 +134,12 @@ Vector Vector::scalarMultiply( const Vector& a,const float& val){
     return result;
 }
 
-Vector Vector::scalarMultiply(const float &val)const{
+Vector Vector::scalarMultiply(const double &val)const{
     return scalarMultiply(*this,val);
 }
 
 Vector Vector::proj(const Vector& P,const Vector& Q){
-    return scalarMultiply(Q,dot(P,Q)/powf(Q.length(),2.0));
+    return scalarMultiply(Q,dot(P,Q)/pow(Q.length(),2.0));
 }
 
 Vector Vector::proj(const Vector& Q)const{

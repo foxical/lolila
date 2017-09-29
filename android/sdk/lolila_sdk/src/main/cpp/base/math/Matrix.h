@@ -13,7 +13,7 @@ public:
 
     Matrix(const int& row,const int& col);
     Matrix(const Matrix&);
-    Matrix(const int& row,const int& col,const float[]);
+    Matrix(const int& row,const int& col,const double[]);
     ~Matrix();
 public:
     int col()const;
@@ -24,10 +24,10 @@ public:
 
     Matrix add(const Matrix&)const;
     Matrix minus(const Matrix&)const;
-    Matrix scalarMultiply(const float&)const;
+    Matrix scalarMultiply(const double&)const;
     Matrix multiply(const Matrix&)const;
     Matrix transpose()const;
-    float determinant()const;
+    double determinant()const;
     Matrix cofactors()const;
     Matrix invert()const;
 
@@ -35,7 +35,7 @@ public:
 
     static Matrix add(const Matrix& ,const Matrix&);
     static Matrix minus(const Matrix& ,const Matrix&);
-    static Matrix scalarMultiply(const Matrix&,const float&);
+    static Matrix scalarMultiply(const Matrix&,const double&);
     static Matrix multiply(const Matrix& ,const Matrix&);
     static Matrix transpose(const Matrix&);
 
@@ -56,10 +56,10 @@ public:
     const char* c_str() const;
 
 public:
-    void set(const int& rowIdx,const int& colIdx,const float& val);
-    void set(const int& idx,const float& val);
-    float get(const int& rowIdx,const int& colIdx)const;
-    float get(const int& idx)const;
+    void set(const int& rowIdx,const int& colIdx,const double& val);
+    void set(const int& idx,const double& val);
+    double get(const int& rowIdx,const int& colIdx)const;
+    double get(const int& idx)const;
 
 public:
     //Matrix& operator=(const Matrix&);
@@ -69,7 +69,7 @@ private:
 private:
     const int _row;
     const int _col;
-    float* _items;
+    double* _items;
 };
 
 #endif //__MATRIX_H__

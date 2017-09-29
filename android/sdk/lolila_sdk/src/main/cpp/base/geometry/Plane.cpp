@@ -4,6 +4,7 @@
 
 #include "Plane.h"
 #include "../utils/FloatUtils.h"
+#include <math.h>
 
 Plane::Plane(const Vector &N, const Vector &P):_n(N),_p(P) {
 }
@@ -20,4 +21,8 @@ bool  Plane::pointLiesInPlane(const Plane &plane, const Vector &Q){
 
 bool  Plane::pointLiesInPlane( const Vector& Q)const{
     return pointLiesInPlane(*this, Q);
+}
+
+double Plane::distanceFromOri()const{
+    return fabs(D())/N().length();
 }

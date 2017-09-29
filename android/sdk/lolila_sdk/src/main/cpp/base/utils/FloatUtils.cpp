@@ -3,5 +3,5 @@
 //
 #include "FloatUtils.h"
 
-const float FloatUtils::EPSINON=0.00001;
-
+const float FloatUtils::EPSINON_F=0.00001;
+const double FloatUtils::EPSINON_D=0.00000001;

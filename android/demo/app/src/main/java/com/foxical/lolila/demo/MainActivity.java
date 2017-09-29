@@ -1,9 +1,13 @@
 package com.foxical.lolila.demo;
 
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.pm.ConfigurationInfo;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.foxical.lolila.sdk.IndexApi;
 
@@ -16,6 +20,13 @@ public class MainActivity extends Activity {
 
         TextView tvTitle = (TextView) findViewById(R.id.tv_title);
         tvTitle.setText(IndexApi.getStr());
+
+
+        ActivityManager am =(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        ConfigurationInfo info = am.getDeviceConfigurationInfo();
+        String s = info.reqGlEsVersion+"";
+        String ver = Integer.toHexString(Integer.parseInt(s));
+        Toast.makeText(this,"reqGlEsVersion = " + ver,Toast.LENGTH_LONG).show();
 
         findViewById(R.id.btn_enter_test).setOnClickListener(new View.OnClickListener() {
             @Override

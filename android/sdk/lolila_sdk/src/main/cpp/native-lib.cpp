@@ -4,7 +4,7 @@
 #include <android/asset_manager_jni.h>
 #include <android/log.h>
 
-//#include <GLES3/gl3.h>
+#include <GLES3/gl3.h>
 
 #include "base/geometry/Vector.h"
 #include "base/geometry/Line.h"
@@ -17,6 +17,7 @@
 #include "base/geometry/Plane.h"
 #include "base/geometry/PlaneIntersection.h"
 #include "base/geometry/ViewFrustum.h"
+#include "base/geometry/Projections.h"
 #include <exception>
 #include <stdexcept>
 #include <math.h>
@@ -47,20 +48,20 @@ static void testPointLies(){
 }
 
 static void testPlanes(){
-
-    Vector N1(1,6,9);
-    Vector P1(4,5,0);
-    Plane plane1(N1,P1);
-
-    Vector N2(7,1,6);
-    Vector P2(3,0,-9);
-    Plane plane2(N2,P2);
-
-    Vector N3(-50,-90,134);
-    Vector P3(40,-67,90);
-    Plane plane3(N3,P3);
-
-    PlaneIntersection::intersects(plane1,plane2,plane3);
+//
+//    Vector N1(1,6,9);
+//    Vector P1(4,5,0);
+//    Plane plane1(N1,P1);
+//
+//    Vector N2(7,1,6);
+//    Vector P2(3,0,-9);
+//    Plane plane2(N2,P2);
+//
+//    Vector N3(-50,-90,134);
+//    Vector P3(40,-67,90);
+//    Plane plane3(N3,P3);
+//
+//    PlaneIntersection::intersects(plane1,plane2,plane3);
 
 //    Ray RC(PlaneIntersection::intersects_v2(plane1,plane2));
 //
@@ -87,6 +88,29 @@ static void testPlanes(){
 //    Vector v2 = v_perp_to_n_and_not_perp_to_m(N,M,P,2);
 //    LogQueue::push("v2 is %s\n",v2.c_str());
 
+    Vector N1(0,0,9);
+    Vector P1(0,0,1);
+    Plane plane1(N1,P1);
+
+    LogQueue::push("p1 D is %g\n",plane1.distanceFromOri());
+}
+
+static void testProjections(){
+
+    double left=-2.0;
+    double right=2.0;
+    double top=2.0;
+    double bottom=-2.0;
+    double near = 1.0;
+    double far = 3.0;
+
+    Vector P1(2.0,2.0,-3);
+    LogQueue::push("p1 project: %s\n",Projections::perspectiveProjection(left,top,right,bottom,near,far,P1).c_str());
+    //LogQueue::push("p1 project_v2: %s\n",Projections::perspectiveProjection_v2(left,top,right,bottom,near,far,P1).c_str());
+    Vector P2(2.0,2.0,-2);
+    LogQueue::push("p2 project: %s\n",Projections::perspectiveProjection(left,top,right,bottom,near,far,P2).c_str());
+    //LogQueue::push("p2 project_v2: %s\n",Projections::perspectiveProjection_v2(left,top,right,bottom,near,far,P2).c_str());
+
 }
 
 extern "C"
@@ -102,8 +126,9 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         //testLineDistance();
         //testPointLies();
         //testPlanes();
+        testProjections();
 
-        LogQueue::push("b is %g\n",ViewFrustum::getVerticalViewAngle(1280,1024,75.0f));
+        //LogQueue::push("b is %g\n",ViewFrustum::getVerticalViewAngle(1280,1024,75.0f));
 
         return env->NewStringUTF( LogQueue::c_str());
 

@@ -29,6 +29,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/geometry/Plane.cpp
              src/main/cpp/base/geometry/PlaneIntersection.cpp
              src/main/cpp/base/geometry/ViewFrustum.cpp
+             src/main/cpp/base/geometry/Projections.cpp
              src/main/cpp/base/transforms/HomogeneousCoordinate.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
@@ -59,4 +60,4 @@ target_link_libraries( # Specifies the target library.
                        ${log-lib}
                        android
                        EGL
-                       GLESv2 )
+                       GLESv3 )

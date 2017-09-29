@@ -11,36 +11,36 @@
 
 class HomogeneousCoordinate{
 public:
-    HomogeneousCoordinate(const float& x,const float& w);
-    HomogeneousCoordinate(const float& x,const float& y,const float& w);
-    HomogeneousCoordinate(const float& x,const float& y,const float& z,const float& w);
-    HomogeneousCoordinate(const Vector&,const float& );
+    HomogeneousCoordinate(const double& x,const double& w);
+    HomogeneousCoordinate(const double& x,const double& y,const double& w);
+    HomogeneousCoordinate(const double& x,const double& y,const double& z,const double& w);
+    HomogeneousCoordinate(const Vector&,const double& w);
     HomogeneousCoordinate(const HomogeneousCoordinate&);
 public:
     inline int dim()const{
         return _vector.dim()+1;
     }
-    inline float x()const{
+    inline double x()const{
         return _vector.x();
     }
-    inline float y()const{
+    inline double y()const{
         return _vector.y();
     }
-    inline float z()const{
+    inline double z()const{
         return _vector.z();
     }
-    inline float w()const{
+    inline double w()const{
         return _w;
     }
 public:
-    int dot(const HomogeneousCoordinate&)const;
+    double dot(const HomogeneousCoordinate&)const;
 public:
-    static int dot(const HomogeneousCoordinate&,const HomogeneousCoordinate&);
+    static double dot(const HomogeneousCoordinate&,const HomogeneousCoordinate&);
 private:
     HomogeneousCoordinate();
 private:
     const Vector _vector;
-    const float _w;
+    const double _w;
 };
 
 #endif //__HOMOGENEOUSCOORDINATE_H__
