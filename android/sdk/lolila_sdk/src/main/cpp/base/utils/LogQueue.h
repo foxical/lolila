@@ -20,6 +20,8 @@ public :
     static void clear(){
         s_log_str.clear();
     }
+
+
 private:
     LogQueue();
     ~LogQueue();

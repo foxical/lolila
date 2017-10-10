@@ -32,6 +32,14 @@ add_library( sample1
              STATIC
              src/main/cpp/sample1/hello_triangle.c )
 
+#add_library( sample_6_7
+#             STATIC
+#             src/main/cpp/sample_6_7/VertexArrayObjects.c )
+
+#add_library( sample_6_5
+#             STATIC
+#             src/main/cpp/sample_6_5/VertexBufferObjects.c )
+
 
 # Specifies a path to native header files.
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}

@@ -21,18 +21,30 @@ public class MainActivity extends Activity {
         TextView tvTitle = (TextView) findViewById(R.id.tv_title);
         tvTitle.setText(IndexApi.getStr());
 
+        /*
 
         ActivityManager am =(ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         ConfigurationInfo info = am.getDeviceConfigurationInfo();
         String s = info.reqGlEsVersion+"";
         String ver = Integer.toHexString(Integer.parseInt(s));
         Toast.makeText(this,"reqGlEsVersion = " + ver,Toast.LENGTH_LONG).show();
+        */
 
         findViewById(R.id.btn_enter_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                OpenGLES2Activity.start(MainActivity.this);
+                if( !detectOpenGLES30()){
+                    Toast.makeText(MainActivity.this,"OpenGL ES 3.0 not supported on device. Aborting...",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                OpenGLESActivity.start(MainActivity.this);
             }
         });
+    }
+
+    private boolean detectOpenGLES30() {
+        ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
+        ConfigurationInfo info = am.getDeviceConfigurationInfo();
+        return (info.reqGlEsVersion >= 0x30000);
     }
 }

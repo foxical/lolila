@@ -19,6 +19,7 @@ add_library( # Sets the name of the library.
              # Associated headers in the same location as their source
              # file are automatically included.
              src/main/cpp/native-lib.cpp
+             src/main/cpp/RenderApi.cpp
              src/main/cpp/base/geometry/Vector.cpp
              src/main/cpp/base/geometry/Line.cpp
              src/main/cpp/base/geometry/Ray.cpp
@@ -26,6 +27,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/math/Matrix.cpp
              src/main/cpp/base/utils/LogQueue.cpp
              src/main/cpp/base/utils/FloatUtils.cpp
+             src/main/cpp/base/utils/GLUtils.cpp
              src/main/cpp/base/geometry/Plane.cpp
              src/main/cpp/base/geometry/PlaneIntersection.cpp
              src/main/cpp/base/geometry/ViewFrustum.cpp

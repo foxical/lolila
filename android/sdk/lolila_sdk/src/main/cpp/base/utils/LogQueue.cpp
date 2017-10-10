@@ -4,6 +4,7 @@
 
 #include "LogQueue.h"
 
+
 string LogQueue::s_log_str = "";
 
 void LogQueue::push(const char* format, ...){
@@ -16,3 +17,4 @@ void LogQueue::push(const char* format, ...){
 
     s_log_str.append(buf);
 }
+

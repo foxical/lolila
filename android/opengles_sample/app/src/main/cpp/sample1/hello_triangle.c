@@ -176,13 +176,19 @@ int Init ( ESContext *esContext )
 void Draw ( ESContext *esContext )
 {
    UserData *userData = esContext->userData;
-   GLfloat vVertices[] = {  0.0f,  0.5f, 0.0f,
-                            -0.5f, -0.5f, 0.0f,
-                            0.5f, -0.5f, 0.0f
-                         };
+   GLfloat vVertices[] = {  //0.0f,  0.5f, 0.0f,
+                            //-0.5f, -0.5f, 0.0f,
+                            //0.5f, -0.5f, 0.0f
+    0.0f,0.0f,0.0f,
+    0.0f,1.0f,0.0f,
+    1.0f,1.0f,0.0f,
+    1.0f,0.0f,0.0f
+   };
 
    // Set the viewport
-   glViewport ( 0, 0, esContext->width, esContext->height );
+   glViewport ( 0, 0, esContext->width,
+           /*esContext->height*/esContext->width
+   ); // 视口的尺寸传正方形直观一点，否则渲染时坐标会按视口比例进行变换，会变形
 
    // Clear the color buffer
    glClear ( GL_COLOR_BUFFER_BIT );
@@ -191,10 +197,20 @@ void Draw ( ESContext *esContext )
    glUseProgram ( userData->programObject );
 
    // Load the vertex data
-   glVertexAttribPointer ( 0, 3, GL_FLOAT, GL_FALSE, 0, vVertices );
+   glVertexAttribPointer (
+           0, // 第0号数组，将第0号数组和客户缓冲区关联
+           3, // 每个顶点坐标使用3个分量表示，XYZ
+           GL_FLOAT,
+           GL_FALSE,
+           0, // 由于改数组仅仅是存放坐标，没有颜色，因此跨距是0
+           vVertices // 客户缓冲区指针
+   );
    glEnableVertexAttribArray ( 0 );
 
-   glDrawArrays ( GL_TRIANGLES, 0, 3 );
+   glDrawArrays ( GL_TRIANGLE_FAN ,
+                  0, // draw begin from index 0
+                  4  // total 3 vertices
+   );
 }
 
 void Shutdown ( ESContext *esContext )
