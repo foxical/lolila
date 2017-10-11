@@ -7,14 +7,14 @@
 #include <stdexcept>
 #include <math.h>
 
-Matrix::Matrix(const int &row, const int &col):_col(col),_row(row),_items(new double[row*col]) {
+Matrix::Matrix(const int &row, const int &col):_col(col),_row(row),_items(new float[row*col]) {
     const int itemCount = _col*_row;
     for(int i=0;i<itemCount;++i){
         _items[i] = 0.0;
     }
 }
 
-Matrix::Matrix(const Matrix & o):_col(o._col),_row(o._row),_items(new double[o._col*o._row]) {
+Matrix::Matrix(const Matrix & o):_col(o._col),_row(o._row),_items(new float[o._col*o._row]) {
     const int itemCount = _col*_row;
     for(int i=0;i<itemCount;++i){
         _items[i] = o._items[i];
@@ -23,7 +23,7 @@ Matrix::Matrix(const Matrix & o):_col(o._col),_row(o._row),_items(new double[o._
 
 
 // * Fucking float array
-Matrix::Matrix(const int& row,const int& col,const double items[]):_col(col),_row(row),_items(new double[col*row]){
+Matrix::Matrix(const int& row,const int& col,const float items[]):_col(col),_row(row),_items(new float[col*row]){
     const int itemCount = _col*_row;
     for(int i=0;i<itemCount;++i){
         _items[i] = items[i];
@@ -79,7 +79,7 @@ Matrix Matrix::minus(const Matrix & A) const {
     return minus(*this,A);
 }
 
-Matrix Matrix::scalarMultiply(const Matrix& o,const double& scalar){
+Matrix Matrix::scalarMultiply(const Matrix& o,const float& scalar){
     Matrix result(o);
     const int itemCount = result.itemCount();
     for(int i=0;i<itemCount;++i){
@@ -88,7 +88,7 @@ Matrix Matrix::scalarMultiply(const Matrix& o,const double& scalar){
     return result;
 }
 
-Matrix Matrix::scalarMultiply(const double& scalar)const{
+Matrix Matrix::scalarMultiply(const float& scalar)const{
     return scalarMultiply(*this,scalar);
 }
 
@@ -115,6 +115,10 @@ const char* Matrix::c_str() const {
     return toString().c_str();
 }
 
+const float* Matrix::value_ptr()const{
+    return _items;
+}
+
 /*
 Matrix& Matrix::operator=(const Matrix& A){
 
@@ -133,14 +137,14 @@ Matrix& Matrix::operator=(const Matrix& A){
 }
 */
 
-void Matrix::set(const int& idx,const double & val){
+void Matrix::set(const int& idx,const float & val){
     if( idx<0||idx>=itemCount()){
         throw out_of_range("index is out of range!");
     }
     _items[ idx] = val;
 }
 
-void Matrix::set(const int& rowIdx,const int& colIdx,const double & val){
+void Matrix::set(const int& rowIdx,const int& colIdx,const float & val){
     if( colIdx<0||colIdx>=_col){
         throw out_of_range("col index is out of range!");
     }
@@ -150,14 +154,14 @@ void Matrix::set(const int& rowIdx,const int& colIdx,const double & val){
     set( rowIdx*_col + colIdx, val);
 }
 
-double Matrix::get(const int& idx)const{
+float Matrix::get(const int& idx)const{
     if( idx<0||idx>=itemCount()){
         throw out_of_range("index is out of range!");
     }
     return _items[idx];
 }
 
-double Matrix::get(const int& rowIdx,const int& colIdx)const{
+float Matrix::get(const int& rowIdx,const int& colIdx)const{
     if( colIdx<0||colIdx>=_col){
         throw out_of_range("colIdx is out of range!");
     }
@@ -225,7 +229,7 @@ bool Matrix::isSingular()const{
     for( int rowIdx=0;rowIdx<_row;++rowIdx){
         int zeroCountOfRow=0;
         for( int colIdx=0;colIdx<_col;++colIdx){
-           if(_items[rowIdx*_row+colIdx]==0.0){
+           if(FloatUtils::isEqual(_items[rowIdx*_row+colIdx],0.0f)){
                zeroCountOfRow++;
                zeroCountOfCol[colIdx]++;
            }
@@ -247,19 +251,19 @@ bool Matrix::isSquare() const {
 }
 
 bool Matrix::isInvertible()const{
-    return isSquare() && FloatUtils::isEqual(determinant(),0.0)==false;
+    return isSquare() && !FloatUtils::isEqual(determinant(), 0.0f);
 }
 
 // forward def
-static double det(const Matrix& M);
-static double Cij(const Matrix& M,const int& i,const int& j);
+static float det(const Matrix& M);
+static float Cij(const Matrix& M,const int& i,const int& j);
 
-double Matrix::determinant()const{
+float Matrix::determinant()const{
     return det(*this);
 }
 
 Matrix Matrix::cofactors()const{
-    if( isSquare()==false){
+    if(!isSquare()){
         throw runtime_error("M must be a square Matrix!");
     }
 
@@ -276,14 +280,14 @@ Matrix Matrix::cofactors()const{
 }
 
 Matrix Matrix::invert()const{
-    if( isSquare()==false){
+    if(!isSquare()){
         throw runtime_error("M must be a square Matrix!");
     }
-    const double det = determinant();
-    if( FloatUtils::isEqual(det,0.0)){
+    const float det = determinant();
+    if( FloatUtils::isEqual(det,0.0f)){
         throw runtime_error("DET ==0 ");
     }
-    return scalarMultiply(cofactors(),1.0/det);
+    return scalarMultiply(cofactors(),1.0f/det);
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -303,7 +307,7 @@ static Matrix del(const Matrix& M, const int& rowIdxToRemove, const int& colIdxt
 
     const int rrow=row-1;
     const int rcol=col-1;
-    double  trimItems[rrow*rcol];
+    float  trimItems[rrow*rcol];
     int idx=0;
     for( int r=0;r<row;++r){
         for(int c=0;c<col;++c){
@@ -318,12 +322,12 @@ static Matrix del(const Matrix& M, const int& rowIdxToRemove, const int& colIdxt
 
 
 
-static double Cij(const Matrix& M,const int& i,const int& j){
-    return pow(-1.0,i+j) * det( del(M,i,j));
+static float Cij(const Matrix& M,const int& i,const int& j){
+    return powf(-1.0f,i+j) * det( del(M,i,j));
 }
 
-static double det(const Matrix& M){
-    if( M.isSquare()==false){
+static float det(const Matrix& M){
+    if(!M.isSquare()){
         throw runtime_error("M must be a square Matrix!");
     }
     if( M.row()==1){
@@ -331,7 +335,7 @@ static double det(const Matrix& M){
     }
     const int k=1;
     const int n = M.row();
-    double result=0.0;
+    float result=0.0;
     for( int i=0;i<n;i++){
         result += M.get(i,k) * Cij(M,i,k);
     }

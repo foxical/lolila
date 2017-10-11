@@ -6,7 +6,7 @@
 #define __LINEDISTANCE_H__
 
 
-#include "Vector.h"
+
 
 class Line;
 class Ray;
@@ -17,10 +17,10 @@ public:
 
 
 
-    static double calc(const Line& l1, const Line& l2);
-    static double calc(const Ray& l1,const Ray& l2);
-    static double calc(const Line& l1, const Ray& l2);
-    static double calc(const Ray& l1,const Line& l2);
+    static float calc(const Line& l1, const Line& l2);
+    static float calc(const Ray& l1,const Ray& l2);
+    static float calc(const Line& l1, const Ray& l2);
+    static float calc(const Ray& l1,const Line& l2);
 
 
     static bool isParallel(const Vector&,const Vector&);

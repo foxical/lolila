@@ -17,11 +17,11 @@ Line::~Line() {
 
 }
 
-Vector Line::pointAt(const double &t) const {
+Vector Line::pointAt(const float &t) const {
     return Vector::add(Vector::scalarMultiply(_point1,1-t),Vector::scalarMultiply(_point2,t));
 }
 
-double Line::distance(const Vector& Q)const{
+float Line::distance(const Vector& Q)const{
     return line2ray(*this).distance(Q);
 }
 

@@ -15,15 +15,15 @@ public:
     ~Plane();
 public:
     bool pointLiesInPlane(const Vector&)const;
-    double distanceFromOri()const;
+    float distanceFromOri()const;
     inline const Vector& N()const{
         return _n;
     }
     inline const Vector& P()const{
         return _p;
     }
-    inline double D()const{
-        return (-1.0)*Vector::dot(_n,_p);
+    inline float D()const{
+        return (-1.0f)*Vector::dot(_n,_p);
     }
 public:
     static bool  pointLiesInPlane(const Plane &, const Vector &);

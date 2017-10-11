@@ -97,12 +97,12 @@ static void testPlanes(){
 
 static void testProjections(){
 
-    double left=-2.0;
-    double right=2.0;
-    double top=2.0;
-    double bottom=-2.0;
-    double near = 1.0;
-    double far = 3.0;
+    float left=-2.0;
+    float right=2.0;
+    float top=2.0;
+    float bottom=-2.0;
+    float near = 1.0;
+    float far = 3.0;
 
     Vector P1(2.0,2.0,-3);
     LogQueue::push("p1 project: %s\n",Projections::perspectiveProjection(left,top,right,bottom,near,far,P1).c_str());
@@ -111,6 +111,19 @@ static void testProjections(){
     LogQueue::push("p2 project: %s\n",Projections::perspectiveProjection(left,top,right,bottom,near,far,P2).c_str());
     //LogQueue::push("p2 project_v2: %s\n",Projections::perspectiveProjection_v2(left,top,right,bottom,near,far,P2).c_str());
 
+}
+
+static void testMisc(){
+    double ddd[]={1.0f,2.0f,3.0f };
+
+    const double* pd = ddd;
+
+    LOGI("sizeof float:%d,sizeof double:%d", sizeof(float), sizeof(double));
+
+    const float * pf = (const float *) pd;
+    for( int i=0;i< 3;++i){
+        LOGI("float:%.8lf, double:%.8lf",pf[i],pd[i]);
+    }
 }
 
 extern "C"
@@ -126,8 +139,9 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         //testLineDistance();
         //testPointLies();
         //testPlanes();
-        testProjections();
+        //testProjections();
 
+        testMisc();
         //LogQueue::push("b is %g\n",ViewFrustum::getVerticalViewAngle(1280,1024,75.0f));
 
         return env->NewStringUTF( LogQueue::c_str());

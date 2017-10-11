@@ -7,18 +7,18 @@
 #include <stdexcept>
 
 
-Vector::Vector(const double &x) {
+Vector::Vector(const float &x) {
     _dim= 1;
     _components[0] = x;
 }
 
-Vector::Vector(const double &x, const double &y) {
+Vector::Vector(const float &x, const float &y) {
     _dim= 2;
     _components[0] = x;
     _components[1] = y;
 }
 
-Vector::Vector(const double &x, const double &y, const double &z) {
+Vector::Vector(const float &x, const float &y, const float &z) {
     _dim=3;
     _components[0] = x;
     _components[1] = y;
@@ -36,33 +36,33 @@ Vector::~Vector() {
 
 }
 
-double Vector::x() const {
+float Vector::x() const {
     return _components[0];
 }
 
-double Vector::y() const {
+float Vector::y() const {
     if( _dim<2){
         throw runtime_error("Vector must has 2 dims!");
     }
     return _components[1];
 }
 
-double Vector::z() const {
+float Vector::z() const {
     if( _dim<3){
         throw runtime_error("Vector must has 3 dims!");
     }
     return _components[2];
 }
 
-double Vector::length() const {
+float Vector::length() const {
     float result=0;
     for(int d=0;d<_dim;++d){
-        result += pow(_components[d],2.0);
+        result += powf(_components[d],2.0);
     }
-    return sqrt(result);
+    return sqrtf(result);
 }
 
-double Vector::dot(const Vector& a, const Vector& b){
+float Vector::dot(const Vector& a, const Vector& b){
     if( a._dim != b._dim){
         throw  runtime_error("Dim A not equal with B!");
     }
@@ -73,7 +73,7 @@ double Vector::dot(const Vector& a, const Vector& b){
     return result;
 }
 
-double Vector::dot(const Vector& a) const{
+float Vector::dot(const Vector& a) const{
      return dot(*this,a);
 }
 
@@ -83,7 +83,7 @@ int Vector::dim()const{
 
 bool Vector::isZero() const {
     for( int d=0;d<_dim;++d){
-        if(FloatUtils::isEqual(_components[d],0.0)==false){
+        if(FloatUtils::isEqual(_components[d],0.0f)==false){
             return false;
         }
     }
@@ -126,7 +126,7 @@ const char* Vector::c_str() const {
     return toString().c_str();
 }
 
-Vector Vector::scalarMultiply( const Vector& a,const double& val){
+Vector Vector::scalarMultiply( const Vector& a,const float& val){
     Vector result(a);
     for(int d=0;d<a._dim;++d){
         result._components[d] = a._components[d]*val;
@@ -134,7 +134,7 @@ Vector Vector::scalarMultiply( const Vector& a,const double& val){
     return result;
 }
 
-Vector Vector::scalarMultiply(const double &val)const{
+Vector Vector::scalarMultiply(const float &val)const{
     return scalarMultiply(*this,val);
 }
 

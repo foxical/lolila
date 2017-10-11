@@ -6,22 +6,33 @@
 #define __PROJECTIONS_H__
 
 class Vector;
+class Matrix;
 
 class Projections{
 public:
 
     /**
-     *
+     * 执行透视变换
      */
     static Vector perspectiveProjection(
-            const double& l,const double& t,const double& r,const double& b,
-            const double& n,const double& f,
+            const float& l,const float& t,const float& r,const float& b,
+            const float& n,const float& f,
             const Vector& P);
 
+    /**
+     * 构造透视投影矩阵
+     */
+    static void  buildPerspectiveProjectionMatrix(
+            const float& l,const float& t,const float& r,const float& b,
+            const float& n,const float& f,
+            Matrix& mat4);
+
+    /*
     static Vector perspectiveProjection_v2(
             const double& l,const double& t,const double& r,const double& b,
             const double& n,const double& f,
             const Vector& P);
+    */
 
 private:
     Projections();

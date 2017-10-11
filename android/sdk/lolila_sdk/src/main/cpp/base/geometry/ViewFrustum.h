@@ -11,7 +11,7 @@ public:
      * a: horizontal field of view angle.
      * return the e
      */
-    static double getFocalLength(const double& a);
+    static float getFocalLength(const float& a);
 
     /**
      * w: width of display screen
@@ -19,7 +19,7 @@ public:
      * a: horizontal field of view angle.
      * return the vertical field of view angle β
      */
-    static double getVerticalViewAngle(const int& w,const int& h,const double& a);
+    static float getVerticalViewAngle(const int& w,const int& h,const float& a);
 
 private:
     ViewFrustum();

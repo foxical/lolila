@@ -12,15 +12,27 @@ static GLint   gl_programObject=-1;
 static GLsizei gl_viewport_width=-1;
 static GLsizei gl_viewport_height=-1;
 
+static GLfloat ff=0;
+
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
         JNIEnv *env,
         jobject /* this */) {
 
     LOGI("RenderApi_init begin");
 
+/**
+ *  gl_Position is a built-in vertex shader output variable, whose type is defined by the OpenGL specification to be a vec4.
+    position is a vertex shader attribute, and since the introduction of programmable shaders, you (as the developer) are in full control of its format.
+    Most likely, you have per-vertex 3D coordinates (hence, just 3 floats per vertex),
+    that you configured as the vertex shader input via a call to glVertexAttribPointer (or similar),
+    telling OpenGL to pull 3 floats at a time from a buffer for the position attribute.
+    Since gl_Position wants 4 floats, the expansion to vec4 (by filling in the w to 1.0) becomes necessary in the vertex shader.
+ */
+
+
     char vShaderStr[] =
             "#version 300 es                          \n"
-                    "layout(location = 0) in vec4 vPosition;  \n"
+                    "layout(location = 0) in vec4 vPosition;  \n"    // 顶点属性， 通过布局限定符指定在0位置
                     "void main()                              \n"
                     "{                                        \n"
                     "   gl_Position = vPosition;              \n"
@@ -103,9 +115,9 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
             //-0.5f, -0.5f, 0.0f,
             //0.5f, -0.5f, 0.0f
             0.0f,0.0f,0.0f,
-            0.0f,1.0f,0.0f,
-            1.0f,1.0f,0.0f,
-            1.0f,0.0f,0.0f
+            0.0f,0.5f,0.0f,
+            0.5f,0.5f,0.0f,
+            0.5f,0.0f,0.0f
     };
 
     // Set the viewport
@@ -121,14 +133,14 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
 
     // Load the vertex data
     glVertexAttribPointer (
-            0, // 第0号数组，将第0号数组和客户缓冲区关联
+            0, // 第0号顶点属性和客户缓冲区关联， 第0号位置通过着色器语言指定
             3, // 每个顶点坐标使用3个分量表示，XYZ
             GL_FLOAT,
             GL_FALSE,
             0, // 由于改数组仅仅是存放坐标，没有颜色，因此跨距是0
             vVertices // 客户缓冲区指针
     );
-    glEnableVertexAttribArray ( 0 );
+    glEnableVertexAttribArray ( 0 ); // 启用第0号位置顶点属性
 
     glDrawArrays ( GL_TRIANGLE_FAN ,
                    0, // draw begin from index 0

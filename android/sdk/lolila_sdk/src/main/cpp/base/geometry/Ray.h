@@ -15,8 +15,8 @@ public:
     Ray(const Ray&);
     ~Ray();
 public:
-    Vector pointAt(const double& t)const;
-    double distance(const Vector& Q)const;
+    Vector pointAt(const float& t)const;
+    float distance(const Vector& Q)const;
     const Vector& endPoint()const;
     const Vector& direction()const;
     bool pointLiesInRay(const Vector& Q)const;
