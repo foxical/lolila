@@ -40,6 +40,13 @@ public class MainActivity extends Activity {
                 OpenGLESActivity.start(MainActivity.this);
             }
         });
+
+        findViewById(R.id.btn_enter_test_2d).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MatrixTestActivity.start(MainActivity.this);
+            }
+        });
     }
 
     private boolean detectOpenGLES30() {

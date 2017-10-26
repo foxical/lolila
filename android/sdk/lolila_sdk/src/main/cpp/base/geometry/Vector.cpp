@@ -139,7 +139,7 @@ Vector Vector::scalarMultiply(const float &val)const{
 }
 
 Vector Vector::proj(const Vector& P,const Vector& Q){
-    return scalarMultiply(Q,dot(P,Q)/pow(Q.length(),2.0));
+    return scalarMultiply(Q,dot(P,Q)/powf(Q.length(),2.0));
 }
 
 Vector Vector::proj(const Vector& Q)const{

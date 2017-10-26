@@ -139,9 +139,9 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         //testLineDistance();
         //testPointLies();
         //testPlanes();
-        //testProjections();
+        testProjections();
 
-        testMisc();
+        //testMisc();
         //LogQueue::push("b is %g\n",ViewFrustum::getVerticalViewAngle(1280,1024,75.0f));
 
         return env->NewStringUTF( LogQueue::c_str());

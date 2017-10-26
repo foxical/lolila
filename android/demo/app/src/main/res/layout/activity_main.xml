@@ -25,9 +25,14 @@
 
             <Button
                 android:id="@+id/btn_enter_test"
-                android:layout_width="100dp"
+                android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="进入测试"/>
+                android:text="进入3D测试"/>
+            <Button
+                android:id="@+id/btn_enter_test_2d"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:text="进入矩阵动画测试"/>
         </LinearLayout>
 
     </ScrollView>

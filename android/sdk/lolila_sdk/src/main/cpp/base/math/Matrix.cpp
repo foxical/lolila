@@ -154,6 +154,16 @@ void Matrix::set(const int& rowIdx,const int& colIdx,const float & val){
     set( rowIdx*_col + colIdx, val);
 }
 
+void  Matrix::set(const Matrix& clone){
+    if( _col!=clone._col||_row!=clone._row){
+        throw runtime_error("col or row is not equal!");
+    }
+    const int itemCount = itemCount;
+    for(int i=0;i<itemCount;++i){
+        _items[i] = clone._items[i];
+    }
+}
+
 float Matrix::get(const int& idx)const{
     if( idx<0||idx>=itemCount()){
         throw out_of_range("index is out of range!");

@@ -35,26 +35,17 @@ void  Projections::buildPerspectiveProjectionMatrix(
     if( !M.isSquare() || M.col()!=4){
         throw runtime_error("Matrix must a 4x4 square!");
     }
-    M.set(0,0,2.0f*n/(r-l)); M.set(0,1,0);         M.set(0,2,(r+l)/(r-l));      M.set(0,3,0);
-    M.set(1,0,0);         M.set(1,1,2.0f*n/(t-b)); M.set(1,2,(t+b)/(t-b));      M.set(1,3,0);
-    M.set(2,0,0);         M.set(2,1,0);         M.set(2,2,-1.0f*(f+n)/(f-n));   M.set(2,3,-2.0f*n*f/(f-n));
-    M.set(3,0,0);         M.set(3,1,0);         M.set(3,2,-1);               M.set(3,3,0);
+
+    const float       deltaX = r - l;
+    const float       deltaY = t - b;
+    const float       deltaZ = f - n;
+    if ( ( n <= 0.0f ) || ( f <= 0.0f ) ||
+         ( deltaX <= 0.0f ) || ( deltaY <= 0.0f ) || ( deltaZ <= 0.0f ) ){
+        throw runtime_error("delta is invalid!");
+    }
+
+    M.set(0,0,2.0f*n/deltaX); /*0*/                      M.set(0,2,(r+l)/deltaX);         /*0*/
+    /*0*/                     M.set(1,1,2.0f*n/deltaY);  M.set(1,2,(t+b)/deltaY);         /*0*/
+    /*0*/                     /*0*/                      M.set(2,2,-1.0f*(f+n)/deltaZ);   M.set(2,3,-2.0f*n*f/deltaZ);
+    /*0*/                     /*0*/                      M.set(3,2,-1.0f);                /*0*/
 }
-
-/*
-Vector Projections::perspectiveProjection_v2(
-        const double& l,const double& t,const double& r,const double& b,
-        const double& n,const double& f,
-        const Vector& P){
-
-    const double px = P.x();
-    const double py = P.y();
-    const double pz = P.z();
-
-    const double x = ((2*n)/(r-l))*(-1*px/pz)-((r+l)/(r-l));
-    const double y = ((2*n)/(t-b))*(-1*py/pz)-((t+b)/(t-b));
-    const double z = (-2*pz-2*f)/(f-n) +1;
-    return Vector(x,y,z);
-}
-*/
-

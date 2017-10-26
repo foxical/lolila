@@ -12,7 +12,7 @@ class Projections{
 public:
 
     /**
-     * 执行透视变换
+     * 执行透视变换（该函数内部会自动执行透视除法）
      */
     static Vector perspectiveProjection(
             const float& l,const float& t,const float& r,const float& b,

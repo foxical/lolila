@@ -25,6 +25,9 @@
         <activity android:name=".OpenGLESActivity"
             android:launchMode="standard"
             android:screenOrientation="portrait" />
+        <activity android:name=".MatrixTestActivity"
+            android:launchMode="standard"
+            android:screenOrientation="portrait" />
 
     </application>
 

@@ -28,11 +28,14 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/utils/LogQueue.cpp
              src/main/cpp/base/utils/FloatUtils.cpp
              src/main/cpp/base/utils/GLUtils.cpp
+             src/main/cpp/base/utils/esTransform.c
              src/main/cpp/base/geometry/Plane.cpp
              src/main/cpp/base/geometry/PlaneIntersection.cpp
              src/main/cpp/base/geometry/ViewFrustum.cpp
              src/main/cpp/base/geometry/Projections.cpp
-             src/main/cpp/base/transforms/HomogeneousCoordinate.cpp)
+             src/main/cpp/base/transforms/MVPTransform.cpp
+             src/main/cpp/base/transforms/Rotation.cpp
+             src/main/cpp/base/transforms/Translate.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by

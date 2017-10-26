@@ -7,12 +7,177 @@
 #include <malloc.h>
 #include "base/utils/GLUtils.h"
 #include "base/utils/AndroidLog.h"
+#include "base/math/Matrix.h"
+#include "base/geometry/Vector.h"
+#include "base/geometry/Projections.h"
+#include "base/transforms/Rotation.h"
+#include "base/transforms/Translate.h"
+#include "base/transforms/MVPTransform.h"
+#include "base/utils/esUtil.h"
 
 static GLint   gl_programObject=-1;
 static GLsizei gl_viewport_width=-1;
 static GLsizei gl_viewport_height=-1;
 
-static GLfloat ff=0;
+
+static Matrix projectMat(4,4);
+static Matrix rotateMat(4,4);
+static Matrix translateMat(4,4);
+static Matrix viewMat(4,4);
+
+
+
+// Vertex daata
+static GLfloat  *vertices;
+static GLuint   *indices;
+static int       numIndices;
+static ESMatrix mvp;
+static ESMatrix pm;
+static ESMatrix tm;
+static ESMatrix rm;
+
+int esGenCube ( float scale, GLfloat **vertices, GLfloat **normals,
+                           GLfloat **texCoords, GLuint **indices )
+{
+    int i;
+    int numVertices = 24;
+    int numIndices = 36;
+
+    GLfloat cubeVerts[] =
+            {
+                    -0.5f, -0.5f, -0.5f,
+                    -0.5f, -0.5f,  0.5f,
+                    0.5f, -0.5f,  0.5f,
+                    0.5f, -0.5f, -0.5f,
+                    -0.5f,  0.5f, -0.5f,
+                    -0.5f,  0.5f,  0.5f,
+                    0.5f,  0.5f,  0.5f,
+                    0.5f,  0.5f, -0.5f,
+                    -0.5f, -0.5f, -0.5f,
+                    -0.5f,  0.5f, -0.5f,
+                    0.5f,  0.5f, -0.5f,
+                    0.5f, -0.5f, -0.5f,
+                    -0.5f, -0.5f, 0.5f,
+                    -0.5f,  0.5f, 0.5f,
+                    0.5f,  0.5f, 0.5f,
+                    0.5f, -0.5f, 0.5f,
+                    -0.5f, -0.5f, -0.5f,
+                    -0.5f, -0.5f,  0.5f,
+                    -0.5f,  0.5f,  0.5f,
+                    -0.5f,  0.5f, -0.5f,
+                    0.5f, -0.5f, -0.5f,
+                    0.5f, -0.5f,  0.5f,
+                    0.5f,  0.5f,  0.5f,
+                    0.5f,  0.5f, -0.5f,
+            };
+
+    GLfloat cubeNormals[] =
+            {
+                    0.0f, -1.0f, 0.0f,
+                    0.0f, -1.0f, 0.0f,
+                    0.0f, -1.0f, 0.0f,
+                    0.0f, -1.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f,
+                    0.0f, 1.0f, 0.0f,
+                    0.0f, 0.0f, -1.0f,
+                    0.0f, 0.0f, -1.0f,
+                    0.0f, 0.0f, -1.0f,
+                    0.0f, 0.0f, -1.0f,
+                    0.0f, 0.0f, 1.0f,
+                    0.0f, 0.0f, 1.0f,
+                    0.0f, 0.0f, 1.0f,
+                    0.0f, 0.0f, 1.0f,
+                    -1.0f, 0.0f, 0.0f,
+                    -1.0f, 0.0f, 0.0f,
+                    -1.0f, 0.0f, 0.0f,
+                    -1.0f, 0.0f, 0.0f,
+                    1.0f, 0.0f, 0.0f,
+                    1.0f, 0.0f, 0.0f,
+                    1.0f, 0.0f, 0.0f,
+                    1.0f, 0.0f, 0.0f,
+            };
+
+    GLfloat cubeTex[] =
+            {
+                    0.0f, 0.0f,
+                    0.0f, 1.0f,
+                    1.0f, 1.0f,
+                    1.0f, 0.0f,
+                    1.0f, 0.0f,
+                    1.0f, 1.0f,
+                    0.0f, 1.0f,
+                    0.0f, 0.0f,
+                    0.0f, 0.0f,
+                    0.0f, 1.0f,
+                    1.0f, 1.0f,
+                    1.0f, 0.0f,
+                    0.0f, 0.0f,
+                    0.0f, 1.0f,
+                    1.0f, 1.0f,
+                    1.0f, 0.0f,
+                    0.0f, 0.0f,
+                    0.0f, 1.0f,
+                    1.0f, 1.0f,
+                    1.0f, 0.0f,
+                    0.0f, 0.0f,
+                    0.0f, 1.0f,
+                    1.0f, 1.0f,
+                    1.0f, 0.0f,
+            };
+
+    // Allocate memory for buffers
+    if ( vertices != NULL )
+    {
+        *vertices = (GLfloat *) malloc (sizeof ( GLfloat ) * 3 * numVertices );
+        memcpy ( *vertices, cubeVerts, sizeof ( cubeVerts ) );
+
+        for ( i = 0; i < numVertices * 3; i++ )
+        {
+            ( *vertices ) [i] *= scale;
+        }
+    }
+
+    if ( normals != NULL )
+    {
+        *normals = (GLfloat *) malloc (sizeof ( GLfloat ) * 3 * numVertices );
+        memcpy ( *normals, cubeNormals, sizeof ( cubeNormals ) );
+    }
+
+    if ( texCoords != NULL )
+    {
+        *texCoords = (GLfloat *) malloc (sizeof ( GLfloat ) * 2 * numVertices );
+        memcpy ( *texCoords, cubeTex, sizeof ( cubeTex ) ) ;
+    }
+
+
+    // Generate the indices
+    if ( indices != NULL )
+    {
+        GLuint cubeIndices[] =
+                {
+                        0, 2, 1,
+                        0, 3, 2,
+                        4, 5, 6,
+                        4, 6, 7,
+                        8, 9, 10,
+                        8, 10, 11,
+                        12, 15, 14,
+                        12, 14, 13,
+                        16, 17, 18,
+                        16, 18, 19,
+                        20, 23, 22,
+                        20, 22, 21
+                };
+
+        *indices = (GLuint *) malloc (sizeof ( GLuint ) * numIndices );
+        memcpy ( *indices, cubeIndices, sizeof ( cubeIndices ) );
+    }
+
+    return numIndices;
+}
+
 
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
         JNIEnv *env,
@@ -32,11 +197,15 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
 
     char vShaderStr[] =
             "#version 300 es                          \n"
-                    "layout(location = 0) in vec4 vPosition;  \n"    // 顶点属性， 通过布局限定符指定在0位置
-                    "void main()                              \n"
-                    "{                                        \n"
-                    "   gl_Position = vPosition;              \n"
-                    "}                                        \n";
+                    "layout(location = 0) in vec3 vPosition;  \n"    // 顶点属性， 通过布局限定符指定在0位置
+
+                    "uniform mat4 projection;                  \n"    // 统一变量，名字叫做‘projection’，把客户代码的投影矩阵传递给着色器
+                    "uniform mat4 rotation;                    \n"
+                    "uniform mat4 translate;                   \n"
+                    "void main()                               \n"
+                    "{                                         \n"
+                    "   gl_Position =  projection * translate * rotation * vec4(vPosition,1.0); \n"    // 对每个顶点执行透视变换
+                    "}                                         \n";
 
     char fShaderStr[] =
             "#version 300 es                              \n"
@@ -92,6 +261,18 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
 
     glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
 
+
+    //Rotation::buildRotationMatrix(Vector(.0f,1.0f,.0f),45.0f,rotateMat);
+    Translate::buildTranslateMatrix(Vector(.0f,.0f,-5.0f),translateMat);
+
+
+    numIndices = esGenCube ( 1.0, &vertices,
+                                       NULL, NULL, &indices );
+
+
+    glEnable(GL_DEPTH_TEST);
+
+
     LOGI("RenderApi_init end.");
     return;
 }
@@ -99,54 +280,116 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resize(
         JNIEnv *env,
         jobject obj, jint width, jint height ) {
-    LOGI("RenderApi_resize w:%i,h:%i",width,height);
+    LOGI("RenderApi_resize w:%i,h:%i, aspect:%f",width,height,(float)width/(float)height);
     gl_viewport_width = width;
     gl_viewport_height = height;
-
-
+    MVPTransform::buildFrustumMatrix((float)width,(float)height,1.0f, 20.0f,60.0f,projectMat);
 }
+
+static float degree=45.0f;
+static int delay_fr=0;
 
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
         JNIEnv *env,
         jobject /* this */) {
     //LOGI("RenderApi_draw begin");
 
+    const float w = 1.0f;
+    const float z = -1.0f;
+
+
     GLfloat vVertices[] = {  //0.0f,  0.5f, 0.0f,
-            //-0.5f, -0.5f, 0.0f,
-            //0.5f, -0.5f, 0.0f
-            0.0f,0.0f,0.0f,
-            0.0f,0.5f,0.0f,
-            0.5f,0.5f,0.0f,
-            0.5f,0.0f,0.0f
+
+            // face 0
+            0.0f,0.0f, 0.0,
+            0.0f,w,    0.0,
+            w,   w,    0.0,
+            w,   0.0f, 0.0,
+
+            // face 1
+            0.0, w, 0.0,
+            0.0, w,  z,
+            w,w,z,
+            w,w,0.0,
     };
 
+
+
+
     // Set the viewport
-    glViewport ( 0, 0, gl_viewport_width,
-            /*gl_viewport_height*/gl_viewport_width
-    ); // 视口的尺寸传正方形直观一点，否则渲染时坐标会按视口比例进行变换，会变形
+    glViewport ( 0, 0, gl_viewport_width, gl_viewport_height  );
+
 
     // Clear the color buffer
-    glClear ( GL_COLOR_BUFFER_BIT );
+    glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
     // Use the program object
     glUseProgram ( gl_programObject );
 
+
+    //if( ++delay_fr >=10 )
+    {
+        degree += 1.0f;
+        if (degree >= 360.0f) {
+            degree -= 360.0f;
+        }
+        delay_fr=0;
+    }
+
+
+    Rotation::buildRotationMatrix(Vector(.0f,1.0f,.0f),degree,rotateMat);
+
+    int matLoc = -1;
+
+    matLoc = glGetUniformLocation(gl_programObject, "projection");
+    glUniformMatrix4fv(matLoc, 1, GL_TRUE, projectMat.value_ptr() );
+    matLoc = glGetUniformLocation(gl_programObject, "rotation");
+    glUniformMatrix4fv(matLoc, 1, GL_TRUE, rotateMat.value_ptr());
+    matLoc = glGetUniformLocation(gl_programObject, "translate");
+    glUniformMatrix4fv(matLoc, 1, GL_TRUE, translateMat.value_ptr());
+
+
+
+
+
     // Load the vertex data
+
+
+
+
     glVertexAttribPointer (
             0, // 第0号顶点属性和客户缓冲区关联， 第0号位置通过着色器语言指定
             3, // 每个顶点坐标使用3个分量表示，XYZ
             GL_FLOAT,
             GL_FALSE,
-            0, // 由于改数组仅仅是存放坐标，没有颜色，因此跨距是0
+            3 * sizeof ( GLfloat ), // 由于改数组仅仅是存放坐标，没有颜色，因此跨距是0
             vVertices // 客户缓冲区指针
     );
     glEnableVertexAttribArray ( 0 ); // 启用第0号位置顶点属性
 
-    glDrawArrays ( GL_TRIANGLE_FAN ,
-                   0, // draw begin from index 0
-                   4  // total 3 vertices
-    );
 
+
+    for(int i=0;i<2;++i) {
+
+        glDrawArrays(GL_TRIANGLE_FAN,
+                     i*4, // draw begin from index per face
+                     4  // total 4 vertices per face
+        );
+    }
+
+
+
+
+
+    /*
+    glVertexAttribPointer ( 0, 3, GL_FLOAT,
+                            GL_FALSE,
+                            3 * sizeof ( GLfloat ),
+                            vertices );
+
+    glEnableVertexAttribArray ( 0 );
+    glDrawElements ( GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, indices );
+    */
 
     //LOGI("RenderApi_draw end");
 }

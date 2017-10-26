@@ -28,9 +28,9 @@ add_library( app-glue
              STATIC
              ${ANDROID_NDK}/sources/android/native_app_glue/android_native_app_glue.c )
 
-add_library( sample1
-             STATIC
-             src/main/cpp/sample1/hello_triangle.c )
+#add_library( sample1
+#             STATIC
+#             src/main/cpp/sample1/hello_triangle.c )
 
 #add_library( sample_6_7
 #             STATIC
@@ -40,6 +40,10 @@ add_library( sample1
 #             STATIC
 #             src/main/cpp/sample_6_5/VertexBufferObjects.c )
 
+
+add_library( sample_8
+             STATIC
+             src/main/cpp/sample_8/Simple_VertexShader.c )
 
 # Specifies a path to native header files.
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}
@@ -73,4 +77,4 @@ target_link_libraries( # Specifies the target library.
                        EGL
                        GLESv3
                        app-glue
-                       sample1)
+                       sample_8)

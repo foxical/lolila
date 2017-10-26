@@ -10,6 +10,7 @@ using namespace std;
 
 /**
  * 元素按行优先的顺序存放
+ * 在使用glUniformMatrix4fv设置时，必须设置转置标志为真
  */
 class Matrix{
 public:
@@ -64,6 +65,7 @@ public:
 public:
     void set(const int& rowIdx,const int& colIdx,const float& val);
     void set(const int& idx,const float& val);
+    void set(const Matrix&);
     float get(const int& rowIdx,const int& colIdx)const;
     float get(const int& idx)const;
 

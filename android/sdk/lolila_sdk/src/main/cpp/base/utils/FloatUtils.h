@@ -27,6 +27,10 @@ public:
         }
         return f1-f2;
     }
+
+public:
+    static const float PI;
+
 private:
     static const float EPSINON_F;
     static const double EPSINON_D;
