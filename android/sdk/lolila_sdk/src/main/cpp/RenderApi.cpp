@@ -5,6 +5,7 @@
 #include <jni.h>
 #include <GLES3/gl3.h>
 #include <malloc.h>
+#include <math.h>
 #include "base/utils/GLUtils.h"
 #include "base/utils/AndroidLog.h"
 #include "base/math/Matrix.h"
@@ -14,6 +15,7 @@
 #include "base/transforms/Translate.h"
 #include "base/transforms/MVPTransform.h"
 #include "base/utils/esUtil.h"
+#include "base/utils/FloatUtils.h"
 
 static GLint   gl_programObject=-1;
 static GLsizei gl_viewport_width=-1;
@@ -202,9 +204,10 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
                     "uniform mat4 projection;                  \n"    // 统一变量，名字叫做‘projection’，把客户代码的投影矩阵传递给着色器
                     "uniform mat4 rotation;                    \n"
                     "uniform mat4 translate;                   \n"
+                    "uniform mat4 view;                        \n"
                     "void main()                               \n"
                     "{                                         \n"
-                    "   gl_Position =  projection * translate * rotation * vec4(vPosition,1.0); \n"    // 对每个顶点执行透视变换
+                    "   gl_Position =  projection * view * translate * rotation * vec4(vPosition,1.0); \n"    // 对每个顶点执行透视变换
                     "}                                         \n";
 
     char fShaderStr[] =
@@ -262,7 +265,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
     glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
 
 
-    //Rotation::buildRotationMatrix(Vector(.0f,1.0f,.0f),45.0f,rotateMat);
+    Rotation::buildRotationMatrix(Vector(1.0f,.0f,.0f),45.0f,rotateMat);
     Translate::buildTranslateMatrix(Vector(.0f,.0f,-5.0f),translateMat);
 
 
@@ -271,6 +274,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
 
 
     glEnable(GL_DEPTH_TEST);
+
 
 
     LOGI("RenderApi_init end.");
@@ -288,6 +292,8 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resize(
 
 static float degree=45.0f;
 static int delay_fr=0;
+
+static const float PI  = FloatUtils::PI;//3.14159265f
 
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
         JNIEnv *env,
@@ -337,7 +343,11 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
     }
 
 
-    Rotation::buildRotationMatrix(Vector(.0f,1.0f,.0f),degree,rotateMat);
+
+    const Vector vUp(0,1,0);
+    const Vector basePosV(0,0,8.0f);
+    const Vector rotatePosV = Translate::doTransform(Vector(0,0,-5.0f),Rotation::doTransform(vUp, degree,basePosV));
+    MVPTransform::buildLookAtMatrix(rotatePosV.x(),rotatePosV.y(),rotatePosV.z(),0,0,-5.0f,vUp,viewMat);
 
     int matLoc = -1;
 
@@ -347,6 +357,8 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
     glUniformMatrix4fv(matLoc, 1, GL_TRUE, rotateMat.value_ptr());
     matLoc = glGetUniformLocation(gl_programObject, "translate");
     glUniformMatrix4fv(matLoc, 1, GL_TRUE, translateMat.value_ptr());
+    matLoc = glGetUniformLocation(gl_programObject, "view");
+    glUniformMatrix4fv(matLoc, 1, GL_TRUE, viewMat.value_ptr());
 
 
 

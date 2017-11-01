@@ -158,8 +158,8 @@ void  Matrix::set(const Matrix& clone){
     if( _col!=clone._col||_row!=clone._row){
         throw runtime_error("col or row is not equal!");
     }
-    const int itemCount = itemCount;
-    for(int i=0;i<itemCount;++i){
+    const int c = itemCount();
+    for(int i=0;i<c;++i){
         _items[i] = clone._items[i];
     }
 }

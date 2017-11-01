@@ -5,15 +5,24 @@
 #ifndef __MVPTRANSFORM_H__
 #define __MVPTRANSFORM_H__
 
-
+class Vector;
 class Matrix;
 
 class MVPTransform {
 public:
+
+    /**
+     * pos
+     * 摄像机位置
+     * lookAt
+     * 观察点
+     * up
+     * 上向量
+     */
     static void buildLookAtMatrix(
-        float posX,    float posY,    float posZ,
-        float lookAtX, float lookAtY, float lookAtZ,
-        float upX,     float upY,     float upZ,
+        const float& posX,    const float& posY,    const float& posZ,
+        const float& lookAtX, const float& lookAtY, const float& lookAtZ,
+        const Vector&   up,
         Matrix& M
     );
 

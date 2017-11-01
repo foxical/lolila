@@ -35,3 +35,13 @@ void Rotation::buildRotationMatrix(const Vector& axis, const float& degree, Matr
     M.set(2,0, i_c*Ax*Az-s*Ay);  M.set(2,1, i_c*Ay*Az+s*Ax);      M.set(2,2, c+i_c*Az*Az);        /*0*/
     /*0*/                        /*0*/                            /*0*/                           M.set(3,3,1.0f);
 }
+
+Vector Rotation::doTransform( const Vector& axis, const float& degree, const Vector& in ){
+
+    Matrix M(4,4);
+    buildRotationMatrix(axis,degree,M);
+    Matrix P(4,1);
+    P.set(0,0,in.x());P.set(1,0,in.y());P.set(2,0,in.z());
+    const Matrix PZ = Matrix::multiply(M,P);
+    return Vector(PZ.get(0,0),PZ.get(1,0),PZ.get(2,0));
+}
