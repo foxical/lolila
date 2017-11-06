@@ -35,7 +35,8 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/geometry/Projections.cpp
              src/main/cpp/base/transforms/MVPTransform.cpp
              src/main/cpp/base/transforms/Rotation.cpp
-             src/main/cpp/base/transforms/Translate.cpp)
+             src/main/cpp/base/transforms/Translate.cpp
+             src/main/cpp/base/transforms/Camera.cpp)
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by

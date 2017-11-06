@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.LinearLayout;
 
 
 import com.foxical.lolila.sdk.RenderApi;
@@ -12,7 +16,9 @@ import com.foxical.lolila.sdk.RenderApi;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-public class OpenGLESActivity extends Activity {
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
+public class OpenGLESActivity extends Activity implements View.OnClickListener{
 
     public static void start(Context ctx){
         ctx.startActivity(new Intent(ctx,OpenGLESActivity.class));
@@ -25,9 +31,21 @@ public class OpenGLESActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+
+        setContentView(R.layout.activity_opengles);
+
+
+
+
         // 创建一个GLSurfaceView对象，并将其设置为当前Activity的ContentView
         mGLView = new MyGLSurfaceView(this);
-        setContentView(mGLView);
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT,MATCH_PARENT);
+        LinearLayout glViewContainer = (LinearLayout) findViewById(R.id.gl_view_container);
+        glViewContainer.addView(mGLView,layoutParams);
     }
 
     @Override
@@ -44,11 +62,19 @@ public class OpenGLESActivity extends Activity {
         mGLView.onPause();
     }
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////
     //
     ////////////////////////////////////////////////////////////////////////////////////////
 
     class MyGLSurfaceView extends GLSurfaceView {
+
+        JNIRenderer renderer;
+
 
         public MyGLSurfaceView(Context context){
             super(context);
@@ -58,7 +84,8 @@ public class OpenGLESActivity extends Activity {
             // 只有在绘制数据改变时才绘制view
             //setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
             // 设置渲染对象，用于控制在GLSurfaceView中的绘制工作
-            setRenderer(new JNIRenderer());
+            renderer = new JNIRenderer();
+            setRenderer(renderer);
         }
     }
 

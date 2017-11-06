@@ -18,6 +18,9 @@
 #include "base/geometry/PlaneIntersection.h"
 #include "base/geometry/ViewFrustum.h"
 #include "base/geometry/Projections.h"
+#include "base/transforms/Rotation.h"
+#include "base/transforms/MVPTransform.h"
+#include "base/transforms/Translate.h"
 #include <exception>
 #include <stdexcept>
 #include <math.h>
@@ -143,6 +146,31 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
 
         //testMisc();
         //LogQueue::push("b is %g\n",ViewFrustum::getVerticalViewAngle(1280,1024,75.0f));
+
+        float m0[]={1,-1,0,1,1,0,0,0,1};
+        Matrix M0(3,3,m0);
+        float m1[]={1,0,-1,0,1,-1,0,0,1};
+        Matrix M1(3,3,m1);
+
+        float v[]={1,0,-1,1};
+        Matrix MV(4,1,v);
+
+        Matrix MC(4,4);
+        MVPTransform::buildLookAtMatrix(1,0,1,0,0,0,Vector(0,1,0),MC);
+
+        //LOGD("camera:%s", Matrix::multiply(MC,MV).c_str());
+
+        Matrix MR(4,4);
+        Rotation::buildRotationMatrix(Vector(0,1,0),-45.0f,MR);
+        LOGD("MR:%s",MR.c_str());
+
+        Matrix MVT = MVPTransform::vec2mat(Translate::doTransform(Vector(-1,0,-1),Vector(1,0,-1)));
+        LOGD("rotation:%s", Matrix::multiply(MR,MVT).c_str());
+
+
+        float mm[]={1,0,0,0,1,0,0,0,1};
+        Matrix MF(3,3,mm);
+        LOGD("MF-1:%s",MF.invert().c_str());
 
         return env->NewStringUTF( LogQueue::c_str());
 

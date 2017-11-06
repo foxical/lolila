@@ -5,6 +5,9 @@
 #ifndef __MVPTRANSFORM_H__
 #define __MVPTRANSFORM_H__
 
+#include "../math/Matrix.h"
+#include "../geometry/Vector.h"
+
 class Vector;
 class Matrix;
 
@@ -40,6 +43,9 @@ public:
      * 垂直视场角
      */
     static void buildFrustumMatrix( const float& view_port_w, const float& view_port_h, const float& nearZ, const float& farZ, const float& fov, Matrix& mat4 );
+
+
+    static Matrix vec2mat(const Vector& in);
 
 private:
     MVPTransform();
