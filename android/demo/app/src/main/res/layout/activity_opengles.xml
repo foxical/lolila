@@ -84,6 +84,29 @@
                 android:text="后"/>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/btn_group_3"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/btn_group_2">
+            <Button
+                android:id="@+id/btn_pitch_up"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="抬头"/>
+            <Button
+                android:id="@+id/btn_pitch_down"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="低头"/>
+        </RelativeLayout>
 
 
     </RelativeLayout>

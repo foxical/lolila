@@ -14,6 +14,7 @@
 #include "base/transforms/Rotation.h"
 #include "base/transforms/Translate.h"
 #include "base/transforms/MVPTransform.h"
+#include "base/transforms/Camera.h"
 #include "base/utils/esUtil.h"
 #include "base/utils/FloatUtils.h"
 
@@ -26,7 +27,7 @@ static Matrix projectMat(4,4);
 static Matrix rotateMat(4,4);
 static Matrix translateMat(4,4);
 static Matrix viewMat(4,4);
-
+static Camera camera;
 
 
 // Vertex daata
@@ -37,6 +38,7 @@ static ESMatrix mvp;
 static ESMatrix pm;
 static ESMatrix tm;
 static ESMatrix rm;
+
 
 int esGenCube ( float scale, GLfloat **vertices, GLfloat **normals,
                            GLfloat **texCoords, GLuint **indices )
@@ -276,6 +278,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
     glEnable(GL_DEPTH_TEST);
 
 
+    camera.resetPos();
 
     LOGI("RenderApi_init end.");
     return;
@@ -294,6 +297,8 @@ static float degree=45.0f;
 static int delay_fr=0;
 
 static const float PI  = FloatUtils::PI;//3.14159265f
+
+
 
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
         JNIEnv *env,
@@ -333,7 +338,11 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
     glUseProgram ( gl_programObject );
 
 
-    //if( ++delay_fr >=10 )
+
+
+
+
+    /*  以下代码片段演示了摄像机绕物体旋转
     {
         degree += 1.0f;
         if (degree >= 360.0f) {
@@ -341,13 +350,13 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
         }
         delay_fr=0;
     }
-
-
-
     const Vector vUp(0,1,0);
     const Vector basePosV(0,0,8.0f);
     const Vector rotatePosV = Translate::doTransform(Vector(0,0,-5.0f),Rotation::doTransform(vUp, degree,basePosV));
     MVPTransform::buildLookAtMatrix(rotatePosV.x(),rotatePosV.y(),rotatePosV.z(),0,0,-5.0f,vUp,viewMat);
+    */
+
+    camera.buildLookAtMatrix(viewMat);
 
     int matLoc = -1;
 
@@ -404,4 +413,51 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
     */
 
     //LOGI("RenderApi_draw end");
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveForward(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.moveForward();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveBack(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.moveBack();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveLeft(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.moveLeft();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveRight(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.moveRight();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveUp(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.moveUp();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveDown(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.moveDown();
+}
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraPitchUp(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.pitchUp();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraPitchDown(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.pitchDown();
 }

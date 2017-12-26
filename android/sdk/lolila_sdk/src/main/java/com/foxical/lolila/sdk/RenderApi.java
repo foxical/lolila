@@ -19,4 +19,13 @@ public final class RenderApi {
     public static native void init();
     public static native void resize(int w,int h);
     public static native void draw();
+
+    public static native void cameraMoveForward();
+    public static native void cameraMoveBack();
+    public static native void cameraMoveLeft();
+    public static native void cameraMoveRight();
+    public static native void cameraMoveUp();
+    public static native void cameraMoveDown();
+    public static native void cameraPitchUp();
+    public static native void cameraPitchDown();
 }

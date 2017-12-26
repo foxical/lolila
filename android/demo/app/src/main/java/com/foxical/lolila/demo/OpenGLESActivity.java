@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,7 +27,7 @@ public class OpenGLESActivity extends Activity implements View.OnClickListener{
     }
 
 
-    private GLSurfaceView mGLView;
+    private MyGLSurfaceView mGLView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,8 +39,14 @@ public class OpenGLESActivity extends Activity implements View.OnClickListener{
 
 
         setContentView(R.layout.activity_opengles);
-
-
+        findViewById(R.id.btn_move_back).setOnClickListener(this);
+        findViewById(R.id.btn_move_forward).setOnClickListener(this);
+        findViewById(R.id.btn_move_left).setOnClickListener(this);
+        findViewById(R.id.btn_move_right).setOnClickListener(this);
+        findViewById(R.id.btn_move_up).setOnClickListener(this);
+        findViewById(R.id.btn_move_down).setOnClickListener(this);
+        findViewById(R.id.btn_pitch_up).setOnClickListener(this);
+        findViewById(R.id.btn_pitch_down).setOnClickListener(this);
 
 
         // 创建一个GLSurfaceView对象，并将其设置为当前Activity的ContentView
@@ -64,7 +72,77 @@ public class OpenGLESActivity extends Activity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
-
+        final JNIRenderer renderer = mGLView.renderer;
+        Runnable runnable=null;
+        switch (v.getId()){
+            case R.id.btn_move_forward:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraMoveForward();
+                    }
+                };
+                break;
+            case R.id.btn_move_back:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraMoveBack();
+                    }
+                };
+                break;
+            case R.id.btn_move_left:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraMoveLeft();
+                    }
+                };
+                break;
+            case R.id.btn_move_right:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraMoveRight();
+                    }
+                };
+                break;
+            case R.id.btn_move_up:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraMoveUp();
+                    }
+                };
+                break;
+            case R.id.btn_move_down:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraMoveDown();
+                    }
+                };
+                break;
+            case R.id.btn_pitch_up:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraPitchUp();
+                    }
+                };
+                break;
+            case R.id.btn_pitch_down:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraPitchDown();
+                    }
+                };
+                break;
+        }
+        if( runnable!=null){
+            mGLView.queueEvent(runnable);
+        }
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -87,6 +165,7 @@ public class OpenGLESActivity extends Activity implements View.OnClickListener{
             renderer = new JNIRenderer();
             setRenderer(renderer);
         }
+
     }
 
     private class JNIRenderer implements GLSurfaceView.Renderer {
@@ -107,6 +186,31 @@ public class OpenGLESActivity extends Activity implements View.OnClickListener{
             // 重绘背景色
             //GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
             RenderApi.draw();
+        }
+
+        void cameraMoveForward(){
+            RenderApi.cameraMoveForward();
+        }
+        void cameraMoveBack(){
+            RenderApi.cameraMoveBack();
+        }
+        void cameraMoveLeft(){
+            RenderApi.cameraMoveLeft();
+        }
+        void cameraMoveRight(){
+            RenderApi.cameraMoveRight();
+        }
+        void cameraMoveUp(){
+            RenderApi.cameraMoveUp();
+        }
+        void cameraMoveDown(){
+            RenderApi.cameraMoveDown();
+        }
+        void cameraPitchUp(){
+            RenderApi.cameraPitchUp();
+        }
+        void cameraPitchDown(){
+            RenderApi.cameraPitchDown();
         }
     }
 
