@@ -28,4 +28,6 @@ public final class RenderApi {
     public static native void cameraMoveDown();
     public static native void cameraPitchUp();
     public static native void cameraPitchDown();
+    public static native void cameraYawLeft();
+    public static native void cameraYawRight();
 }

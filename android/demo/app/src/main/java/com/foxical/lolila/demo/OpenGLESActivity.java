@@ -47,6 +47,8 @@ public class OpenGLESActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.btn_move_down).setOnClickListener(this);
         findViewById(R.id.btn_pitch_up).setOnClickListener(this);
         findViewById(R.id.btn_pitch_down).setOnClickListener(this);
+        findViewById(R.id.btn_yaw_left).setOnClickListener(this);
+        findViewById(R.id.btn_yaw_right).setOnClickListener(this);
 
 
         // 创建一个GLSurfaceView对象，并将其设置为当前Activity的ContentView
@@ -139,6 +141,22 @@ public class OpenGLESActivity extends Activity implements View.OnClickListener{
                     }
                 };
                 break;
+            case R.id.btn_yaw_left:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraYawLeft();
+                    }
+                };
+                break;
+            case R.id.btn_yaw_right:
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.cameraYawRight();
+                    }
+                };
+                break;
         }
         if( runnable!=null){
             mGLView.queueEvent(runnable);
@@ -211,6 +229,12 @@ public class OpenGLESActivity extends Activity implements View.OnClickListener{
         }
         void cameraPitchDown(){
             RenderApi.cameraPitchDown();
+        }
+        void cameraYawLeft(){
+            RenderApi.cameraYawLeft();
+        }
+        void cameraYawRight(){
+            RenderApi.cameraYawRight();
         }
     }
 

@@ -48,6 +48,9 @@ public:
     void pitchDown();
     void pitchUp();
 
+    void yawLeft();
+    void yawRight();
+
     void resetPos();
 
 public:
@@ -64,6 +67,7 @@ private:
     Vector _up;
     float _speed;//移动速度
     float _pitch;// 俯仰角
+    float _yaw;// 偏航角
 };
 
 

@@ -28,6 +28,10 @@ public:
         return f1-f2;
     }
 
+    static float radians(const float degree){
+        return degree*PI/180.0f;
+    }
+
 public:
     static const float PI;
 

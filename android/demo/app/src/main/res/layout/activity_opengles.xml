@@ -86,14 +86,29 @@
 
         <RelativeLayout
             android:id="@+id/btn_group_3"
-            android:layout_width="wrap_content"
+            android:layout_width="140dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/btn_group_2">
+            android:layout_alignParentRight="true">
+            <Button
+                android:id="@+id/btn_yaw_left"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="左转"/>
+            <Button
+                android:id="@+id/btn_yaw_right"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:text="右转"/>
             <Button
                 android:id="@+id/btn_pitch_up"
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
@@ -101,7 +116,7 @@
             <Button
                 android:id="@+id/btn_pitch_down"
                 android:layout_width="60dp"
-                android:layout_height="50dp"
+                android:layout_height="40dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"

@@ -461,3 +461,14 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraPitchDown(
         jobject /* this */) {
     camera.pitchDown();
 }
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraYawLeft(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.yawLeft();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraYawRight(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.yawRight();
+}

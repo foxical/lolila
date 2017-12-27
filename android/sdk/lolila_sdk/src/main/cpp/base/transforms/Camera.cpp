@@ -26,12 +26,14 @@ static const float s_def_front_z=-1.0f;
 static const Vector s_up(0.0,1.0,0.0);
 
 static const float s_def_pitch=0.0f;
+static const float s_def_yaw = -90.0f;
 
 Camera::Camera():_pos(s_def_front_x,s_def_front_y,s_def_front_z),
                  _front(s_def_front_x,s_def_front_y,s_def_front_z),
                  _up(s_up),
                  _speed(s_def_speed),
-                 _pitch(s_def_pitch){
+                 _pitch(s_def_pitch),
+                 _yaw(s_def_yaw){
 
 }
 
@@ -47,6 +49,7 @@ void Camera::resetPos(){
     _up=s_up;
     _speed=s_def_speed;
     _pitch=s_def_pitch;
+    _yaw = s_def_yaw;
     updateVectors();
 }
 
@@ -99,11 +102,33 @@ void Camera::pitchUp(){
     updateVectors();
 }
 
+void Camera::yawLeft(){
+    _yaw -= 1.0f;
+    if ( _yaw <= -360.0f) {
+        _yaw += 360.0f;
+    }
+    updateVectors();
+}
+
+void Camera::yawRight() {
+
+    _yaw += 1.0f;
+    if ( _yaw >= 360.0f) {
+        _yaw -= 360.0f;
+    }
+    updateVectors();
+
+}
+
+
+
 void Camera::updateVectors(){
 
-    Vector front(_front.x(), sinf(_pitch*PI/180.0f),_front.z());
+    const float fx = cosf(FloatUtils::radians(_pitch)) * cosf(FloatUtils::radians(_yaw));
+    const float fy = sinf(FloatUtils::radians(_pitch));
+    const float fz = cosf(FloatUtils::radians(_pitch)) * sinf(FloatUtils::radians(_yaw));
 
-    _front = front.normalize();
+    _front = Vector(fx,fy,fz).normalize();
     // Also re-calculate the Right and Up vector
     Vector Right = Vector::cross(_front, s_up).normalize();  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
     _up  = Vector::cross(Right, _front).normalize();
