@@ -17,6 +17,8 @@
 #include "base/transforms/Camera.h"
 #include "base/utils/esUtil.h"
 #include "base/utils/FloatUtils.h"
+#include "base/utils/VBOHelper.h"
+
 
 static GLint   gl_programObject=-1;
 static GLsizei gl_viewport_width=-1;
@@ -24,11 +26,12 @@ static GLsizei gl_viewport_height=-1;
 
 
 static Matrix projectMat(4,4);
-static Matrix rotateMat(4,4);
+static Matrix rotateMat1(4,4);
+static Matrix rotateMat2(4,4);
 static Matrix translateMat(4,4);
 static Matrix viewMat(4,4);
 static Camera camera;
-
+static VBOHelper vboHelper(GL_ARRAY_BUFFER);
 
 // Vertex daata
 static GLfloat  *vertices;
@@ -182,6 +185,28 @@ int esGenCube ( float scale, GLfloat **vertices, GLfloat **normals,
     return numIndices;
 }
 
+static float degree=45.0f;
+static int delay_fr=0;
+
+static const float PI  = FloatUtils::PI;//3.14159265f
+
+static float near = 1.0f;
+static float far = 20.0f;
+static float fov=60.0f;
+
+static int projectType=0; // 0: 透视投影，1：正视投影
+
+static void updateProjectMat(){
+
+
+    far = near + 20.0f;
+
+    if( projectType==0) {
+        MVPTransform::buildFrustumMatrix(gl_viewport_width, gl_viewport_height, near,far, fov, projectMat);
+    }else{
+        MVPTransform::buildOrthoMatrix(gl_viewport_width, gl_viewport_height, near, far, fov, projectMat);
+    }
+}
 
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
         JNIEnv *env,
@@ -204,12 +229,13 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
                     "layout(location = 0) in vec3 vPosition;  \n"    // 顶点属性， 通过布局限定符指定在0位置
 
                     "uniform mat4 projection;                  \n"    // 统一变量，名字叫做‘projection’，把客户代码的投影矩阵传递给着色器
-                    "uniform mat4 rotation;                    \n"
+                    "uniform mat4 rotation1;                   \n"
+                    "uniform mat4 rotation2;                   \n"
                     "uniform mat4 translate;                   \n"
                     "uniform mat4 view;                        \n"
                     "void main()                               \n"
                     "{                                         \n"
-                    "   gl_Position =  projection * view * translate * rotation * vec4(vPosition,1.0); \n"    // 对每个顶点执行透视变换
+                    "   gl_Position =  projection * view * translate * rotation2 * rotation1 * vec4(vPosition,1.0); \n"    // 对每个顶点执行透视变换
                     "}                                         \n";
 
     char fShaderStr[] =
@@ -267,8 +293,8 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
     glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
 
 
-    Rotation::buildRotationMatrix(Vector(1.0f,.0f,.0f),45.0f,rotateMat);
-    Translate::buildTranslateMatrix(Vector(.0f,.0f,-5.0f),translateMat);
+    Rotation::buildRotationMatrix(Vector(1.0f,.0f,.0f),45.0f,rotateMat1);
+    Translate::buildTranslateMatrix(Vector(.0f,.0f,-10.0f),translateMat);
 
 
     numIndices = esGenCube ( 1.0, &vertices,
@@ -279,31 +305,10 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
 
 
     camera.resetPos();
+    projectType=0;
+    fov=60.f;
+    near=1.0f;
 
-    LOGI("RenderApi_init end.");
-    return;
-}
-
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resize(
-        JNIEnv *env,
-        jobject obj, jint width, jint height ) {
-    LOGI("RenderApi_resize w:%i,h:%i, aspect:%f",width,height,(float)width/(float)height);
-    gl_viewport_width = width;
-    gl_viewport_height = height;
-    MVPTransform::buildFrustumMatrix((float)width,(float)height,1.0f, 20.0f,60.0f,projectMat);
-}
-
-static float degree=45.0f;
-static int delay_fr=0;
-
-static const float PI  = FloatUtils::PI;//3.14159265f
-
-
-
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
-        JNIEnv *env,
-        jobject /* this */) {
-    //LOGI("RenderApi_draw begin");
 
     const float w = 1.0f;
     const float z = -1.0f;
@@ -324,7 +329,30 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
             w,w,0.0,
     };
 
+    LOGD("vVertices size:%d", sizeof(vVertices));
+    vboHelper.bindData(sizeof(vVertices),vVertices,GL_STATIC_DRAW);
 
+    LOGI("RenderApi_init end.");
+    return;
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resize(
+        JNIEnv *env,
+        jobject obj, jint width, jint height ) {
+    LOGI("RenderApi_resize w:%i,h:%i, aspect:%f",width,height,(float)width/(float)height);
+    gl_viewport_width = width;
+    gl_viewport_height = height;
+    updateProjectMat();
+}
+
+
+
+
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
+        JNIEnv *env,
+        jobject /* this */) {
+    //LOGI("RenderApi_draw begin");
 
 
     // Set the viewport
@@ -339,10 +367,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
 
 
 
-
-
-
-    /*  以下代码片段演示了摄像机绕物体旋转
+    ///*  以下代码片段演示了物体绕Y轴旋转
     {
         degree += 1.0f;
         if (degree >= 360.0f) {
@@ -351,10 +376,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
         delay_fr=0;
     }
     const Vector vUp(0,1,0);
-    const Vector basePosV(0,0,8.0f);
-    const Vector rotatePosV = Translate::doTransform(Vector(0,0,-5.0f),Rotation::doTransform(vUp, degree,basePosV));
-    MVPTransform::buildLookAtMatrix(rotatePosV.x(),rotatePosV.y(),rotatePosV.z(),0,0,-5.0f,vUp,viewMat);
-    */
+    Rotation::buildRotationMatrix(vUp, degree,rotateMat2);
 
     camera.buildLookAtMatrix(viewMat);
 
@@ -362,8 +384,10 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
 
     matLoc = glGetUniformLocation(gl_programObject, "projection");
     glUniformMatrix4fv(matLoc, 1, GL_TRUE, projectMat.value_ptr() );
-    matLoc = glGetUniformLocation(gl_programObject, "rotation");
-    glUniformMatrix4fv(matLoc, 1, GL_TRUE, rotateMat.value_ptr());
+    matLoc = glGetUniformLocation(gl_programObject, "rotation1");
+    glUniformMatrix4fv(matLoc, 1, GL_TRUE, rotateMat1.value_ptr());
+    matLoc = glGetUniformLocation(gl_programObject, "rotation2");
+    glUniformMatrix4fv(matLoc, 1, GL_TRUE, rotateMat2.value_ptr());
     matLoc = glGetUniformLocation(gl_programObject, "translate");
     glUniformMatrix4fv(matLoc, 1, GL_TRUE, translateMat.value_ptr());
     matLoc = glGetUniformLocation(gl_programObject, "view");
@@ -374,19 +398,12 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
 
 
     // Load the vertex data
-
-
-
-
-    glVertexAttribPointer (
-            0, // 第0号顶点属性和客户缓冲区关联， 第0号位置通过着色器语言指定
-            3, // 每个顶点坐标使用3个分量表示，XYZ
-            GL_FLOAT,
-            GL_FALSE,
-            3 * sizeof ( GLfloat ), // 由于改数组仅仅是存放坐标，没有颜色，因此跨距是0
-            vVertices // 客户缓冲区指针
-    );
-    glEnableVertexAttribArray ( 0 ); // 启用第0号位置顶点属性
+    VBOHelper::VertexAttribPointer vertexAttribPointer(&vboHelper,
+                                                           0, // 第0号顶点属性和客户缓冲区关联， 第0号位置通过着色器语言指定
+                                                           3, // 每个顶点坐标使用3个分量表示，XYZ
+                                                           GL_FLOAT,
+                                                           GL_FALSE,
+                                                           3 * sizeof(GLfloat));
 
 
 
@@ -398,19 +415,6 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
         );
     }
 
-
-
-
-
-    /*
-    glVertexAttribPointer ( 0, 3, GL_FLOAT,
-                            GL_FALSE,
-                            3 * sizeof ( GLfloat ),
-                            vertices );
-
-    glEnableVertexAttribArray ( 0 );
-    glDrawElements ( GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, indices );
-    */
 
     //LOGI("RenderApi_draw end");
 }
@@ -471,4 +475,47 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraYawRight(
         JNIEnv *env,
         jobject /* this */) {
     camera.yawRight();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_zoomIn(
+        JNIEnv *env,
+        jobject /* this */) {
+    fov+=1.0f;
+    if( fov>60.0f){
+        fov=60.0f;
+    }
+    updateProjectMat();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_zoomOut(
+        JNIEnv *env,
+        jobject /* this */) {
+    fov-=1.0f;
+    if( fov<1.0f){
+        fov=1.0f;
+    }
+    updateProjectMat();
+}
+
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_useFrustumPrj(
+        JNIEnv *env,
+        jobject /* this */) {
+    projectType=0;
+    updateProjectMat();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_useOrthoPrj(
+        JNIEnv *env,
+        jobject /* this */) {
+    projectType=1;
+    near=5.0f;
+    updateProjectMat();
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_pushNearPlane(
+        JNIEnv *env,
+        jobject /* this */) {
+    near+=1.0f;
+    updateProjectMat();
 }

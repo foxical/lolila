@@ -9,11 +9,39 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/btn_group"
+        android:layout_above="@+id/prj_type_group"
         android:orientation="vertical">
 
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/prj_type_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_above="@+id/btn_group">
+        <Button
+            android:id="@+id/btn_use_f_prj"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="透视投影"/>
+        <Button
+            android:id="@+id/btn_use_o_prj"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="正视投影"/>
+        <Button
+            android:id="@+id/btn_push_near_plane"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="远离近平面"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/btn_group"
@@ -86,7 +114,31 @@
 
         <RelativeLayout
             android:id="@+id/btn_group_3"
-            android:layout_width="140dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/btn_group_2">
+            <Button
+                android:id="@+id/btn_zoom_in"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="放大"/>
+            <Button
+                android:id="@+id/btn_zoom_out"
+                android:layout_width="60dp"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:text="缩小"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/btn_group_4"
+            android:layout_width="130dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true">
             <Button

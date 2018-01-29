@@ -10,7 +10,7 @@
 
 static const float PI  = FloatUtils::PI;//3.14159265f
 
-static const float s_def_speed = 0.5f;
+static const float s_def_speed = 0.1f;
 
 // 默认相机位置
 static const float s_def_pos_x = 0.0f;

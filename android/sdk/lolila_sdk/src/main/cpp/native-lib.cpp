@@ -25,6 +25,8 @@
 #include <stdexcept>
 #include <math.h>
 
+#include <dirent.h>
+
 using namespace std;
 
 extern Vector v_perp_to_n_and_not_perp_to_m(const Vector& N, const Vector& M,const Vector& P,const float& dot );
@@ -171,6 +173,25 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         float mm[]={1,0,0,0,1,0,0,0,1};
         Matrix MF(3,3,mm);
         LOGD("MF-1:%s",MF.invert().c_str());
+
+
+
+        const char* rootPath = "/storage/emulated/0";
+        DIR* dir;
+        dir = opendir(rootPath);
+
+        if (dir != NULL) {
+            dirent* currentDir;
+            while ((currentDir = readdir(dir)) != NULL) {  //readdir()方法就像java中迭代器的next()方法一样
+                //currentDir->d_name; //文件名，目录名
+                //currentDir->d_type; //类型，是目录还是文件啥的
+                LOGD("dirName:%s,type:%d",currentDir->d_name,currentDir->d_type);
+            }
+            closedir(dir); //用完要关掉，要不然会出错的
+        }else{
+            LOGD("open dir failed");
+        }
+
 
         return env->NewStringUTF( LogQueue::c_str());
 

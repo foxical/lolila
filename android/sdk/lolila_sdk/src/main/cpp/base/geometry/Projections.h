@@ -27,6 +27,14 @@ public:
             const float& n,const float& f,
             Matrix& mat4);
 
+    /**
+     * 构造正视投影矩阵
+     */
+    static void  buildOrthoProjectionMatrix(
+            const float& l,const float& t,const float& r,const float& b,
+            const float& n,const float& f,
+            Matrix& mat4);
+
     /*
     static Vector perspectiveProjection_v2(
             const double& l,const double& t,const double& r,const double& b,

@@ -99,9 +99,17 @@ void MVPTransform::buildLookAtMatrix(
 
 void MVPTransform::buildFrustumMatrix( const float& view_port_w, const float& view_port_h, const float& nearZ, const float& farZ, const float& fov, Matrix& mat4  ){
     const float aspect = view_port_w/view_port_h;  // 计算宽高比
-    const float frustumH = tanf ( (fov/2)*PI/180.0f ) * nearZ;  // 根据焦距neerZ(近平面)以及垂直视场角获得高度
+    const float frustumH = tanf ( FloatUtils::radians(fov/2) ) * nearZ;  // 根据焦距neerZ(近平面)以及垂直视场角获得高度
     const float frustumW = frustumH * aspect; // 反算出宽度
     Projections::buildPerspectiveProjectionMatrix( -frustumW, frustumH, frustumW, -frustumH, nearZ, farZ,mat4 );
+}
+
+void MVPTransform::buildOrthoMatrix( const float& view_port_w, const float& view_port_h, const float& nearZ, const float& farZ, const float& fov, Matrix& mat4  ){
+    const float aspect = view_port_w/view_port_h;  // 计算宽高比
+    const float frustumH = tanf ( FloatUtils::radians(fov/2) ) * nearZ;  // 根据焦距neerZ(近平面)以及垂直视场角获得高度
+    const float frustumW = frustumH * aspect; // 反算出宽度
+    //LOGD("w:%f,h:%f",frustumW,frustumH);
+    Projections::buildOrthoProjectionMatrix( -frustumW, frustumH, frustumW, -frustumH, nearZ, farZ,mat4 );
 }
 
 Matrix MVPTransform:: vec2mat(const Vector& in){

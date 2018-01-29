@@ -19,6 +19,8 @@ public final class RenderApi {
     public static native void init();
     public static native void resize(int w,int h);
     public static native void draw();
+    public static native void zoomIn();
+    public static native void zoomOut();
 
     public static native void cameraMoveForward();
     public static native void cameraMoveBack();
@@ -30,4 +32,9 @@ public final class RenderApi {
     public static native void cameraPitchDown();
     public static native void cameraYawLeft();
     public static native void cameraYawRight();
+
+    public static native void useFrustumPrj();
+    public static native void useOrthoPrj();
+
+    public static native void pushNearPlane();
 }

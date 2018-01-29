@@ -31,6 +31,7 @@ public:
 
 
     /**
+     * 创建透视投影矩阵
      * @view_port_w
      * 视口宽度
      * @view_port_h
@@ -43,6 +44,22 @@ public:
      * 垂直视场角
      */
     static void buildFrustumMatrix( const float& view_port_w, const float& view_port_h, const float& nearZ, const float& farZ, const float& fov, Matrix& mat4 );
+
+
+    /**
+    * 创建正视投影矩阵
+    * @view_port_w
+    * 视口宽度
+    * @view_port_h
+    * 视口高度
+    * @nearZ
+    * 近平面距离（焦距）必须为正数
+    * @farZ
+    * 远平面距离，必须为正数
+    * @fov
+    * 垂直视场角
+    */
+    static void buildOrthoMatrix( const float& view_port_w, const float& view_port_h, const float& nearZ, const float& farZ, const float& fov, Matrix& mat4 );
 
 
     static Matrix vec2mat(const Vector& in);

@@ -29,6 +29,9 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/utils/FloatUtils.cpp
              src/main/cpp/base/utils/GLUtils.cpp
              src/main/cpp/base/utils/esTransform.c
+             src/main/cpp/base/utils/stb_image_wrap.cpp
+             src/main/cpp/base/utils/Simple2DTexture.cpp
+             src/main/cpp/base/utils/VBOHelper.cpp
              src/main/cpp/base/geometry/Plane.cpp
              src/main/cpp/base/geometry/PlaneIntersection.cpp
              src/main/cpp/base/geometry/ViewFrustum.cpp
