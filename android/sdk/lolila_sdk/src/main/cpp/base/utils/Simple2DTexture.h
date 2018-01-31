@@ -5,6 +5,8 @@
 #ifndef __SIMPLE2DTEXTURE_H__
 #define __SIMPLE2DTEXTURE_H__
 
+#include <GLES3/gl3.h>
+
 class Simple2DTexture{
 public:
     Simple2DTexture();
@@ -12,7 +14,7 @@ public:
 public:
     bool loadImage(const char* imgPath);
 private:
-    unsigned int _textureHandle;
+    GLuint  _textureHandle;
     unsigned char* _imgData;
 };
 

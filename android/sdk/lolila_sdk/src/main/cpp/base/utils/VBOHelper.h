@@ -25,14 +25,14 @@ public:
      */
     class VertexAttribPointer{
     public:
-        VertexAttribPointer(VBOHelper* host,GLuint index,GLint size,GLenum type,GLboolean normalized,GLsizei strider):_target(host->_target),_index(index){
-            glBindBuffer(_target,host->_bufferHandle[0]);
-            glVertexAttribPointer(index,size,type,normalized,strider,(const void*)0);
+        VertexAttribPointer(VBOHelper* host,GLuint index,GLint size,GLenum type,GLboolean normalized,GLsizei strider,GLuint offset):_target(host->_target),_index(index){
+            glBindBuffer(_target,host->_bufferHandle);
+            glVertexAttribPointer(index,size,type,normalized,strider,(const void*)offset);
             glEnableVertexAttribArray(_index);
         }
         ~VertexAttribPointer(){
             glDisableVertexAttribArray(_index);
-            glBindBuffer(_target,0);
+            //glBindBuffer(_target,0);
         }
     private:
         GLenum _target;
@@ -44,7 +44,7 @@ public:
 
 private:
     GLenum  _target;
-    GLuint _bufferHandle[1];
+    GLuint _bufferHandle;
     friend class VertexAttribPointer;
 };
 
