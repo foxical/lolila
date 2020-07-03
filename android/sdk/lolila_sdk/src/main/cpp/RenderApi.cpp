@@ -80,6 +80,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
 
     glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
     glEnable(GL_DEPTH_TEST);
+    glLineWidth(8.0);
 
     Translate::buildTranslateMatrix(Vector(0,0,-5.0),translateMat);
 
@@ -241,6 +242,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_useFrustumPrj(
         JNIEnv *env,
         jobject /* this */) {
     projectType=0;
+    near = 1.0f;
     updateProjectMat();
 }
 

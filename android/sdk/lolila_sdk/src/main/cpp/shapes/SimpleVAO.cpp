@@ -16,7 +16,7 @@ SimpleVAO::~SimpleVAO(){
 
 void SimpleVAO::load(const AbstractShapeVertex &shapeVertex){
 
-    const void*  vertices = shapeVertex.getRawVertexArrayPtr();
+    const void*  vertices = (const void*)shapeVertex.getRawVertexArrayPtr();
     const GLsizeiptr size = shapeVertex.getRawVertexArraySize();
     const GLsizei strider = shapeVertex.getStider();
 

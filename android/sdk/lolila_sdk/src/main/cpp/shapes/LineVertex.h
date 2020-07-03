@@ -11,21 +11,22 @@
 
 class LineVertex: public AbstractShapeVertex{
 public:
+    LineVertex(){
+        LineVertex(1,0,0,1);
+    }
     LineVertex(GLfloat r, GLfloat g, GLfloat b, GLfloat a){
-
-        GLfloat* ptr = _vertexArray;
-        ptr[0]=0;
-        ptr[1]=0;
-        ptr[2]=0;
-        ptr = (GLfloat*)(((unsigned char*)_vertexArray)+VERTEX_STRIDER_BASE);
-        ptr[0]=1.0;
-        ptr[1]=0;
-        ptr[2]=0;
+        setPos(0,0,0,0);
+        setPos(1,1,0,0);
         setColor(r,g,b,a);
+    }
+    LineVertex(GLfloat x0, GLfloat y0, GLfloat z0, GLfloat x1, GLfloat y1, GLfloat z1){
+        setPos(0,x0,y0,z0);
+        setPos(1,x1,y1,z1);
+        setColor(1,0,0,1);
     }
     ~LineVertex(){}
 public:
-    virtual const void* getRawVertexArrayPtr()const{
+    virtual const GLfloat* getRawVertexArrayPtr()const{
         return _vertexArray;
     }
     virtual GLuint getRawVertexCount()const{

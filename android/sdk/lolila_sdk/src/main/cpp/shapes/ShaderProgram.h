@@ -24,6 +24,7 @@ public:
     GLuint getProgramObject()const{
         return _programObject;
     }
+    void use()const;
 private:
     GLuint _programObject;
 };

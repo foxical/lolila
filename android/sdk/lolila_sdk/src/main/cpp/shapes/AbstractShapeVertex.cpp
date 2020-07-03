@@ -11,6 +11,12 @@ const GLuint AbstractShapeVertex::POS_VBO_OFFSET = 0x0;
 const GLuint AbstractShapeVertex::COLOR_VBO_OFFSET = sizeof(GLfloat)*VERTEX_POS_SIZE;
 
 
+static GLfloat* getEntry( const GLfloat* arrayHead, GLuint offset, GLsizei strider,int idx){
+    unsigned char* ptr = (unsigned char*)( arrayHead);
+    ptr += (offset + idx*strider);
+    return (GLfloat*)ptr;
+}
+
 AbstractShapeVertex::AbstractShapeVertex(){
 
 }
@@ -18,16 +24,29 @@ AbstractShapeVertex::~AbstractShapeVertex(){
 
 }
 
+GLfloat* AbstractShapeVertex::getPosEntry(int idx)const{
+    return getEntry(getRawVertexArrayPtr(),POS_VBO_OFFSET,getStider(),idx);
+}
+GLfloat* AbstractShapeVertex::getColorEntry(int idx)const{
+    return getEntry(getRawVertexArrayPtr(),COLOR_VBO_OFFSET,getStider(),idx);
+}
+
 void AbstractShapeVertex::setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a){
 
-    GLfloat* colorBuf = (GLfloat*)(((unsigned char*)getRawVertexArrayPtr()) + COLOR_VBO_OFFSET);
+    GLfloat* colorBuf = NULL;
     const int count = getRawVertexCount();
-    const GLsizei strider = getStider();
     for(int i=0;i<count;++i){
+        colorBuf = getColorEntry(i);
         colorBuf[0]=r;
         colorBuf[1]=g;
         colorBuf[2]=b;
         colorBuf[3]=a;
-        colorBuf = (GLfloat*)(((unsigned char*)colorBuf) + strider);
     }
+}
+
+void AbstractShapeVertex::setPos(int posIdx, GLfloat x,GLfloat y ,GLfloat z){
+    GLfloat* entry = getPosEntry(posIdx);
+    entry[0]=x;
+    entry[1]=y;
+    entry[2]=z;
 }
