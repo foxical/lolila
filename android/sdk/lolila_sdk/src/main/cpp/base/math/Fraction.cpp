@@ -51,6 +51,38 @@ Fraction::Fraction(std::string FractionString) {
     this->convertStringToFraction(FractionString);
 }
 
+Fraction::Fraction(const Fraction& o):numerator(o.numerator),denominator(o.denominator){
+
+}
+
+Fraction::Fraction(long val):numerator(val),denominator(1){
+
+}
+
+Fraction& Fraction::operator=(const Fraction& other){
+    if(*this!=other){
+        this->numerator=other.numerator;
+        this->denominator=other.denominator;
+    }
+    return *this;
+}
+
+Fraction& Fraction::operator=(long val){
+    this->numerator=val;
+    this->denominator=1;
+    return *this;
+}
+
+Fraction& Fraction::operator=(double Number){
+    this->convertDoubleToFraction(Number);
+    return *this;
+}
+
+Fraction& Fraction::operator=(string val){
+    this->convertStringToFraction(val);
+    return *this;
+}
+
 /**
  * Standard deconstructor
 */
@@ -237,9 +269,10 @@ Fraction::operator long() {
 Fraction::operator std::string() const{
     std::stringstream output;
     output << this->getNumerator() << "/" << this->getDenominator();
-
     return output.str();
 }
+
+
 
 /**
  * Addition operator overloading
@@ -384,11 +417,15 @@ Fraction Fraction::operator--(void) {
 /**
  * Left shift operator overloading
 */
-std::ostream& operator<<(std::ostream &out, Fraction &Fraction) {
-    out << Fraction.getNumerator() << "/" << Fraction.getDenominator();
 
+/*
+std::stringstream& operator<<(std::stringstream &out, Fraction &f) {
+    out << f.getNumerator() << "/" << f.getDenominator();
     return out;
 }
+ */
+
+
 
 /**
  * Right shift operator overloading
@@ -398,6 +435,7 @@ std::ostream& operator<<(std::ostream &out, Fraction &Fraction) {
  *
  * (catchable as a std::exception)
 */
+/*
 std::istream& operator>>(std::istream &in, Fraction &Fraction) {
     std::string input;
 
@@ -410,8 +448,10 @@ std::istream& operator>>(std::istream &in, Fraction &Fraction) {
 
     return in;
 }
+ */
 
 
 const char* Fraction::c_str() const{
+
     return ((string)*this).c_str();
 }

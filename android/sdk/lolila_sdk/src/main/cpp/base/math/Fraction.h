@@ -39,8 +39,10 @@ private:
 public:
     // Constructors
     Fraction(void);
+    Fraction(long);
     Fraction(double Number);
     Fraction(std::string FractionString);
+    Fraction(const Fraction&);
     // Destructur
     ~Fraction(void);
 
@@ -67,7 +69,11 @@ public:
     operator double();
     operator float();
     operator long();
+
+
     operator std::string()const;
+
+
     Fraction operator+(Fraction fraction);
     Fraction operator+=(Fraction fraction);
     Fraction operator-=(Fraction fraction);
@@ -81,8 +87,15 @@ public:
     Fraction operator--(void);
 
 public:
+    Fraction& operator=(const Fraction&);
+    Fraction& operator=(long);
+    Fraction& operator=(double);
+    Fraction& operator=(string);
+
+public:
 
     const char* c_str() const;
+
 };
 
 /**
@@ -96,9 +109,11 @@ public: virtual const char* what() const throw() { return "Incorrect Input"; }
 };
 
 /** Left Shift Operator overloading functions (need to be declared global) */
-std::ostream& operator<<(std::ostream &out, Fraction &Fraction);
+//std::ostream& operator<<(std::ostream &out, Fraction &Fraction);
 /** Right Shift Operator overloading functions (need to be declared global) */
-std::istream& operator>>(std::istream &in, Fraction &Fraction);
+//std::istream& operator>>(std::istream &in, Fraction &Fraction);
+
+
 
 #endif //__FRACTION_H__
 

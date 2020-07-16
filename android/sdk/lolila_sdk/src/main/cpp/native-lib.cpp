@@ -28,6 +28,9 @@
 #include <dirent.h>
 
 #include "base/math/Fraction.h"
+#include "base/math/TMatrix.hpp"
+#include "base/math/FloatOutputAdapter.hpp"
+#include "base/math/FractionOutputAdapter.hpp"
 
 using namespace std;
 
@@ -263,11 +266,17 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         //LOGD("isZeroRow of 0 :%i",MF.isZeroRow(0)?1:0);
         //LOGD("first 1 idx :%i",MF.getFirstOneColIdx(3));
 
-        Fraction fraction("2/4");
+        Fraction fraction(0.1);
         fraction.reduce();
+        fraction=0.2;
+        const char* pstr = fraction.c_str();
+        LOGD("fraction :%s",pstr);
 
-        LOGD("fraction :%s",fraction.c_str());
+        TMatrix<float,FloatOutputAdapter> tm(4,4);
+        LOGD("float matrix :%s",tm.c_str());
 
+        TMatrix<Fraction,FractionOutputAdapter> fm(4,4);
+        LOGD("Fraction matrix :%s",fm.c_str());
 
         return env->NewStringUTF( LogQueue::c_str());
 
