@@ -55,7 +55,7 @@ public:
     // Fraction functions
     bool reduce(void);
     void convertDoubleToFraction(double Number);
-    double convertFractionToDouble(void);
+    const double convertFractionToDouble(void)const;
     bool convertStringToFraction(std::string FractionString);
 
     // Operator overloading functions
@@ -63,10 +63,11 @@ public:
     bool operator<=(Fraction fraction);
     bool operator>(Fraction fraction);
     bool operator>=(Fraction fraction);
-    bool operator==(Fraction fraction);
-    bool operator!=(Fraction fraction);
+    bool operator==(const Fraction& fraction)const;
+    //bool operator!=(Fraction fraction);
+    bool operator!=(const Fraction& fraction)const;
     long operator%(Fraction fraction);
-    operator double();
+    operator double()const;
     operator float();
     operator long();
 
@@ -96,6 +97,12 @@ public:
 
     const char* c_str() const;
 
+    inline bool  isZero()const{
+        return  numerator==0L || denominator==0L;
+    }
+
+    Fraction reciprocal()const;
+
 };
 
 /**
@@ -109,9 +116,9 @@ public: virtual const char* what() const throw() { return "Incorrect Input"; }
 };
 
 /** Left Shift Operator overloading functions (need to be declared global) */
-//std::ostream& operator<<(std::ostream &out, Fraction &Fraction);
+std::ostream& operator<<(std::ostream &out, Fraction &Fraction);
 /** Right Shift Operator overloading functions (need to be declared global) */
-//std::istream& operator>>(std::istream &in, Fraction &Fraction);
+std::istream& operator>>(std::istream &in, Fraction &Fraction);
 
 
 

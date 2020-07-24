@@ -27,14 +27,16 @@
 #include <string>
 #include <cstdlib>
 #include <exception>
+#include <stdexcept>
 #include "Fraction.h"
+#include "../utils/AndroidLog.h"
 
 /***
  * Standard constructor
 */
 Fraction::Fraction(void) {
-    this->numerator = 0;
-    this->denominator = 0;
+    this->numerator = 0L;
+    this->denominator = 0L;
 }
 
 /**
@@ -60,6 +62,10 @@ Fraction::Fraction(long val):numerator(val),denominator(1){
 }
 
 Fraction& Fraction::operator=(const Fraction& other){
+
+
+
+
     if(*this!=other){
         this->numerator=other.numerator;
         this->denominator=other.denominator;
@@ -163,7 +169,7 @@ void Fraction::convertDoubleToFraction(double Number) {
 /**
  * Convert function for fraction to double
 */
-double Fraction::convertFractionToDouble(void) {
+const double Fraction::convertFractionToDouble(void) const{
     return (double)this->numerator / (double)this->denominator;
 }
 
@@ -220,16 +226,34 @@ bool Fraction::operator>=(Fraction fraction) {
 /**
  * Equal operator overloading
 */
-bool Fraction::operator==(Fraction fraction) {
+bool Fraction::operator==(const Fraction& fraction)const {
     return (this->numerator * (this->denominator * fraction.getDenominator())) == (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
 }
 
 /**
  * Non-Equal operator overloading
 */
+/*
 bool Fraction::operator!=(Fraction fraction) {
     return (this->numerator * (this->denominator * fraction.getDenominator())) != (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
 }
+*/
+
+bool Fraction::operator!=(const Fraction& fraction) const{
+
+
+    if( this->isZero() && !fraction.isZero() ){
+        return true;
+    }
+    if( !this->isZero() && fraction.isZero() ){
+        return true;
+    }
+
+    // if one of them is zero , can not apply this camp way
+    return  (this->numerator * (this->denominator * fraction.getDenominator())) != (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
+
+}
+
 
 /**
  * Modulos operator overloading (a/b % x/y = (a*y % b*x) / (b*y))
@@ -245,7 +269,7 @@ long Fraction::operator%(Fraction fraction) {
 /**
  * Double typecast operator overloading
 */
-Fraction::operator double() {
+Fraction::operator double() const{
     return this->convertFractionToDouble();
 }
 
@@ -418,12 +442,12 @@ Fraction Fraction::operator--(void) {
  * Left shift operator overloading
 */
 
-/*
+
 std::stringstream& operator<<(std::stringstream &out, Fraction &f) {
     out << f.getNumerator() << "/" << f.getDenominator();
     return out;
 }
- */
+
 
 
 
@@ -435,7 +459,7 @@ std::stringstream& operator<<(std::stringstream &out, Fraction &f) {
  *
  * (catchable as a std::exception)
 */
-/*
+
 std::istream& operator>>(std::istream &in, Fraction &Fraction) {
     std::string input;
 
@@ -448,10 +472,21 @@ std::istream& operator>>(std::istream &in, Fraction &Fraction) {
 
     return in;
 }
- */
+
 
 
 const char* Fraction::c_str() const{
 
     return ((string)*this).c_str();
+}
+
+Fraction Fraction::reciprocal()const{
+    if( this->numerator==0L || this->denominator==0L ){
+        throw logic_error("can not reciprocal a zero");
+    }
+
+    Fraction r;
+    r.setNumerator(this->denominator);
+    r.setDenominator(this->numerator);
+    return r;
 }

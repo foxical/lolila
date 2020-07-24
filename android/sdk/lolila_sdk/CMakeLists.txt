@@ -28,7 +28,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/math/Fraction.cpp
              src/main/cpp/base/math/TMatrix.hpp
              src/main/cpp/base/math/FractionOutputAdapter.hpp
-             src/main/cpp/base/math/FloatOutputAdapter.hpp
+             src/main/cpp/base/math/DoubleOutputAdapter.hpp
              src/main/cpp/base/utils/LogQueue.cpp
              src/main/cpp/base/utils/FloatUtils.cpp
              src/main/cpp/base/utils/GLUtils.cpp

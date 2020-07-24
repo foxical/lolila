@@ -29,7 +29,7 @@
 
 #include "base/math/Fraction.h"
 #include "base/math/TMatrix.hpp"
-#include "base/math/FloatOutputAdapter.hpp"
+#include "base/math/DoubleOutputAdapter.hpp"
 #include "base/math/FractionOutputAdapter.hpp"
 
 using namespace std;
@@ -266,17 +266,43 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         //LOGD("isZeroRow of 0 :%i",MF.isZeroRow(0)?1:0);
         //LOGD("first 1 idx :%i",MF.getFirstOneColIdx(3));
 
-        Fraction fraction(0.1);
-        fraction.reduce();
-        fraction=0.2;
-        const char* pstr = fraction.c_str();
-        LOGD("fraction :%s",pstr);
+        {
+            Fraction fraction(0.1);
+            fraction.reduce();
+            fraction = 0.2;
+            const char *pstr = fraction.c_str();
+            LOGD("fraction :%s", pstr);
 
-        TMatrix<float,FloatOutputAdapter> tm(4,4);
-        LOGD("float matrix :%s",tm.c_str());
+            TMatrix<double,DoubleOutputAdapter> tm(4, 4);
+            LOGD("double matrix :%s", tm.c_str());
+            TMatrix<Fraction,FractionOutputAdapter> fm(4, 4);
+            LOGD("Fraction matrix :%s", fm.c_str());
+            LOGD("isZeroRow of 0 :%i", fm.isZeroRow(0) ? 1 : 0);
+        }
 
-        TMatrix<Fraction,FractionOutputAdapter> fm(4,4);
-        LOGD("Fraction matrix :%s",fm.c_str());
+        {
+            const double v[] = {
+                    0.5, 0.5, 0.5, 0.5,
+                    0.5, 0.5, 0.5, 0.5,
+                    0.5, 0.5, 0.5, 0.5,
+                    0.5, 0.5, 0.5, 5
+            };
+            TMatrix<Fraction,FractionOutputAdapter> fm2(4, 4, v);
+            LOGD("Fraction matrix2 :%s", fm2.c_str());
+            LOGD("isZeroRow of 0 :%i", fm2.isZeroRow(0) ? 1 : 0);
+
+            TMatrix<Fraction,FractionOutputAdapter> fm3(fm2);
+            LOGD("Fraction matrix3 before :%s", fm3.c_str());
+
+            fm3.elementary_line_transformation();
+            LOGD("Fraction matrix3 after elementary_line_transformation :%s", fm3.c_str());
+
+            LOGD("isMostSimplest :%i",fm3.isMostSimplest()?1:0);
+            //Fraction f1(0L);
+            //Fraction f2(0.5f);
+            //LOGD("f1!=f2:%s",(f1!=f2)?"true":"false");
+        }
+
 
         return env->NewStringUTF( LogQueue::c_str());
 
