@@ -23,7 +23,10 @@ struct FractionOutputAdapter{
     static string toString(const Fraction& f ){
         if(f.getNumerator()==0L){
             return string("0");
-        }else{
+        }else if( f.getNumerator()==f.getDenominator()){
+            return string("1");
+        }
+        else{
             Fraction clone(f);
             clone.reduce();
             if(clone.getDenominator()==1L){

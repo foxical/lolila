@@ -287,20 +287,37 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
                     0.5, 0.5, 0.5, 0.5,
                     0.5, 0.5, 0.5, 5
             };
-            TMatrix<Fraction,FractionOutputAdapter> fm2(4, 4, v);
-            LOGD("Fraction matrix2 :%s", fm2.c_str());
-            LOGD("isZeroRow of 0 :%i", fm2.isZeroRow(0) ? 1 : 0);
+            //TMatrix<Fraction,FractionOutputAdapter> fm2(4, 4, v);
+            //LOGD("Fraction matrix2 :%s", fm2.c_str());
+            //LOGD("isZeroRow of 0 :%i", fm2.isZeroRow(0) ? 1 : 0);
 
-            TMatrix<Fraction,FractionOutputAdapter> fm3(fm2);
-            LOGD("Fraction matrix3 before :%s", fm3.c_str());
+            //TMatrix<Fraction,FractionOutputAdapter> fm3(fm2);
+            //LOGD("Fraction matrix3 before :%s", fm3.c_str());
 
-            fm3.elementary_line_transformation();
-            LOGD("Fraction matrix3 after elementary_line_transformation :%s", fm3.c_str());
+            //fm3.elementary_line_transformation();
+            //LOGD("Fraction matrix3 after elementary_line_transformation :%s", fm3.c_str());
 
-            LOGD("isMostSimplest :%i",fm3.isMostSimplest()?1:0);
+            //LOGD("isMostSimplest :%i",fm3.isMostSimplest()?1:0);
             //Fraction f1(0L);
             //Fraction f2(0.5f);
             //LOGD("f1!=f2:%s",(f1!=f2)?"true":"false");
+        }
+
+        {
+            const double v[] = {
+                    3, 2, -3, 5,
+                    4, -3, 6, 1,
+                    1, 0, -1, 3
+            };
+            TMatrix<Fraction,FractionOutputAdapter> fm2(3, 4, v);
+            //fm2.elementary_line_transformation();
+            fm2.elementary_line_transformation(0);
+            LOGD("Fraction matrix2 after elementary_line_transformation 0 :%s", fm2.c_str());
+            fm2.elementary_line_transformation(1);
+            LOGD("Fraction matrix2 after elementary_line_transformation 1 :%s", fm2.c_str());
+            fm2.elementary_line_transformation(2);
+            LOGD("Fraction matrix2 after elementary_line_transformation 2 :%s", fm2.c_str());
+            LOGD("isMostSimplest :%i",fm2.isMostSimplest()?1:0);
         }
 
 

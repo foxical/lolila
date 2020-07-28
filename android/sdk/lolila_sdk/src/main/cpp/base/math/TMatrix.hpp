@@ -23,6 +23,7 @@ public:
     TMatrix(const int& row,const int& col);
     TMatrix(const int& row,const int& col,const double[]);
     TMatrix(const TMatrix<T,OutputAdapter>&);
+    //TMatrix(const int& row,const int& col,const T[]);
     ~TMatrix();
 public:
     int col()const;

@@ -136,12 +136,13 @@ void Fraction::setDenominator(long Denominator) {
 bool Fraction::reduce(void) {
     long gcd(this->euclidean(this->numerator, this->denominator));
 
-    if (1 < gcd) {
+    if (1 < gcd || gcd<-1 /* */) {
         this->numerator /= gcd;
         this->denominator /= gcd;
 
         return true;
     } else {
+        LOGD("reduce false:%i,%i",this->numerator,this->denominator);
         return false;
     }
 }

@@ -20,6 +20,7 @@ TMatrix<T,OutputAdapter>::TMatrix(const int& row,const int& col):_col(col),_row(
     }
 }
 
+////*
 template <typename T,typename OutputAdapter>
 TMatrix<T,OutputAdapter>::TMatrix(const int& row,const int& col,const double items[]):_col(col),_row(row),_items(new T[row*col]){
     const int itemCount = _col*_row;
@@ -27,6 +28,7 @@ TMatrix<T,OutputAdapter>::TMatrix(const int& row,const int& col,const double ite
         _items[i] = items[i];
     }
 }
+///*/
 
 template <typename T,typename OutputAdapter>
 TMatrix<T,OutputAdapter>::TMatrix(const TMatrix<T,OutputAdapter> & o):_col(o._col),_row(o._row),_items(new T[o._col*o._row]) {
@@ -36,6 +38,15 @@ TMatrix<T,OutputAdapter>::TMatrix(const TMatrix<T,OutputAdapter> & o):_col(o._co
     }
 }
 
+/*
+template <typename T,typename OutputAdapter>
+TMatrix<T,OutputAdapter>::TMatrix(const int& row,const int& col,const T items[]):_col(col),_row(row),_items(new T[row*col]){
+    const int itemCount = _col*_row;
+    for(int i=0;i<itemCount;++i){
+        _items[i] = items[i];
+    }
+}
+*/
 
 template <typename T,typename OutputAdapter>
 TMatrix<T,OutputAdapter>::~TMatrix() {
