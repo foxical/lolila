@@ -55,6 +55,11 @@ public:
     bool isSingular()const;
     bool isSquare()const;
     bool isInvertible()const;
+    /**
+     * check if is the most simplest
+     * @return
+     */
+    bool isMostSimplest(void)const;
 
 public:
 
@@ -70,6 +75,32 @@ public:
     void set(const Matrix&);
     float get(const int& rowIdx,const int& colIdx)const;
     float get(const int& idx)const;
+
+public:
+
+    /**
+     * 对指定的行执行初等行变换
+     * @param rowIdx
+     */
+    void elementary_line_transformation(const int& rowIdx);
+
+    /**
+     * check if is zero row
+     * @param rowIdx
+     * @return
+     */
+    bool isZeroRow(const int& rowIdx)const;
+
+    /**
+     * get the col index of first '1' element of this row
+     * @param rowIdx
+     * @return
+     * -1: '1' element is not found!
+     */
+    int getFirstOneColIdx(const int& rowIdx)const;
+
+
+
 
 public:
     //Matrix& operator=(const Matrix&);

@@ -4,6 +4,7 @@
 
 #include "Matrix.h"
 #include "../utils/FloatUtils.h"
+#include "../utils/LogQueue.h"
 #include <stdexcept>
 #include <math.h>
 
@@ -306,6 +307,109 @@ Matrix Matrix::invert()const{
         throw runtime_error("DET ==0 ");
     }
     return scalarMultiply(cofactors(),1.0f/det);
+}
+
+
+void Matrix::elementary_line_transformation(const int& rowIdx){
+    if( rowIdx<0||rowIdx>=_row){
+        throw out_of_range(" rowIdx<0||rowIdx>=_row");
+    }
+
+    const int& curRowIdx = rowIdx;
+
+    int bingoColIdx=-1;
+    float firstNonZeroVal=0.0;
+    for( int colIdx=0;colIdx<_col;++colIdx){
+        const float Mij=  get(curRowIdx,colIdx);
+        if(FloatUtils::isEqual( Mij,0.0f)==false){
+            bingoColIdx=colIdx;
+            firstNonZeroVal=Mij;
+            break;
+        }
+    }
+
+    if(bingoColIdx==-1){
+        LogQueue::push("cannot find non zero value in row[%d], elementary_line_transformation abort!",curRowIdx);
+        return;
+    }
+
+
+
+    LogQueue::push("first value of row[%d] is:%f\n",curRowIdx,firstNonZeroVal);
+
+}
+
+bool Matrix::isZeroRow(const int& rowIdx)const{
+    if( rowIdx<0||rowIdx>=_row){
+        throw out_of_range(" rowIdx<0||rowIdx>=_row");
+    }
+
+    for( int colIdx=0;colIdx<_col;++colIdx){
+        const float Mij=  get(rowIdx,colIdx);
+        if(FloatUtils::isEqual( Mij,0.0f)==false){
+            return false;
+        }
+    }
+
+    return true;
+}
+
+int Matrix::getFirstOneColIdx(const int& rowIdx)const{
+    if( rowIdx<0||rowIdx>=_row){
+        throw out_of_range(" rowIdx<0||rowIdx>=_row");
+    }
+
+    for( int colIdx=0;colIdx<_col;++colIdx){
+        const float Mij=  get(rowIdx,colIdx);
+        if(FloatUtils::isEqual( Mij,0.0f)){
+            continue;//
+        }else if(FloatUtils::isEqual( Mij,1.0f)){
+            return colIdx;
+        }else{
+            return -1;
+        }
+    }
+
+    return -99;
+}
+
+bool  Matrix::isMostSimplest(void)const{
+
+    int lastZeroRowIdx=-1;
+    int lastFirstOneColIdx=-1;
+
+    for(int rowIdx=0;rowIdx<_row;++rowIdx){
+        int firstOneColIdxOfRow = getFirstOneColIdx(rowIdx);
+        if( firstOneColIdxOfRow==-1 ){
+            return false; // can not find the ‘first one’ element
+        }else if( firstOneColIdxOfRow==-99){
+            lastZeroRowIdx = rowIdx; // this row is zero row, save the row idx in 'lastZeroRowIdx'
+            continue;
+        }
+
+        if(firstOneColIdxOfRow<=lastFirstOneColIdx){
+            return false; // the col idx is less then the last first one element's col idx
+        }
+
+        if(lastZeroRowIdx!=-1){
+            return false; // the zero row is above of this row
+        }
+
+        // check the elements that with same column in other rows, they must be zero all
+        const int& col = firstOneColIdxOfRow;
+        for(int r=0;r<_row;++r){
+            if(r!=rowIdx){
+                if(FloatUtils::isEqual(get(r,col),0.0f)==false){
+                    return false;
+                }
+            }
+        }
+
+        // !! this row is OK!! ,continue
+        lastFirstOneColIdx = firstOneColIdxOfRow;
+    }
+
+    return true;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////

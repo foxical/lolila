@@ -25,6 +25,10 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/geometry/Ray.cpp
              src/main/cpp/base/geometry/LineDistance.cpp
              src/main/cpp/base/math/Matrix.cpp
+             src/main/cpp/base/math/Fraction.cpp
+             src/main/cpp/base/math/TMatrix.hpp
+             src/main/cpp/base/math/FractionOutputAdapter.hpp
+             src/main/cpp/base/math/DoubleOutputAdapter.hpp
              src/main/cpp/base/utils/LogQueue.cpp
              src/main/cpp/base/utils/FloatUtils.cpp
              src/main/cpp/base/utils/GLUtils.cpp

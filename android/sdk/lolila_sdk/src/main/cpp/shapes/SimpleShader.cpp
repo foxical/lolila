@@ -47,11 +47,7 @@ bool SimpleShader::init(){
 }
 
 void SimpleShader::use() const {
-    if( !_shaderProgram.isReady()){
-        LOGE("ShaderProgram is not ready! try to execute init function first.");
-        return;
-    }
-    glUseProgram(_shaderProgram.getProgramObject());
+    _shaderProgram.use();
 }
 
 void SimpleShader::setMatrix(const GLchar* name, const Matrix& M)const{

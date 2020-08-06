@@ -17,12 +17,12 @@ public:
         }
         return f1-f2;
     }
-    static bool isEqual(const double& f1, const double& f2){
-        const float x = f1-f2;
+    static bool isEqualD(const double& f1, const double& f2){
+        const double x = f1-f2;
         return ((x >= - EPSINON_D)&& (x <= EPSINON_D));
     }
-    static double minus(const double& f1, const double& f2){
-        if(isEqual(f1,f2)){
+    static double minusD(const double& f1, const double& f2){
+        if(isEqualD(f1,f2)){
             return 0;
         }
         return f1-f2;

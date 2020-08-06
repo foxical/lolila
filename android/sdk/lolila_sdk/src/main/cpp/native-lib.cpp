@@ -27,6 +27,11 @@
 
 #include <dirent.h>
 
+#include "base/math/Fraction.h"
+#include "base/math/TMatrix.hpp"
+#include "base/math/DoubleOutputAdapter.hpp"
+#include "base/math/FractionOutputAdapter.hpp"
+
 using namespace std;
 
 extern Vector v_perp_to_n_and_not_perp_to_m(const Vector& N, const Vector& M,const Vector& P,const float& dot );
@@ -144,11 +149,12 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         //testLineDistance();
         //testPointLies();
         //testPlanes();
-        testProjections();
+        //testProjections();
 
         //testMisc();
         //LogQueue::push("b is %g\n",ViewFrustum::getVerticalViewAngle(1280,1024,75.0f));
 
+        /*
         float m0[]={1,-1,0,1,1,0,0,0,1};
         Matrix M0(3,3,m0);
         float m1[]={1,0,-1,0,1,-1,0,0,1};
@@ -173,13 +179,13 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         float mm[]={1,0,0,0,1,0,0,0,1};
         Matrix MF(3,3,mm);
         LOGD("MF-1:%s",MF.invert().c_str());
+         */
 
 
-
+        /*
         const char* rootPath = "/storage/emulated/0";
         DIR* dir;
         dir = opendir(rootPath);
-
         if (dir != NULL) {
             dirent* currentDir;
             while ((currentDir = readdir(dir)) != NULL) {  //readdir()方法就像java中迭代器的next()方法一样
@@ -191,6 +197,133 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         }else{
             LOGD("open dir failed");
         }
+         */
+
+
+        {
+
+            Matrix MF(4, 4);
+            LOGD("isMostSimplest :%i",MF.isMostSimplest()?1:0);
+        }
+
+        {
+
+            Matrix MF = Matrix::createIdentityMatrix(4);
+            LOGD("isMostSimplest :%i",MF.isMostSimplest()?1:0);
+        }
+
+        {
+            float mm[] = {
+                    3, 2, -3, 5,
+                    4, -3, 6, 1,
+                    0, 0, 1.0, 3,
+                    0, 0, 0, 1.0
+            };
+            Matrix MF(4, 4, mm);
+            LOGD("isMostSimplest :%i",MF.isMostSimplest()?1:0);
+        }
+
+        {
+            float mm[] = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 0, 0,
+                    0, 0, 0, 1
+            };
+            Matrix MF(4, 4, mm);
+            LOGD("isMostSimplest :%i",MF.isMostSimplest()?1:0);
+        }
+
+        {
+            float mm[] = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 0, 1,
+                    0, 0, 1, 0
+            };
+            Matrix MF(4, 4, mm);
+            LOGD("Mat:%s",MF.toString().c_str());
+            LOGD("isMostSimplest :%i",MF.isMostSimplest()?1:0);
+        }
+
+        {
+            float mm[] = {
+                    1, 0, 0, 0,
+                    0, 1, 0, 0,
+                    0, 0, 0, 1,
+                    0, 0, 0, 0
+            };
+            Matrix MF(4, 4, mm);
+            LOGD("Mat:%s",MF.toString().c_str());
+            LOGD("isMostSimplest :%i",MF.isMostSimplest()?1:0);
+        }
+
+
+        //LOGD("MF:%s",MF.c_str());
+        //MF.elementary_line_transformation(0);
+        //MF.elementary_line_transformation(1);
+        //MF.elementary_line_transformation(2);
+        //LOGD("isZeroRow of 0 :%i",MF.isZeroRow(0)?1:0);
+        //LOGD("first 1 idx :%i",MF.getFirstOneColIdx(3));
+
+        {
+            Fraction fraction(0.1);
+            fraction.reduce();
+            fraction = 0.2;
+            const char *pstr = fraction.c_str();
+            LOGD("fraction :%s", pstr);
+
+            TMatrix<double,DoubleOutputAdapter> tm(4, 4);
+            LOGD("double matrix :%s", tm.c_str());
+            TMatrix<Fraction,FractionOutputAdapter> fm(4, 4);
+            LOGD("Fraction matrix :%s", fm.c_str());
+            LOGD("isZeroRow of 0 :%i", fm.isZeroRow(0) ? 1 : 0);
+        }
+
+        {
+            const double v[] = {
+                    0.5, 0.5, 0.5, 0.5,
+                    0.5, 0.5, 0.5, 0.5,
+                    0.5, 0.5, 0.5, 0.5,
+                    0.5, 0.5, 0.5, 5
+            };
+            //TMatrix<Fraction,FractionOutputAdapter> fm2(4, 4, v);
+            //LOGD("Fraction matrix2 :%s", fm2.c_str());
+            //LOGD("isZeroRow of 0 :%i", fm2.isZeroRow(0) ? 1 : 0);
+
+            //TMatrix<Fraction,FractionOutputAdapter> fm3(fm2);
+            //LOGD("Fraction matrix3 before :%s", fm3.c_str());
+
+            //fm3.elementary_line_transformation();
+            //LOGD("Fraction matrix3 after elementary_line_transformation :%s", fm3.c_str());
+
+            //LOGD("isMostSimplest :%i",fm3.isMostSimplest()?1:0);
+            //Fraction f1(0L);
+            //Fraction f2(0.5f);
+            //LOGD("f1!=f2:%s",(f1!=f2)?"true":"false");
+        }
+
+        {
+            const double v[] = {
+                    3, 2, -3, 5,
+                    4, -3, 6, 1,
+                    1, 0, -1, 3
+            };
+            TMatrix<Fraction,FractionOutputAdapter> fm2(3, 4, v);
+            //fm2.elementary_line_transformation();
+            fm2.elementary_line_transformation(0);
+            LOGD("Fraction matrix2 after elementary_line_transformation 0 :%s", fm2.c_str());
+            fm2.elementary_line_transformation(1);
+            LOGD("Fraction matrix2 after elementary_line_transformation 1 :%s", fm2.c_str());
+            fm2.elementary_line_transformation(2);
+            LOGD("Fraction matrix2 after elementary_line_transformation 2 :%s", fm2.c_str());
+            LOGD("isMostSimplest :%i",fm2.isMostSimplest()?1:0);
+
+            LOGD("determinant :%f",fm2.determinant());
+
+            fm2.zero();
+            LOGD("Fraction matrix2 after zero :%s", fm2.c_str());
+        }
 
 
         return env->NewStringUTF( LogQueue::c_str());
@@ -198,6 +331,7 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
     }catch (exception& e){
         char buff[1024];
         sprintf(buff,"exception: %s\n", e.what());
+        LOGD("exception:%s",buff);
         std::string hello(buff);
         return env->NewStringUTF(hello.c_str());
     }

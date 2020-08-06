@@ -43,7 +43,10 @@ public:
 
 public:
 
+
     static float dot(const Vector&, const Vector&);
+
+
     static Vector cross(const Vector&,const Vector&);
     static Vector scalarMultiply( const Vector&,const float&);
     static Vector proj(const Vector& P,const Vector& Q);

@@ -59,4 +59,12 @@ GLuint ShaderProgram::create(const char* vShaderStr, const char* fShaderStr){
     return programObject;
 }
 
+void ShaderProgram::use()const{
+    if(!isReady()){
+        LOGE("_programObject is not ready! try to execute create function first.");
+        return;
+    }
+    glUseProgram(_programObject);
+}
+
 
