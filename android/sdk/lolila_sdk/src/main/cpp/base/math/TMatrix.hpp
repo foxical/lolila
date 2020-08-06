@@ -23,7 +23,7 @@ public:
     TMatrix(const int& row,const int& col);
     TMatrix(const int& row,const int& col,const double[]);
     TMatrix(const TMatrix<T,OutputAdapter>&);
-    //TMatrix(const int& row,const int& col,const T[]);
+    TMatrix(const T[],const int& row,const int& col);
     ~TMatrix();
 public:
     int col()const;
@@ -70,6 +70,13 @@ public:
     */
     void elementary_line_transformation(const int& rowIdx);
     void elementary_line_transformation();
+
+    void zero();
+
+    bool isSquare()const;
+    bool isInvertible()const;
+
+    double determinant()const;
 
 private:
     TMatrix();

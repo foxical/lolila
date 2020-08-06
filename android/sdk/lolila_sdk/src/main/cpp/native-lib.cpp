@@ -318,6 +318,11 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
             fm2.elementary_line_transformation(2);
             LOGD("Fraction matrix2 after elementary_line_transformation 2 :%s", fm2.c_str());
             LOGD("isMostSimplest :%i",fm2.isMostSimplest()?1:0);
+
+            LOGD("determinant :%f",fm2.determinant());
+
+            fm2.zero();
+            LOGD("Fraction matrix2 after zero :%s", fm2.c_str());
         }
 
 
