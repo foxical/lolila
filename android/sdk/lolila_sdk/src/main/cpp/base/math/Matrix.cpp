@@ -137,6 +137,14 @@ Matrix& Matrix::operator=(const Matrix& A){
 }
 */
 
+void  Matrix::zero(){
+
+    const int c = itemCount();
+    for(int i=0;i<c;++i){
+        _items[i] = 0.0f;
+    }
+}
+
 void Matrix::set(const int& idx,const float & val){
     if( idx<0||idx>=itemCount()){
         throw out_of_range("index is out of range!");

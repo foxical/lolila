@@ -63,6 +63,8 @@ public:
     const float* value_ptr()const;
 
 public:
+
+    void zero();
     void set(const int& rowIdx,const int& colIdx,const float& val);
     void set(const int& idx,const float& val);
     void set(const Matrix&);

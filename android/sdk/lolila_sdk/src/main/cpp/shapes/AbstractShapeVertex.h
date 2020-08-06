@@ -13,7 +13,7 @@ protected:
     virtual ~AbstractShapeVertex();
 public:
 
-    virtual const void* getRawVertexArrayPtr()const=0;
+    virtual const GLfloat* getRawVertexArrayPtr()const=0;
     virtual GLuint getRawVertexCount()const=0;
 
     /**
@@ -35,16 +35,26 @@ public:
      */
     void setColor(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 
+    /**
+     * 设置顶点坐标
+     */
+    void setPos(int posIdx, GLfloat x,GLfloat y ,GLfloat z);
+
 public:
 
     virtual void draw()const=0;
 
 public:
-    static const GLint VERTEX_POS_SIZE;
-    static const GLint VERTEX_COLOR_SIZE;
+    static const GLint VERTEX_POS_SIZE; //3
+    static const GLint VERTEX_COLOR_SIZE; // 4
     static const GLsizei VERTEX_STRIDER_BASE; // in bytes
     static const GLuint POS_VBO_OFFSET;  // in bytes
     static const GLuint COLOR_VBO_OFFSET; // in bytes
+
+protected:
+
+    GLfloat* getPosEntry(int idx)const;
+    GLfloat* getColorEntry(int idx)const;
 
 };
 
