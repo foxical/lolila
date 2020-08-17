@@ -142,7 +142,7 @@ bool Fraction::reduce(void) {
 
         return true;
     } else {
-        LOGD("reduce false:%i,%i",this->numerator,this->denominator);
+        //LOGD("reduce false:%i,%i",this->numerator,this->denominator);
         return false;
     }
 }

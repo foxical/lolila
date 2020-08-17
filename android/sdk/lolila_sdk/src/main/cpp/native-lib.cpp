@@ -310,19 +310,32 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
                     1, 0, -1, 3
             };
             TMatrix<Fraction,FractionOutputAdapter> fm2(3, 4, v);
+            LOGD("Fraction matrix2 :%s", fm2.c_str());
+
             //fm2.elementary_line_transformation();
-            fm2.elementary_line_transformation(0);
-            LOGD("Fraction matrix2 after elementary_line_transformation 0 :%s", fm2.c_str());
-            fm2.elementary_line_transformation(1);
-            LOGD("Fraction matrix2 after elementary_line_transformation 1 :%s", fm2.c_str());
-            fm2.elementary_line_transformation(2);
-            LOGD("Fraction matrix2 after elementary_line_transformation 2 :%s", fm2.c_str());
-            LOGD("isMostSimplest :%i",fm2.isMostSimplest()?1:0);
+            //fm2.elementary_line_transformation(0);
+            //LOGD("Fraction matrix2 after elementary_line_transformation 0 :%s", fm2.c_str());
+            //fm2.elementary_line_transformation(1);
+            //LOGD("Fraction matrix2 after elementary_line_transformation 1 :%s", fm2.c_str());
+            //fm2.elementary_line_transformation(2);
+            //LOGD("Fraction matrix2 after elementary_line_transformation 2 :%s", fm2.c_str());
+            //LOGD("isMostSimplest :%i",fm2.isMostSimplest()?1:0);
 
-            LOGD("determinant :%f",fm2.determinant());
+            //LOGD("determinant :%f",fm2.determinant());
 
-            fm2.zero();
-            LOGD("Fraction matrix2 after zero :%s", fm2.c_str());
+            //fm2.zero();
+            //LOGD("Fraction matrix2 after zero :%s", fm2.c_str());
+
+            //fm2.swapRow(0,1);
+            //LOGD("Fraction matrix2 after swap row :%s", fm2.c_str());
+
+            LOGD("Fraction matrix2 max k:%i", fm2.findMkj(0,0));
+
+            Fraction f1(0L);
+            Fraction f2(1L);
+            if( f2>f1){
+                LOGD("haha");
+            }
         }
 
 

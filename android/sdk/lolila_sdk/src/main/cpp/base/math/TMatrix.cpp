@@ -278,6 +278,47 @@ double TMatrix<T,OutputAdapter>::determinant()const{
     return det(*this);
 }
 
+template <typename T,typename OutputAdapter>
+void TMatrix<T,OutputAdapter>::swapRow(const int& from, const int& to){
+    if( from<0||from>=_row){
+        throw out_of_range(" from<0||from>=_row");
+    }
+    if( to<0||to>=_row){
+        throw out_of_range(" to<0||to>=_row");
+    }
+
+    for( int colIdx=0;colIdx<_col;++colIdx){
+        const int f_idx= from*_col+colIdx;
+        const int t_idx= to*_col+colIdx;
+        const T  bak =  _items[f_idx];
+        _items[f_idx] = _items[t_idx];
+        _items[t_idx] = bak;
+    }
+}
+
+template <typename T,typename OutputAdapter>
+int TMatrix<T,OutputAdapter>::findMkj(const int& fromRow,const int& j)const{
+    if( fromRow<0||fromRow>=_row){
+        throw out_of_range(" fromRow<0||fromRow>=_row");
+    }
+    if( j<0||j>=_col){
+        throw out_of_range(" j<0||j>=_col");
+    }
+
+    T Mkj;
+    Mkj=0.0f;
+    int k=-1;
+    for( int r=fromRow;r<_row;++r){
+        T  bak =  OutputAdapter::abs(_items[r*_col+j]);
+        if( bak>Mkj){
+            Mkj=bak;
+            k=r;
+        }
+    }
+
+    return k;
+}
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // static inner helper
 /////////////////////////////////////////////////////////////////////////////////////////////////

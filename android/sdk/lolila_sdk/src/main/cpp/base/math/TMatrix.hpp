@@ -78,6 +78,20 @@ public:
 
     double determinant()const;
 
+
+    void swapRow(const int& from, const int& to);
+
+    /**
+     * find the row, which Mkj has the max value
+     * @param fromRow
+     * from row index
+     * @param j
+     * column index
+     * @return
+     * the 'k' row index
+     */
+    int findMkj(const int& fromRow,const int& j)const;
+
 private:
     TMatrix();
 private:

@@ -56,6 +56,13 @@ struct FractionOutputAdapter{
         }
         return (f.getNumerator()==f.getDenominator());
     }
+
+    static Fraction abs(const Fraction& f){
+        Fraction r;
+        r.setNumerator(labs(f.getNumerator()));
+        r.setDenominator(labs(f.getDenominator()));
+        return r;
+    }
 };
 
 #endif //_FRACTIONOUTPUTADAPTER_HPP

@@ -40,6 +40,10 @@ struct DoubleOutputAdapter{
     static bool isEqualOne(const double& f ){
         return FloatUtils::isEqualD(f,1.0f);
     }
+
+    static double abs(const double& f){
+        return fabs(f);
+    }
 };
 
 
