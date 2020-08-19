@@ -21,14 +21,14 @@ using namespace std;
 struct FractionOutputAdapter{
 
     static string toString(const Fraction& f ){
-        if(f.getNumerator()==0L){
+        if(f.isZero()){
             return string("0");
         }else if( f.getNumerator()==f.getDenominator()){
             return string("1");
-        }
-        else{
+        }else{
             Fraction clone(f);
             clone.reduce();
+            clone.symbolSimplification();
             if(clone.getDenominator()==1L){
                 char buf[128];
                 sprintf(buf,"%d",clone.getNumerator());
@@ -44,6 +44,10 @@ struct FractionOutputAdapter{
 
     static Fraction reciprocal(const Fraction& f){
         return f.reciprocal();
+    }
+
+    static Fraction reciprocal_N(const Fraction& f){
+        return f.reciprocal_N();
     }
 
     static bool isEqualD(const Fraction& f,const double& d){

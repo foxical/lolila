@@ -33,6 +33,17 @@ struct DoubleOutputAdapter{
         return 1.0/f;
     }
 
+    static double reciprocal_N(const double& f){
+        if( isZero(f)){
+            throw logic_error("can not reciprocal with a zero");
+        }
+        double r = 1.0/f;
+        if( f<0.0f){
+            r*= -1.0f;
+        }
+        return r;
+    }
+
     static bool isEqualD(const double& f,const double& d ){
         return FloatUtils::isEqualD(f,d);
     }

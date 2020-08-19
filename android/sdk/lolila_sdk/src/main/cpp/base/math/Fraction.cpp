@@ -49,15 +49,16 @@ Fraction::Fraction(double Number) {
 /**
  * String-convert constructor
 */
-Fraction::Fraction(std::string FractionString) {
+Fraction::Fraction(const std::string& FractionString) {
     this->convertStringToFraction(FractionString);
+
 }
 
 Fraction::Fraction(const Fraction& o):numerator(o.numerator),denominator(o.denominator){
 
 }
 
-Fraction::Fraction(long val):numerator(val),denominator(1){
+Fraction::Fraction(long val):numerator(val),denominator(1L){
 
 }
 
@@ -75,7 +76,7 @@ Fraction& Fraction::operator=(const Fraction& other){
 
 Fraction& Fraction::operator=(long val){
     this->numerator=val;
-    this->denominator=1;
+    this->denominator=1L;
     return *this;
 }
 
@@ -84,7 +85,7 @@ Fraction& Fraction::operator=(double Number){
     return *this;
 }
 
-Fraction& Fraction::operator=(string val){
+Fraction& Fraction::operator=(const string& val){
     this->convertStringToFraction(val);
     return *this;
 }
@@ -134,17 +135,34 @@ void Fraction::setDenominator(long Denominator) {
  * Reduce the fraction as low as possible
 */
 bool Fraction::reduce(void) {
+    bool r=false;
+
     long gcd(this->euclidean(this->numerator, this->denominator));
 
-    if (1 < gcd || gcd<-1 /* */) {
+    if (1 < gcd || gcd<-1 /* gcd<-1 */) {
         this->numerator /= gcd;
         this->denominator /= gcd;
-
-        return true;
+        r=true;
     } else {
         //LOGD("reduce false:%i,%i",this->numerator,this->denominator);
-        return false;
+        r=false;
     }
+
+
+    return r;
+}
+
+bool Fraction::symbolSimplification(){
+    if( this->numerator <0L && this->denominator<0L){
+        this->numerator = labs(this->numerator);
+        this->denominator = labs(this->denominator);
+        return true;
+    }else if( this->numerator >0L && this->denominator<0L){
+        this->numerator *= -1L;
+        this->denominator = labs(this->denominator);
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -179,7 +197,7 @@ const double Fraction::convertFractionToDouble(void) const{
  *
  * cut numerator and denominator out of string
 */
-bool Fraction::convertStringToFraction(std::string FractionString) {
+bool Fraction::convertStringToFraction(const std::string& FractionString) {
     std::size_t pos = FractionString.find("/");
 
     if (pos != std::string::npos) {
@@ -190,37 +208,61 @@ bool Fraction::convertStringToFraction(std::string FractionString) {
             return false;
         }
 
+        //LOGD("convertStringToFraction 1 num:%i,den:%i",this->numerator,this->denominator);
+
         return (this->denominator == 0) ? false : true;
+    }else{
+        try {
+            this->numerator = atol(FractionString.c_str());
+            this->denominator = 1L;
+        } catch(...) {
+            return false;
+        }
     }
 
     return false;
 }
 
 /**
+ * Tested!!
  * Smaller than operator overloading
 */
-bool Fraction::operator<(Fraction fraction) {
-    return (this->numerator * (this->denominator * fraction.getDenominator())) < (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
+bool Fraction::operator<(const Fraction& f)const {
+
+    Fraction target(f);
+    target.symbolSimplification();
+    Fraction self(*this);
+    self.symbolSimplification();
+
+    if( self.isZero() && target.isZero()){
+        return false;
+    }else if( self.isZero() && target.isPositive()){
+        return true;
+    }else if( self.isNegative() && target.isZero() ){
+        return true;
+    }
+
+    return ( self.numerator * ( self.denominator * target.getDenominator())) < (target.getNumerator() * ( self.denominator * target.getDenominator()));
 }
 
 /**
  * Smaller than or equal operator overloading
 */
-bool Fraction::operator<=(Fraction fraction) {
+bool Fraction::operator<=(const Fraction& fraction)const {
     return (this->numerator * (this->denominator * fraction.getDenominator())) <= (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
 }
 
 /**
  * Bigger than operator overloading
 */
-bool Fraction::operator>(Fraction fraction) {
+bool Fraction::operator>(const Fraction& fraction)const {
     return (this->numerator * (this->denominator * fraction.getDenominator())) > (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
 }
 
 /**
  * Bigger than or equal operator overloading
 */
-bool Fraction::operator>=(Fraction fraction) {
+bool Fraction::operator>=(const Fraction& fraction)const {
     return (this->numerator * (this->denominator * fraction.getDenominator())) >= (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
 }
 
@@ -277,14 +319,14 @@ Fraction::operator double() const{
 /**
  * Float typecast operator overloading
 */
-Fraction::operator float() {
+Fraction::operator float() const{
     return (float)this->convertFractionToDouble();
 }
 
 /**
  * Long typecast operator overloading
 */
-Fraction::operator long() {
+Fraction::operator long()const {
     return (long)this->convertFractionToDouble();
 }
 
@@ -305,12 +347,18 @@ Fraction::operator std::string() const{
 Fraction Fraction::operator+(Fraction fraction) {
     Fraction resultFraction;
 
-    if (this->denominator == fraction.getDenominator()) {
-        resultFraction.setNumerator(this->numerator + fraction.getNumerator());
+    if( fraction.isZero()){
+        resultFraction.setNumerator(this->numerator);
         resultFraction.setDenominator(this->denominator);
-    } else {
-        resultFraction.setNumerator((this->numerator * fraction.getDenominator()) + (fraction.getNumerator() * this->denominator));
-        resultFraction.setDenominator(this->denominator * fraction.getDenominator());
+    }else {
+        if (this->denominator == fraction.getDenominator()) {
+            resultFraction.setNumerator(this->numerator + fraction.getNumerator());
+            resultFraction.setDenominator(this->denominator);
+        } else {
+            resultFraction.setNumerator((this->numerator * fraction.getDenominator()) +
+                                        (fraction.getNumerator() * this->denominator));
+            resultFraction.setDenominator(this->denominator * fraction.getDenominator());
+        }
     }
 
     return resultFraction;
@@ -320,11 +368,22 @@ Fraction Fraction::operator+(Fraction fraction) {
  * Assignment by Sum operator overloading
 */
 Fraction Fraction::operator+=(Fraction fraction) {
-    if (this->denominator == fraction.getDenominator()) {
-        this->numerator += fraction.getNumerator();
-    } else {
-        this->numerator = (this->numerator * fraction.getDenominator()) + (fraction.getNumerator() * this->denominator);
-        this->denominator *= fraction.getDenominator();
+    if( fraction.isZero()){
+        return *this;
+    }
+
+    if( this->isZero()){
+        this->numerator = fraction.getNumerator();
+        this->denominator = fraction.getDenominator();
+    }else {
+
+        if (this->denominator == fraction.getDenominator()) {
+            this->numerator += fraction.getNumerator();
+        } else {
+            this->numerator = (this->numerator * fraction.getDenominator()) +
+                              (fraction.getNumerator() * this->denominator);
+            this->denominator *= fraction.getDenominator();
+        }
     }
 
     return *this;
@@ -476,10 +535,7 @@ std::istream& operator>>(std::istream &in, Fraction &Fraction) {
 
 
 
-const char* Fraction::c_str() const{
 
-    return ((string)*this).c_str();
-}
 
 Fraction Fraction::reciprocal()const{
     if( this->numerator==0L || this->denominator==0L ){
@@ -489,5 +545,25 @@ Fraction Fraction::reciprocal()const{
     Fraction r;
     r.setNumerator(this->denominator);
     r.setDenominator(this->numerator);
+    return r;
+}
+
+Fraction Fraction::reciprocal_N()const{
+    if( this->numerator==0L || this->denominator==0L ){
+        throw logic_error("can not reciprocal a zero");
+    }
+
+    long num =  this->denominator;
+    long de  =  this->numerator;
+
+    if( this->numerator<0L  ){
+        de *= -1L;
+    }
+    if( this->denominator<0L ){
+        num *= -1L;
+    }
+    Fraction r;
+    r.setNumerator(num);
+    r.setDenominator(de);
     return r;
 }

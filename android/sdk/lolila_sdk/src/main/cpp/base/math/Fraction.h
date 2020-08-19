@@ -41,7 +41,7 @@ public:
     Fraction(void);
     Fraction(long);
     Fraction(double Number);
-    Fraction(std::string FractionString);
+    Fraction(const std::string& FractionString);
     Fraction(const Fraction&);
     // Destructur
     ~Fraction(void);
@@ -56,20 +56,22 @@ public:
     bool reduce(void);
     void convertDoubleToFraction(double Number);
     const double convertFractionToDouble(void)const;
-    bool convertStringToFraction(std::string FractionString);
+    bool convertStringToFraction(const std::string& FractionString);
 
     // Operator overloading functions
-    bool operator<(Fraction fraction);
-    bool operator<=(Fraction fraction);
-    bool operator>(Fraction fraction);
-    bool operator>=(Fraction fraction);
+
+    // tested
+    bool operator<(const Fraction& fraction)const;
+
+    bool operator<=(const Fraction& fraction)const;
+    bool operator>(const Fraction& fraction)const;
+    bool operator>=(const Fraction& fraction)const;
     bool operator==(const Fraction& fraction)const;
-    //bool operator!=(Fraction fraction);
     bool operator!=(const Fraction& fraction)const;
     long operator%(Fraction fraction);
     operator double()const;
-    operator float();
-    operator long();
+    operator float()const;
+    operator long()const;
 
 
     operator std::string()const;
@@ -91,18 +93,47 @@ public:
     Fraction& operator=(const Fraction&);
     Fraction& operator=(long);
     Fraction& operator=(double);
-    Fraction& operator=(string);
+    Fraction& operator=(const string&);
 
 public:
 
-    const char* c_str() const;
+
 
     inline bool  isZero()const{
         return  numerator==0L || denominator==0L;
     }
 
+    inline bool isNegative()const{
+        if(isZero()){
+            return false;
+        }
+        return ( numerator<0L && denominator>0L ) || ( numerator >0L && denominator<0L );
+    }
+
+    inline bool isPositive()const{
+        if(isZero()){
+            return false;
+        }
+        return ( numerator>0L && denominator>0L ) || ( numerator <0L && denominator<0L );
+    }
+
+    /**
+     * 求倒数
+     * @return
+     */
     Fraction reciprocal()const;
 
+    /**
+     * 求倒数，且符号取反
+     * @return
+     */
+    Fraction reciprocal_N()const;
+
+    /**
+     * 化简符号
+     * @return
+     */
+    bool symbolSimplification();
 };
 
 /**

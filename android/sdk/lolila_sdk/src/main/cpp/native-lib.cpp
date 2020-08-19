@@ -270,8 +270,8 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
             Fraction fraction(0.1);
             fraction.reduce();
             fraction = 0.2;
-            const char *pstr = fraction.c_str();
-            LOGD("fraction :%s", pstr);
+            //const char *pstr = fraction.c_str();
+            //LOGD("fraction :%s", pstr);
 
             TMatrix<double,DoubleOutputAdapter> tm(4, 4);
             LOGD("double matrix :%s", tm.c_str());
@@ -305,39 +305,51 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
 
         {
             const double v[] = {
-                    3, 2, -3, 5,
-                    4, -3, 6, 1,
-                    1, 0, -1, 3
+                    3, 2, -3, -13,
+                    4, -3, 6, 7,
+                    1, 0, -1, -5
             };
             TMatrix<Fraction,FractionOutputAdapter> fm2(3, 4, v);
             LOGD("Fraction matrix2 :%s", fm2.c_str());
-
-            //fm2.elementary_line_transformation();
-            //fm2.elementary_line_transformation(0);
-            //LOGD("Fraction matrix2 after elementary_line_transformation 0 :%s", fm2.c_str());
-            //fm2.elementary_line_transformation(1);
-            //LOGD("Fraction matrix2 after elementary_line_transformation 1 :%s", fm2.c_str());
-            //fm2.elementary_line_transformation(2);
-            //LOGD("Fraction matrix2 after elementary_line_transformation 2 :%s", fm2.c_str());
-            //LOGD("isMostSimplest :%i",fm2.isMostSimplest()?1:0);
-
-            //LOGD("determinant :%f",fm2.determinant());
-
-            //fm2.zero();
-            //LOGD("Fraction matrix2 after zero :%s", fm2.c_str());
-
-            //fm2.swapRow(0,1);
-            //LOGD("Fraction matrix2 after swap row :%s", fm2.c_str());
-
-            LOGD("Fraction matrix2 max k:%i", fm2.findMkj(0,0));
-
-            Fraction f1(0L);
-            Fraction f2(1L);
-            if( f2>f1){
-                LOGD("haha");
-            }
+            fm2.elementary_line_transformation();
+            LOGD("Fraction matrix2 elementary_line_transformation:%s", fm2.c_str() );
         }
 
+        {
+            const double v[] = {
+                    2, 1, 3, 0,
+                    0, 1, -1, 0,
+                    1, 3, -1, 0
+            };
+            TMatrix<Fraction,FractionOutputAdapter> fm2(3, 4, v);
+            LOGD("Fraction matrix2 :%s", fm2.c_str());
+            fm2.elementary_line_transformation();
+            LOGD("Fraction matrix2 elementary_line_transformation:%s", fm2.c_str() );
+        }
+
+        {
+            const Fraction f[] = {
+                    Fraction("1"), Fraction("1/2"), Fraction("0"),
+                    Fraction("1"), Fraction("1/3"), Fraction("1"),
+            };
+            TMatrix<Fraction,FractionOutputAdapter> fm2(f,2,3);
+            LOGD("Fraction matrix2 :%s", fm2.c_str());
+            fm2.elementary_line_transformation();
+            LOGD("Fraction matrix2 elementary_line_transformation:%s", fm2.c_str() );
+
+
+        }
+
+        {
+            Fraction f1("10");
+            Fraction f2("-12");
+            Fraction f11(f1);//f2.setNumerator(-1L);
+            Fraction f22(f2);////f2.setDenominator(-1L);
+
+            //LOGD("f1:%s", f11.c_str());
+            //LOGD("f2:%s", f22.c_str());
+            LOGD("f1<f2 :%s", f1<f2?"true":"false");
+        }
 
         return env->NewStringUTF( LogQueue::c_str());
 

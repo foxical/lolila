@@ -196,68 +196,46 @@ bool TMatrix<T,OutputAdapter>::isMostSimplest(void)const{
 }
 
 template <typename T,typename OutputAdapter>
-void TMatrix<T,OutputAdapter>::elementary_line_transformation(const int& rowIdx){
+void TMatrix<T,OutputAdapter>::elementary_line_transformation(const int& rowIdx,const int& j,const T& Mkj){
     if( rowIdx<0||rowIdx>=_row){
         throw out_of_range(" rowIdx<0||rowIdx>=_row");
     }
 
-    const int& curRowIdx = rowIdx;
-
-    int bingoColIdx=-1;
-    const T* pFirstNonZeroVal=NULL;
+    T reciprocal = OutputAdapter::reciprocal(Mkj);
+    LOGD("reciprocal(Mkj)=>%s",OutputAdapter::toString(reciprocal).c_str());
     for( int colIdx=0;colIdx<_col;++colIdx){
-        const T& Mij=  get(curRowIdx,colIdx);
-        if( OutputAdapter::isZero( Mij)==false){
-            bingoColIdx=colIdx;
-            pFirstNonZeroVal=&Mij;
-            break;
-        }
-    }
-
-    if(bingoColIdx==-1){
-        LOGD("cannot find non zero value in row[%d], elementary_line_transformation abort!",curRowIdx);
-        return;
-    }
-
-    const T& firstNonZeroVal = *pFirstNonZeroVal;
-    LOGD("found non zero value in row[%d]=> %s",curRowIdx,OutputAdapter::toString(firstNonZeroVal).c_str());
-
-    if( OutputAdapter::isEqualOne(firstNonZeroVal)){
-        //ok
-    }else{
-        T reciprocal = OutputAdapter::reciprocal(firstNonZeroVal);
-        for( int colIdx=0;colIdx<_col;++colIdx){
-            const int idx= curRowIdx*_col+colIdx;
-            _items[idx]*=reciprocal;
-        }
+        const int idx= rowIdx*_col+colIdx;
+        _items[idx]*=reciprocal;
+        LOGD("cur row:%i, col:%i, trans to=>%s",rowIdx,colIdx,OutputAdapter::toString(_items[idx]).c_str());
     }
 
     for(int otherRowIdx=0; otherRowIdx<_row;++otherRowIdx){
-        if( otherRowIdx==curRowIdx){
+        if( otherRowIdx==rowIdx){
             continue;
         }
-        T nval = _items[otherRowIdx*_col+bingoColIdx];
+        T nval = _items[otherRowIdx*_col+j];
         if( OutputAdapter::isZero(nval)){
             continue;
         }
         nval*=-1L;
-
+        LOGD("nval:%s",OutputAdapter::toString(nval).c_str());
         for( int colIdx=0;colIdx<_col;++colIdx){
-            const int cidx= curRowIdx*_col+colIdx;
+            const int cidx= rowIdx*_col+colIdx;
             const int nidx= otherRowIdx*_col+colIdx;
-            _items[nidx]+= (_items[cidx]*nval);
+            LOGD("other row:%i, col:%i, before=>%s",otherRowIdx,colIdx,OutputAdapter::toString(_items[nidx]).c_str());
+            LOGD("cur row:%i, col:%i, =>%s",rowIdx,colIdx,OutputAdapter::toString(_items[cidx]).c_str());
+            T temp;
+            temp = _items[cidx]*nval;
+            LOGD("temp:%s",OutputAdapter::toString(temp).c_str());
+            _items[nidx]+= temp;
+            LOGD("other row:%i, col:%i, trans to=>%s",otherRowIdx,colIdx,OutputAdapter::toString(_items[nidx]).c_str());
         }
     }
 
     //LOGD("first value of row[%d] is:%s\n",curRowIdx, OutputAdapter::toString(firstNonZeroVal).c_str());
 }
 
-template <typename T,typename OutputAdapter>
-void TMatrix<T,OutputAdapter>::elementary_line_transformation(){
-    for(int r=0;r<_row;++r){
-        elementary_line_transformation(r);
-    }
-}
+
 
 template <typename T,typename OutputAdapter>
 void  TMatrix<T,OutputAdapter>::zero(){
@@ -317,6 +295,40 @@ int TMatrix<T,OutputAdapter>::findMkj(const int& fromRow,const int& j)const{
     }
 
     return k;
+}
+
+template <typename T,typename OutputAdapter>
+void TMatrix<T,OutputAdapter>::elementary_line_transformation(){
+
+    int j=0;
+
+    for(int i=0;i<_row;++i){
+        int k = -1;
+        while(true) {
+            k=findMkj(i, j);
+            if(k>=i){
+                break;
+            }
+            j++;
+            if(j>=_col){
+                return;
+            }
+        }
+
+        if(k>i){
+            swapRow(k,i);
+        }
+
+        const T& Mkj = get(i,j);
+        LOGD("i:%i,j:%i,Mkj found! :%s",i,j,OutputAdapter::toString(Mkj).c_str());
+        elementary_line_transformation(i,j,Mkj);
+
+        j++;
+        if(j>=_col){
+            return;
+        }
+    }
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
