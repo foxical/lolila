@@ -34,6 +34,10 @@ public:
 
     const T& get(const int& rowIdx,const int& colIdx)const;
     const T& get(const int& idx)const;
+    void zero();
+    void set(const int& rowIdx,const int& colIdx,const T& val);
+    void set(const int& idx,const T& val);
+    void set(const TMatrix<T,OutputAdapter>&);
 
 public:
 
@@ -72,7 +76,7 @@ public:
 
     void elementary_line_transformation();
 
-    void zero();
+
 
     bool isSquare()const;
     bool isInvertible()const;
@@ -92,6 +96,9 @@ public:
      * the 'k' row index
      */
     int findMkj(const int& fromRow,const int& j)const;
+
+public:
+    const T* value_ptr()const;
 
 private:
     TMatrix();

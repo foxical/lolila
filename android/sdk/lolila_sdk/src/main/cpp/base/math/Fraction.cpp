@@ -284,6 +284,7 @@ bool Fraction::operator!=(const Fraction& f) const{
 /**
  * Modulos operator overloading (a/b % x/y = (a*y % b*x) / (b*y))
 */
+/*
 long Fraction::operator%(Fraction fraction) {
     long result;
 
@@ -291,6 +292,7 @@ long Fraction::operator%(Fraction fraction) {
 
     return result;
 }
+*/
 
 /**
  * Double typecast operator overloading
@@ -327,10 +329,13 @@ Fraction::operator std::string() const{
 /**
  * Addition operator overloading
 */
-Fraction Fraction::operator+(Fraction fraction) {
+Fraction Fraction::operator+(const Fraction& fraction)const {
     Fraction resultFraction;
 
-    if( fraction.isZero()){
+    if( this->isZero()){
+        resultFraction.setNumerator(fraction.numerator);
+        resultFraction.setDenominator(fraction.denominator);
+    }else if( fraction.isZero()){
         resultFraction.setNumerator(this->numerator);
         resultFraction.setDenominator(this->denominator);
     }else {
@@ -350,12 +355,10 @@ Fraction Fraction::operator+(Fraction fraction) {
 /**
  * Assignment by Sum operator overloading
 */
-Fraction Fraction::operator+=(Fraction fraction) {
+Fraction& Fraction::operator+=(const Fraction& fraction) {
     if( fraction.isZero()){
         return *this;
-    }
-
-    if( this->isZero()){
+    }else  if( this->isZero()){
         this->numerator = fraction.getNumerator();
         this->denominator = fraction.getDenominator();
     }else {
@@ -375,10 +378,18 @@ Fraction Fraction::operator+=(Fraction fraction) {
 /**
  * Subtraction operator overloading
 */
-Fraction Fraction::operator-(Fraction fraction) {
+Fraction Fraction::operator-(const Fraction& fraction)const {
     Fraction resultFraction;
 
-    if (this->denominator == fraction.getDenominator()) {
+    if( this->isZero() && fraction.isZero() ){
+
+    }else if( this->isZero()){
+        resultFraction.setNumerator(0L-fraction.numerator);
+        resultFraction.setDenominator(fraction.denominator);
+    }else if( fraction.isZero()){
+        resultFraction.setNumerator(this->numerator);
+        resultFraction.setDenominator(this->denominator);
+    }else if (this->denominator == fraction.getDenominator()) {
         resultFraction.setNumerator(this->numerator - fraction.getNumerator());
         resultFraction.setDenominator(this->denominator);
     } else {
@@ -392,8 +403,16 @@ Fraction Fraction::operator-(Fraction fraction) {
 /**
  * Assignment by difference operator overloading
 */
-Fraction Fraction::operator-=(Fraction fraction) {
-    if (this->denominator == fraction.getDenominator()) {
+Fraction& Fraction::operator-=(const Fraction& fraction) {
+
+    if( this->isZero() && fraction.isZero() ){
+
+    }else if( this->isZero()){
+        this->numerator=(0L-fraction.numerator);
+        this->denominator=(fraction.denominator);
+    }else if( fraction.isZero()){
+
+    }else if (this->denominator == fraction.getDenominator()) {
         this->numerator -= fraction.getNumerator();
     } else {
         this->numerator = (this->numerator * fraction.getDenominator()) - (fraction.getNumerator() * this->denominator);
@@ -406,50 +425,72 @@ Fraction Fraction::operator-=(Fraction fraction) {
 /**
  * Multiply operator overloading
 */
-Fraction Fraction::operator*(Fraction fraction) {
+Fraction Fraction::operator*(const Fraction& fraction)const {
     Fraction resultFraction;
 
-    resultFraction.setNumerator(this->numerator * fraction.getNumerator());
-    resultFraction.setDenominator(this->denominator * fraction.getDenominator());
+    if( this->isZero() || fraction.isZero()){
 
+    }else {
+        resultFraction.setNumerator(this->numerator * fraction.getNumerator());
+        resultFraction.setDenominator(this->denominator * fraction.getDenominator());
+    }
     return resultFraction;
 }
 
 /**
  * Multiply Set operator overloading
 */
-Fraction Fraction::operator*=(Fraction fraction) {
-    this->denominator *= fraction.getDenominator();
-    this->numerator *= fraction.getNumerator();
+Fraction& Fraction::operator*=(const Fraction& fraction) {
 
+    if( this->isZero() ){
+
+    } else if ( fraction.isZero()){
+        this->numerator=0L;
+        this->denominator = 0L;
+    }else{
+        this->numerator *= fraction.getNumerator();
+        this->denominator *= fraction.getDenominator();
+    }
     return *this;
 }
 
 /**
  * Division operator overloading
 */
-Fraction Fraction::operator/(Fraction fraction) {
+Fraction Fraction::operator/(const Fraction& fraction)const {
     Fraction resultFraction;
 
-    resultFraction.setDenominator(this->denominator * fraction.getNumerator());
-    resultFraction.setNumerator(this->numerator * fraction.getDenominator());
+    if( this->isZero() ){
 
+    } else if ( fraction.isZero()){
+        throw logic_error("fraction.isZero()");
+    }else {
+        resultFraction.setDenominator(this->denominator * fraction.getNumerator());
+        resultFraction.setNumerator(this->numerator * fraction.getDenominator());
+    }
     return resultFraction;
 }
 
 /**
  * Division Set operator overloading
 */
-Fraction Fraction::operator/=(Fraction fraction) {
-    this->denominator *= fraction.getNumerator();
-    this->numerator *= fraction.getDenominator();
+Fraction& Fraction::operator/=(const Fraction& fraction) {
 
+    if( this->isZero() ){
+
+    } else if ( fraction.isZero()){
+        throw logic_error("fraction.isZero()");
+    }else {
+        this->denominator *= fraction.getNumerator();
+        this->numerator *= fraction.getDenominator();
+    }
     return *this;
 }
 
 /**
  * Complement operator overloading
 */
+/*
 Fraction Fraction::operator~(void) {
     Fraction resultFraction;
 
@@ -462,22 +503,31 @@ Fraction Fraction::operator~(void) {
         return resultFraction;
     }
 }
+ */
 
 /**
  * Increment operator overloading
 */
-Fraction Fraction::operator++(void) {
-    this->numerator += 1;
-
+Fraction& Fraction::operator++(void) {
+    if(this->isZero()){
+        this->numerator=1L;
+        this->denominator=1L;
+    }else {
+        this->numerator += 1L;
+    }
     return *this;
 }
 
 /**
  * Decrement operator overloading
 */
-Fraction Fraction::operator--(void) {
-    this->numerator -= 1;
-
+Fraction& Fraction::operator--(void) {
+    if(this->isZero()){
+        this->numerator=-1L;
+        this->denominator=1L;
+    }else {
+        this->numerator -= 1L;
+    }
     return *this;
 }
 

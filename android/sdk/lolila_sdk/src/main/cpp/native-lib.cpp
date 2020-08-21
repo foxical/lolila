@@ -341,7 +341,7 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         }
 
         {
-            Fraction f1("1/2");
+            Fraction f1("0");
             Fraction f2("2/3");
             Fraction f11(f1);//f2.setNumerator(-1L);
             Fraction f22(f2);////f2.setDenominator(-1L);
@@ -352,6 +352,17 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
             LOGD("f1<f2 :%s", f1<f2?"true":"false");
             LOGD("f1==f2 :%s", f1==f2?"true":"false");
             LOGD("f1!=f2 :%s", f1!=f2?"true":"false");
+            LOGD("f1+f2 :%s", ((string)(f1+f2)).c_str());
+            LOGD("f1+=f2 :%s", ((string)(f1+=f2)).c_str());
+            LOGD("f1-f2 :%s", ((string)(f1-f2)).c_str());
+            LOGD("f1-=f2 :%s", ((string)(f1-=f2)).c_str());
+            LOGD("f1*f2 :%s", ((string)(f1*f2)).c_str());
+            LOGD("f1*=f2 :%s", ((string)(f1*=f2)).c_str());
+            LOGD("f1/f2 :%s", ((string)(f1/f2)).c_str());
+            LOGD("f1/=f2 :%s", ((string)(f1/=f2)).c_str());
+
+            LOGD("f1++ :%s", ((string)(++f1)).c_str());
+            LOGD("f1-- :%s", ((string)(--f1)).c_str());
         }
 
         return env->NewStringUTF( LogQueue::c_str());

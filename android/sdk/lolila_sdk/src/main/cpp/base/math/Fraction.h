@@ -73,7 +73,7 @@ public:
 
     bool operator!=(const Fraction& fraction)const;
 
-    long operator%(Fraction fraction);
+    //long operator%(Fraction fraction);
 
     operator double()const;
     operator float()const;
@@ -83,17 +83,21 @@ public:
     operator std::string()const;
 
 
-    Fraction operator+(Fraction fraction);
-    Fraction operator+=(Fraction fraction);
-    Fraction operator-=(Fraction fraction);
-    Fraction operator-(Fraction fraction);
-    Fraction operator*(Fraction fraction);
-    Fraction operator*=(Fraction fraction);
-    Fraction operator/(Fraction fraction);
-    Fraction operator/=(Fraction fraction);
-    Fraction operator~(void);
-    Fraction operator++(void);
-    Fraction operator--(void);
+    Fraction operator+(const Fraction& fraction)const;
+    Fraction operator-(const Fraction& fraction)const;
+    Fraction& operator+=(const Fraction& fraction);
+    Fraction& operator-=(const Fraction& fraction);
+
+
+    Fraction operator*(const Fraction& fraction)const;
+    Fraction operator/(const Fraction& fraction)const;
+    Fraction& operator*=(const Fraction& fraction);
+    Fraction& operator/=(const Fraction& fraction);
+
+    Fraction& operator++(void);
+    Fraction& operator--(void);
+
+    //Fraction operator~(void);
 
 public:
     Fraction& operator=(const Fraction&);

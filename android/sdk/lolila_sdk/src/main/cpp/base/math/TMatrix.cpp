@@ -96,6 +96,47 @@ const T& TMatrix<T,OutputAdapter>::get(const int& idx)const{
 }
 
 template <typename T,typename OutputAdapter>
+void  TMatrix<T,OutputAdapter>::zero(){
+
+    const int c = itemCount();
+    for(int i=0;i<c;++i){
+        _items[i] = 0.0f;
+    }
+}
+
+template <typename T,typename OutputAdapter>
+void TMatrix<T,OutputAdapter>::set(const int& idx,const T & val){
+    if( idx<0||idx>=itemCount()){
+        throw out_of_range("index is out of range!");
+    }
+    _items[ idx] = val;
+}
+
+template <typename T,typename OutputAdapter>
+void TMatrix<T,OutputAdapter>::set(const int& rowIdx,const int& colIdx,const T & val){
+    if( colIdx<0||colIdx>=_col){
+        throw out_of_range("col index is out of range!");
+    }
+    if( rowIdx<0||rowIdx>=_row){
+        throw out_of_range("row index is out of range!");
+    }
+    set( rowIdx*_col + colIdx, val);
+}
+
+template <typename T,typename OutputAdapter>
+void  TMatrix<T,OutputAdapter>::set(const TMatrix<T,OutputAdapter>& clone){
+    if( _col!=clone._col||_row!=clone._row){
+        throw runtime_error("col or row is not equal!");
+    }
+    const int c = itemCount();
+    for(int i=0;i<c;++i){
+        _items[i] = clone._items[i];
+    }
+}
+
+
+
+template <typename T,typename OutputAdapter>
 string TMatrix<T,OutputAdapter>::toString()const{
     std::stringstream output;
 
@@ -237,14 +278,7 @@ void TMatrix<T,OutputAdapter>::elementary_line_transformation(const int& rowIdx,
 
 
 
-template <typename T,typename OutputAdapter>
-void  TMatrix<T,OutputAdapter>::zero(){
 
-    const int c = itemCount();
-    for(int i=0;i<c;++i){
-        _items[i] = 0.0f;
-    }
-}
 
 template <typename T,typename OutputAdapter>
 bool TMatrix<T,OutputAdapter>::isSquare() const {
@@ -329,6 +363,11 @@ void TMatrix<T,OutputAdapter>::elementary_line_transformation(){
         }
     }
 
+}
+
+template <typename T,typename OutputAdapter>
+const T* TMatrix<T,OutputAdapter>::value_ptr()const{
+    return _items;
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////////////
