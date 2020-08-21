@@ -341,14 +341,17 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         }
 
         {
-            Fraction f1("10");
-            Fraction f2("-12");
+            Fraction f1("1/2");
+            Fraction f2("2/3");
             Fraction f11(f1);//f2.setNumerator(-1L);
             Fraction f22(f2);////f2.setDenominator(-1L);
 
             //LOGD("f1:%s", f11.c_str());
             //LOGD("f2:%s", f22.c_str());
+            LOGD("f1>f2 :%s", f1>f2?"true":"false");
             LOGD("f1<f2 :%s", f1<f2?"true":"false");
+            LOGD("f1==f2 :%s", f1==f2?"true":"false");
+            LOGD("f1!=f2 :%s", f1!=f2?"true":"false");
         }
 
         return env->NewStringUTF( LogQueue::c_str());

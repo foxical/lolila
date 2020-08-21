@@ -31,6 +31,8 @@
 #include "Fraction.h"
 #include "../utils/AndroidLog.h"
 
+static void _compare(const Fraction& f1, const Fraction& f2, long& a, long& b);
+
 /***
  * Standard constructor
 */
@@ -228,73 +230,54 @@ bool Fraction::convertStringToFraction(const std::string& FractionString) {
  * Smaller than operator overloading
 */
 bool Fraction::operator<(const Fraction& f)const {
-
-    Fraction target(f);
-    target.symbolSimplification();
-    Fraction self(*this);
-    self.symbolSimplification();
-
-    if( self.isZero() && target.isZero()){
-        return false;
-    }else if( self.isZero() && target.isPositive()){
-        return true;
-    }else if( self.isNegative() && target.isZero() ){
-        return true;
-    }
-
-    return ( self.numerator * ( self.denominator * target.getDenominator())) < (target.getNumerator() * ( self.denominator * target.getDenominator()));
+    long a,b;
+    _compare(*this,f,a,b);
+    return a<b;
 }
 
 /**
  * Smaller than or equal operator overloading
 */
-bool Fraction::operator<=(const Fraction& fraction)const {
-    return (this->numerator * (this->denominator * fraction.getDenominator())) <= (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
+bool Fraction::operator<=(const Fraction& f)const {
+    long a,b;
+    _compare(*this,f,a,b);
+    return a<=b;
 }
 
 /**
  * Bigger than operator overloading
 */
-bool Fraction::operator>(const Fraction& fraction)const {
-    return (this->numerator * (this->denominator * fraction.getDenominator())) > (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
+bool Fraction::operator>(const Fraction& f)const {
+    long a,b;
+    _compare(*this,f,a,b);
+    return a>b;
 }
 
 /**
  * Bigger than or equal operator overloading
 */
-bool Fraction::operator>=(const Fraction& fraction)const {
-    return (this->numerator * (this->denominator * fraction.getDenominator())) >= (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
+bool Fraction::operator>=(const Fraction& f)const {
+    long a,b;
+    _compare(*this,f,a,b);
+    return a>=b;
 }
 
 /**
  * Equal operator overloading
 */
-bool Fraction::operator==(const Fraction& fraction)const {
-    return (this->numerator * (this->denominator * fraction.getDenominator())) == (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
+bool Fraction::operator==(const Fraction& f)const {
+    long a,b;
+    _compare(*this,f,a,b);
+    return a==b;
 }
 
 /**
  * Non-Equal operator overloading
 */
-/*
-bool Fraction::operator!=(Fraction fraction) {
-    return (this->numerator * (this->denominator * fraction.getDenominator())) != (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
-}
-*/
-
-bool Fraction::operator!=(const Fraction& fraction) const{
-
-
-    if( this->isZero() && !fraction.isZero() ){
-        return true;
-    }
-    if( !this->isZero() && fraction.isZero() ){
-        return true;
-    }
-
-    // if one of them is zero , can not apply this camp way
-    return  (this->numerator * (this->denominator * fraction.getDenominator())) != (fraction.getNumerator() * (this->denominator * fraction.getDenominator()));
-
+bool Fraction::operator!=(const Fraction& f) const{
+    long a,b;
+    _compare(*this,f,a,b);
+    return a!=b;
 }
 
 
@@ -566,4 +549,78 @@ Fraction Fraction::reciprocal_N()const{
     r.setNumerator(num);
     r.setDenominator(de);
     return r;
+}
+
+static long LCM(long a , long b){
+    /*排序保证a始终小于b*/
+    if(a > b){
+        long t = a ; a = b ; b = t ;
+    }
+    /*先求出最大公约数*/
+    long c = a ;
+    long d = b ;
+    long gcd = 0 ;
+    while(c%d != 0){
+        //k保存余数
+        long k = c%d ;
+        //除数变为c
+        c = d ;
+        //被除数变为余数
+        d = k ;
+    }
+    /*辗转相除结束后的c即为所求的最大公约数*/
+    gcd = d ;
+
+    /*使用公式算出最小公倍数*/
+    long lcm = a*b/gcd ;
+
+    return lcm ;
+}
+
+static void _compare(const Fraction& f1, const Fraction& f2, long& a, long& b){
+    a=0L;
+    b=0L;
+    Fraction _f1(f1);
+    Fraction _f2(f2);
+    _f1.symbolSimplification();
+    //_f1.reduce();
+    _f2.symbolSimplification();
+    //_f2.reduce();
+
+    if( _f1.isZero() && _f2.isZero()){
+        a=b=0L;
+        return;
+    }else if( _f1.isZero() && _f2.isPositive()){
+        a=0L;
+        b=1L;
+        return;
+    }else if( _f1.isZero() && _f2.isNegative()){
+        a=0L;
+        b=-1L;
+        return;
+    }else if( _f1.isNegative() && _f2.isZero() ){
+        a=-1L;
+        b=0L;
+        return;
+    }else if( _f1.isPositive() && _f2.isZero() ){
+        a=1L;
+        b=0L;
+        return;
+    }else if( _f1.isPositive() && _f2.isNegative() ){
+        a=1L;
+        b=-1L;
+        return;
+    }else if( _f1.isNegative() && _f2.isPositive() ){
+        a=-1L;
+        b=1L;
+        return;
+    }
+
+
+    long lcm = LCM( _f1.getDenominator(),_f2.getDenominator());
+    long t1 = lcm/_f1.getDenominator();
+    a =  labs( _f1.getNumerator()*t1 );
+    long t2 = lcm/_f2.getDenominator();
+    b =  labs( _f2.getNumerator()*t2 );
+
 }

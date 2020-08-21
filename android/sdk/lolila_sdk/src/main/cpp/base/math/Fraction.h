@@ -62,13 +62,19 @@ public:
 
     // tested
     bool operator<(const Fraction& fraction)const;
-
+    // tested
     bool operator<=(const Fraction& fraction)const;
+
     bool operator>(const Fraction& fraction)const;
+
     bool operator>=(const Fraction& fraction)const;
+
     bool operator==(const Fraction& fraction)const;
+
     bool operator!=(const Fraction& fraction)const;
+
     long operator%(Fraction fraction);
+
     operator double()const;
     operator float()const;
     operator long()const;
