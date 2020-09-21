@@ -4,179 +4,154 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <LinearLayout
+    <FrameLayout
         android:id="@+id/gl_view_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
-        android:layout_above="@+id/prj_type_group"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/prj_type_group"
         android:orientation="vertical">
-
-    </LinearLayout>
+    </FrameLayout>
 
     <LinearLayout
         android:id="@+id/prj_type_group"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_above="@+id/btn_group">
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true">
         <Button
             android:id="@+id/btn_use_f_prj"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="透视投影"/>
         <Button
             android:id="@+id/btn_use_o_prj"
             android:layout_width="100dp"
             android:layout_height="40dp"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="正视投影"/>
         <Button
             android:id="@+id/btn_push_near_plane"
             android:layout_width="120dp"
             android:layout_height="40dp"
-            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="远离近平面"/>
-    </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/btn_group"
-        android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:layout_alignParentBottom="true">
 
-        <RelativeLayout
-            android:id="@+id/btn_group_1"
-            android:layout_width="110dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+           android:orientation="horizontal">
+            <Button
+                android:id="@+id/btn_move_forward"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="前"/>
+            <Button
+                android:id="@+id/btn_move_up"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:gravity="center"
+                android:text="上"/>
+            <Button
+                android:id="@+id/btn_zoom_in"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:text="放"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <Button
                 android:id="@+id/btn_move_left"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
+                android:layout_below="@id/btn_move_forward"
+                android:layout_alignLeft="@id/btn_move_forward"
                 android:gravity="center"
                 android:text="左"/>
+            <Button
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/btn_zoom_in"
+                android:gravity="center"
+                android:text=""/>
             <Button
                 android:id="@+id/btn_move_right"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
+                android:layout_below="@id/btn_zoom_in"
                 android:gravity="center"
                 android:text="右"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <Button
-                android:id="@+id/btn_move_up"
+                android:id="@+id/btn_move_back"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:text="上"/>
+                android:text="后"/>
             <Button
                 android:id="@+id/btn_move_down"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:text="下"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/btn_group_2"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/btn_group_1">
-            <Button
-                android:id="@+id/btn_move_forward"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:text="前"/>
-            <Button
-                android:id="@+id/btn_move_back"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:text="后"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/btn_group_3"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/btn_group_2">
-            <Button
-                android:id="@+id/btn_zoom_in"
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:text="放大"/>
             <Button
                 android:id="@+id/btn_zoom_out"
-                android:layout_width="60dp"
-                android:layout_height="50dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:gravity="center"
-                android:text="缩小"/>
-        </RelativeLayout>
+                android:text="缩"/>
+        </LinearLayout>
 
-        <RelativeLayout
-            android:id="@+id/btn_group_4"
-            android:layout_width="130dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true">
+        <Button
+            android:id="@+id/btn_pitch_up"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="30dp"
+            android:layout_gravity="right"
+            android:text="抬头"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
             <Button
                 android:id="@+id/btn_yaw_left"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
-                android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
                 android:text="左转"/>
             <Button
                 android:id="@+id/btn_yaw_right"
                 android:layout_width="60dp"
                 android:layout_height="40dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:gravity="center"
                 android:text="右转"/>
-            <Button
-                android:id="@+id/btn_pitch_up"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:text="抬头"/>
-            <Button
-                android:id="@+id/btn_pitch_down"
-                android:layout_width="60dp"
-                android:layout_height="40dp"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:gravity="center"
-                android:text="低头"/>
-        </RelativeLayout>
-
-
-    </RelativeLayout>
-
+        </LinearLayout>
+        <Button
+            android:id="@+id/btn_pitch_down"
+            android:layout_width="60dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="30dp"
+            android:layout_gravity="right"
+            android:text="低头"/>
+    </LinearLayout>
 
 </RelativeLayout>

@@ -14,6 +14,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 
@@ -64,8 +65,8 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
 
         // 创建一个GLSurfaceView对象，并将其设置为当前Activity的ContentView
         mGLView = new MyGLSurfaceView(this);
-        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(MATCH_PARENT,MATCH_PARENT);
-        LinearLayout glViewContainer = (LinearLayout) findViewById(R.id.gl_view_container);
+        FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(MATCH_PARENT,MATCH_PARENT);
+        FrameLayout glViewContainer = (FrameLayout) findViewById(R.id.gl_view_container);
         glViewContainer.addView(mGLView,layoutParams);
 
         Log.d("LOLILA",getSDCardRootDir());
