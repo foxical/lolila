@@ -9,6 +9,7 @@
 #include "ShaderProgram.h"
 #endif
 
+
 class Matrix;
 
 class SimpleShader{
@@ -19,11 +20,17 @@ public:
 
     bool init();
     void use()const;
+
     void setProjectMatrix(const Matrix&)const;
     void setViewMatrix(const Matrix&)const;
     void setModelMatrix(const Matrix&)const;
 
+protected:
+
+
+
 private:
+
     void setMatrix(const GLchar* , const Matrix&)const;
 
 private:

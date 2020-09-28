@@ -5,23 +5,25 @@
 #ifndef __SIMPLEVAO_H__
 #define __SIMPLEVAO_H__
 
-#ifndef __ABSTRACTVAO_H__
-#include "AbstractVAO.h"
-#endif
+#include <GLES3/gl3.h>
 
-class AbstractShapeVertex;
+class SimpleVertexSet;
 
-class SimpleVAO:public AbstractVAO{
+class SimpleVAO{
 public:
     SimpleVAO();
     ~SimpleVAO();
 public:
 
-    void load(const AbstractShapeVertex &shapeVertex);
+    void bind()const;
+    void unBind()const;
+    void load(const SimpleVertexSet &shapeVertex);
 
 private:
 // VertexBufferObject Ids
     GLuint _vboId;
+    // VertexArrayObject Id
+    GLuint _vaoId;
 };
 
 

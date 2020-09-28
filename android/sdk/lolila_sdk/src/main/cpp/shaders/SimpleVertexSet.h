@@ -7,10 +7,10 @@
 
 #include <GLES3/gl3.h>
 
-class AbstractShapeVertex{
+class SimpleVertexSet{
 protected:
-    AbstractShapeVertex();
-    virtual ~AbstractShapeVertex();
+    SimpleVertexSet();
+    virtual ~SimpleVertexSet();
 public:
 
     virtual const GLfloat* getRawVertexArrayPtr()const=0;

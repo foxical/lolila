@@ -16,9 +16,9 @@
 #include "base/transforms/MVPTransform.h"
 #include "base/transforms/Camera.h"
 #include "base/utils/FloatUtils.h"
-#include "shapes/SimpleShader.h"
-#include "shapes/SimpleVAO.h"
-#include "shapes/LineVertex.h"
+#include "shaders/SimpleShader.h"
+#include "shaders/SimpleVAO.h"
+#include "shapes/SimpleLine.h"
 
 
 static GLsizei gl_viewport_width=-1;
@@ -51,7 +51,7 @@ static int projectType=0; // 0: 透视投影，1：正视投影
 
 static SimpleShader shader;
 static SimpleVAO vao;
-static LineVertex lineVertex(1.0,0.0,0.0,1.0);
+static SimpleLine lineVertex(1.0, 0.0, 0.0, 1.0);
 
 //////////////////////////////////
 

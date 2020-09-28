@@ -45,12 +45,12 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/transforms/Translate.cpp
              src/main/cpp/base/transforms/Camera.cpp
              src/main/cpp/base/transforms/Scaling.cpp
-             src/main/cpp/shapes/AbstractShapeVertex.cpp
-             src/main/cpp/shapes/ShaderProgram.cpp
-             src/main/cpp/shapes/SimpleShader.cpp
-             src/main/cpp/shapes/AbstractVAO.cpp
-             src/main/cpp/shapes/SimpleVAO.cpp
-             )
+             src/main/cpp/shaders/SimpleVertexSet.cpp
+             src/main/cpp/shaders/ShaderProgram.cpp
+             src/main/cpp/shaders/SimpleShader.cpp
+             src/main/cpp/shaders/SimpleVAO.cpp
+             src/main/cpp/course/TestCourse.cpp
+          )
 
 # Searches for a specified prebuilt library and stores the path as a
 # variable. Because system libraries are included in the search path by

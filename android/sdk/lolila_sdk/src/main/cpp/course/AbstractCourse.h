@@ -5,21 +5,17 @@
 #ifndef __ABSTRACTCOURSE_H__
 #define __ABSTRACTCOURSE_H__
 
-class Matrix;
+class DrawingContext;
 
 class AbstractCourse{
 public:
-
-    virtual void onInit()=0;
-    virtual void onDraw(const Matrix& prj,const Matrix& view)=0;
-    virtual int getTotalSteps()const=0;
-    virtual int getCurStep()const=0;
-    virtual void next()=0;
-    virtual void prev()=0;
+    virtual void load()=0;
+    virtual void onDrawStep(DrawingContext& dc)=0;
+    virtual int getTotalStepsCount()const=0;
+    virtual int getCurStepNum()const=0;
+    virtual void nextStep()=0;
+    virtual void prevStep()=0;
     virtual void reset()=0;
-
-private:
-
 };
 
 #endif //__ABSTRACTCOURSE_H__
