@@ -30,6 +30,7 @@ void Rotation::buildRotationMatrix(const Vector& axis, const float& degree, Matr
     const float c = cosf(degree*PI/180.0f);
     const float i_c = FloatUtils::minus(1.0f,c);
 
+    M.zero();
     M.set(0,0, c + i_c*Ax*Ax );  M.set(0,1, i_c*Ax*Ay-s*Az);      M.set(0,2,i_c*Ax*Az+s*Ay);      /*0*/
     M.set(1,0, i_c*Ax*Ay+s*Az);  M.set(1,1, c+i_c*Ay*Ay);         M.set(1,2,i_c*Ay*Az-s*Ax);      /*0*/
     M.set(2,0, i_c*Ax*Az-s*Ay);  M.set(2,1, i_c*Ay*Az+s*Ax);      M.set(2,2, c+i_c*Az*Az);        /*0*/

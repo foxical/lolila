@@ -13,6 +13,7 @@ void Translate::buildTranslateMatrix(const Vector& T, Matrix& M){
         throw runtime_error("Matrix must a 4x4 square!");
     }
 
+    M.zero();
     M.set(0,0,1.0f);  /*0*/               /*0*/              M.set(0,3,T.x());
     /*0*/             M.set(1,1,1.0f);    /*0*/              M.set(1,3,T.y());
     /*0*/             /*0*/               M.set(2,2,1.0f);   M.set(2,3,T.z());

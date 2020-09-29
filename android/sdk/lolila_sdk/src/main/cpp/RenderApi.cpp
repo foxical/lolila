@@ -20,6 +20,9 @@
 #include "shaders/SimpleVAO.h"
 #include "shapes/SimpleLine.h"
 
+#include "course/TestCourse.h"
+#include "course/DrawingContext.h"
+
 
 static GLsizei gl_viewport_width=-1;
 static GLsizei gl_viewport_height=-1;
@@ -50,8 +53,10 @@ static int projectType=0; // 0: 透视投影，1：正视投影
 //////////////////////////////////
 
 static SimpleShader shader;
-static SimpleVAO vao;
-static SimpleLine lineVertex(1.0, 0.0, 0.0, 1.0);
+//static SimpleVAO vao;
+//static SimpleLine lineVertex(1.0, 0.0, 0.0, 1.0);
+
+static TestCourse testCourse;
 
 //////////////////////////////////
 
@@ -74,15 +79,9 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
     LOGI("RenderApi_init begin");
 
 
-    shader.init();
-    vao.load(lineVertex);
-
-
     glClearColor ( 1.0f, 1.0f, 1.0f, 0.0f );
     glEnable(GL_DEPTH_TEST);
     glLineWidth(8.0);
-
-    Translate::buildTranslateMatrix(Vector(0,0,-5.0),translateMat);
 
     camera.resetPos();
     camera.buildLookAtMatrix(viewMat);
@@ -91,6 +90,11 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
     fov=60.f;
     near=1.0f;
 
+    shader.init();
+    testCourse.load();
+
+    //vao.load(lineVertex);
+    //Translate::buildTranslateMatrix(Vector(0,0,-5.0),translateMat);
 
     LOGI("RenderApi_init end.");
     return;
@@ -124,18 +128,20 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
     shader.use();
     shader.setProjectMatrix(projectMat);
     shader.setViewMatrix(viewMat);
-    shader.setModelMatrix(translateMat);
 
+    /*
+    shader.setModelMatrix(translateMat);
     vao.bind();
     lineVertex.draw();
-
     Matrix M(4,4);
     Translate::buildTranslateMatrix(Vector(0.0,1.0,-5.0),M);
     shader.setModelMatrix(M);
     lineVertex.draw();
-
     vao.unBind();
+    */
 
+    DrawingContext dc(shader);
+    testCourse.onDrawStep(dc);
 
     //LOGI("RenderApi_draw end");
 }

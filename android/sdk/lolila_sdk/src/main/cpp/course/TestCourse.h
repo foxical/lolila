@@ -9,6 +9,12 @@
 #include "AbstractCourse.h"
 #endif
 
+
+
+#ifndef __SIMPLE_LINE_H__
+#include "../shapes/SimpleLine.h"
+#endif
+
 class TestCourse : public AbstractCourse{
 public:
     TestCourse();
@@ -33,6 +39,11 @@ public:
     virtual void reset(){
 
     }
+
+private:
+
+    SimpleLine _line1;
+    SimpleLine _line2;
 };
 
 

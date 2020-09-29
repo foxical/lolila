@@ -2,31 +2,35 @@
 // Created by Administrator on 2018/1/30.
 //
 
-#ifndef __ABSTRACTSHAPEVERTEX_H__
-#define __ABSTRACTSHAPEVERTEX_H__
+#ifndef __SIMPLE_VERTEX_SET_H__
+#define __SIMPLE_VERTEX_SET_H__
 
 #include <GLES3/gl3.h>
 
 class SimpleVertexSet{
-protected:
-    SimpleVertexSet();
-    virtual ~SimpleVertexSet();
+public:
+    SimpleVertexSet(const GLuint& count);
+    ~SimpleVertexSet();
 public:
 
-    virtual const GLfloat* getRawVertexArrayPtr()const=0;
-    virtual GLuint getRawVertexCount()const=0;
+    const GLfloat* getRawVertexArrayPtr()const{
+        return _RawVertexArrayPtr;
+    }
+    GLuint getRawVertexCount()const{
+        return _RawVertexCount;
+    }
 
     /**
      * In bytes
      */
-    virtual GLsizeiptr getRawVertexArraySize()const{
+    GLsizeiptr getRawVertexArraySize()const{
         return getRawVertexCount() * getStider();
     }
 
     /**
      * in bytes
      */
-    virtual GLsizei getStider()const{
+    GLsizei getStider()const{
         return VERTEX_STRIDER_BASE;
     }
 
@@ -40,9 +44,6 @@ public:
      */
     void setPos(int posIdx, GLfloat x,GLfloat y ,GLfloat z);
 
-public:
-
-    virtual void draw()const=0;
 
 public:
     static const GLint VERTEX_POS_SIZE; //3
@@ -56,8 +57,12 @@ protected:
     GLfloat* getPosEntry(int idx)const;
     GLfloat* getColorEntry(int idx)const;
 
+private:
+
+    const GLuint _RawVertexCount;
+    GLfloat* _RawVertexArrayPtr;
 };
 
 
 
-#endif //__ABSTRACTSHAPEVERTEX_H__
+#endif //__SIMPLE_VERTEX_SET_H__

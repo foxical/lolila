@@ -17,11 +17,11 @@ static GLfloat* getEntry( const GLfloat* arrayHead, GLuint offset, GLsizei strid
     return (GLfloat*)ptr;
 }
 
-SimpleVertexSet::SimpleVertexSet(){
+SimpleVertexSet::SimpleVertexSet(const GLuint& count):_RawVertexCount(count),_RawVertexArrayPtr(new GLfloat[count*(VERTEX_POS_SIZE + VERTEX_COLOR_SIZE)]){
 
 }
 SimpleVertexSet::~SimpleVertexSet(){
-
+    delete _RawVertexArrayPtr;
 }
 
 GLfloat* SimpleVertexSet::getPosEntry(int idx)const{
