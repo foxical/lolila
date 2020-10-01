@@ -1,32 +1,24 @@
 //
-// Created by tam on 2020/9/28.
+// Created by tam on 2020/10/1.
 //
 
-#ifndef DEMO_TESTCOURSE_H
-#define DEMO_TESTCOURSE_H
+#ifndef _COURSE1_H
+#define _COURSE1_H
 
 #ifndef __ABSTRACTCOURSE_H__
 #include "AbstractCourse.h"
 #endif
 
-
-
 #ifndef __SIMPLE_LINE_H__
 #include "../shapes/SimpleLine.h"
-#endif
-
-#ifndef _SIMPLEPLANE_H_
-#include "../shapes/SimplePlane.h"
 #endif
 
 #ifndef _HOLLOWTRIANGLE_H_
 #include "../shapes/HollowTriangle.h"
 #endif
 
-class TestCourse : public AbstractCourse{
-public:
-    TestCourse();
-    ~TestCourse();
+class Course1 : public AbstractCourse{
+
 public:
 
     virtual void load();
@@ -49,12 +41,10 @@ public:
     }
 
 private:
-
-    SimpleLine _line1;
-    SimpleLine _line2;
-    SimplePlane _plane;
-    HollowTriangle ht;
+    SimpleLine _baseLine;
+    HollowTriangle _t1;
+    HollowTriangle _t2;
 };
 
 
-#endif //DEMO_TESTCOURSE_H
+#endif //_COURSE1_H

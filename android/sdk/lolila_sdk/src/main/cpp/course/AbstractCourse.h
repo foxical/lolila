@@ -10,7 +10,7 @@ class DrawingContext;
 class AbstractCourse{
 public:
     virtual void load()=0;
-    virtual void onDrawStep(DrawingContext& dc)=0;
+    virtual void onDrawStep(DrawingContext& dc)=0; // default 20ms per frame
     virtual int getTotalStepsCount()const=0;
     virtual int getCurStepNum()const=0;
     virtual void nextStep()=0;

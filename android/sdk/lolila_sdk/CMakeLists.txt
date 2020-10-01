@@ -50,7 +50,10 @@ add_library( # Sets the name of the library.
              src/main/cpp/shaders/SimpleShader.cpp
              src/main/cpp/shaders/SimpleVAO.cpp
              src/main/cpp/course/TestCourse.cpp
+             src/main/cpp/course/Course1.cpp
              src/main/cpp/shapes/SimpleLine.cpp
+             src/main/cpp/shapes/SimplePlane.cpp
+             src/main/cpp/shapes/HollowTriangle.cpp
           )
 
 # Searches for a specified prebuilt library and stores the path as a

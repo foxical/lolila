@@ -14,3 +14,8 @@ void SimpleLine::load(GLfloat r, GLfloat g, GLfloat b, GLfloat a){
     _vao.load(vs);
 }
 
+void SimpleLine::draw()const{
+    _vao.bind();
+    glDrawArrays(GL_LINES,0,2);
+    _vao.unBind();
+}

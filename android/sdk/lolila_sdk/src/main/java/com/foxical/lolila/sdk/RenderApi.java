@@ -16,7 +16,7 @@ public final class RenderApi {
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
-    public static native void init();
+    public static native void init(int prjType,int courseNo);
     public static native void resize(int w,int h);
     public static native void draw();
     public static native void zoomIn();
@@ -37,4 +37,10 @@ public final class RenderApi {
     public static native void useOrthoPrj();
 
     public static native void pushNearPlane();
+
+
+    public static native void nextStep();
+    public static native void prevStep();
+    public static native void resetStep();
+    public static native void term();
 }

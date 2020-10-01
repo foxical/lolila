@@ -61,6 +61,7 @@ private:
 
     const GLuint _RawVertexCount;
     GLfloat* _RawVertexArrayPtr;
+
 };
 
 

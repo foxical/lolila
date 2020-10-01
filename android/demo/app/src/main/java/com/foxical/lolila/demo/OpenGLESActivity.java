@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -58,9 +59,12 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         findViewById(R.id.btn_yaw_right).setOnTouchListener(this);
         findViewById(R.id.btn_zoom_in).setOnTouchListener(this);
         findViewById(R.id.btn_zoom_out).setOnTouchListener(this);
-        findViewById(R.id.btn_use_f_prj).setOnTouchListener(this);
-        findViewById(R.id.btn_use_o_prj).setOnTouchListener(this);
-        findViewById(R.id.btn_push_near_plane).setOnTouchListener(this);
+        //findViewById(R.id.btn_use_f_prj).setOnTouchListener(this);
+        //findViewById(R.id.btn_use_o_prj).setOnTouchListener(this);
+        //findViewById(R.id.btn_push_near_plane).setOnTouchListener(this);
+        findViewById(R.id.btn_reset_step).setOnTouchListener(this);
+        findViewById(R.id.btn_prev_step).setOnTouchListener(this);
+        findViewById(R.id.btn_next_step).setOnTouchListener(this);
 
 
         // 创建一个GLSurfaceView对象，并将其设置为当前Activity的ContentView
@@ -69,7 +73,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         FrameLayout glViewContainer = (FrameLayout) findViewById(R.id.gl_view_container);
         glViewContainer.addView(mGLView,layoutParams);
 
-        Log.d("LOLILA",getSDCardRootDir());
+
     }
 
     @Override
@@ -109,6 +113,13 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
             setRenderer(renderer);
         }
 
+        @Override
+        public void surfaceDestroyed(SurfaceHolder holder){
+            super.surfaceDestroyed(holder);
+            renderer.term();
+            Log.d("LOLILA","surfaceDestroyed, renderer.term()");
+        }
+
     }
 
     private class JNIRenderer implements GLSurfaceView.Renderer {
@@ -117,7 +128,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
             // 设置背景色
             //GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-            RenderApi.init();
+            RenderApi.init(0,0);
         }
 
         public void onSurfaceChanged(GL10 unused, int width, int height) {
@@ -166,6 +177,10 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         void useFrustumPrj(){RenderApi.useFrustumPrj();}
         void useOrthoPrj(){RenderApi.useOrthoPrj();}
         void pushNearPlane(){RenderApi.pushNearPlane();}
+        void term(){RenderApi.term();}
+        void resetStep(){RenderApi.resetStep();}
+        void nextStep(){RenderApi.nextStep();}
+        void prevStep(){RenderApi.prevStep();}
     }
 
 
@@ -284,6 +299,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
                         }
                     };
                     break;
+                /*
                 case R.id.btn_use_f_prj:
                     runnable = new Runnable() {
                         @Override
@@ -305,6 +321,33 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
                         @Override
                         public void run() {
                             renderer.pushNearPlane();
+                        }
+                    };
+                    break;
+
+                 */
+
+                case R.id.btn_reset_step:
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.resetStep();
+                        }
+                    };
+                    break;
+                case R.id.btn_prev_step:
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.prevStep();
+                        }
+                    };
+                    break;
+                case R.id.btn_next_step:
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.nextStep();
                         }
                     };
                     break;

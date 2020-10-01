@@ -1,30 +1,22 @@
 //
-// Created by Administrator on 2018/1/30.
+// Created by tam on 2020/10/1.
 //
 
-#ifndef __SIMPLE_LINE_H__
-#define __SIMPLE_LINE_H__
+#ifndef _HOLLOWTRIANGLE_H_
+#define _HOLLOWTRIANGLE_H_
 
 #ifndef __SIMPLEVAO_H__
 #include "../shaders/SimpleVAO.h"
 #endif
 
-class SimpleLine{
+class HollowTriangle {
 public:
-    SimpleLine(){
-
-    }
-
-    ~SimpleLine(){}
-public:
-
     void load(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 
     void draw()const;
-
 private:
     SimpleVAO _vao;
 };
 
 
-#endif //__SIMPLE_LINE_H__
+#endif //_HOLLOWTRIANGLE_H_

@@ -31,10 +31,10 @@ void SimpleVAO::unBind()const{
 }
 
 void SimpleVAO::load(const SimpleVertexSet &shapeVertex){
-    load(shapeVertex,0,NULL);
+    load(shapeVertex,NULL);
 }
 
-void SimpleVAO::load(const SimpleVertexSet &shapeVertex, const GLsizeiptr indices_size, const void* indices){
+void SimpleVAO::load(const SimpleVertexSet &shapeVertex, const void* indices){
 
     // 记得要在这里分配VAO，即必须在opengl context 初始化之后
     glGenVertexArrays(1, &_vaoId);
@@ -47,10 +47,10 @@ void SimpleVAO::load(const SimpleVertexSet &shapeVertex, const GLsizeiptr indice
     glBindBuffer ( GL_ARRAY_BUFFER, _vboId1 );
     glBufferData ( GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW );
 
-    if( indices_size>0 && indices!=NULL){
+    if( indices!=NULL){
         glGenBuffers(1,&_vboId2);
         glBindBuffer ( GL_ELEMENT_ARRAY_BUFFER, _vboId2 );
-        glBufferData ( GL_ELEMENT_ARRAY_BUFFER, indices_size, indices, GL_STATIC_DRAW );
+        glBufferData ( GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW );
     }
 
     // Bind the VAO and then setup the vertex
@@ -74,5 +74,7 @@ void SimpleVAO::load(const SimpleVertexSet &shapeVertex, const GLsizeiptr indice
     // Reset to the default VAO
     unBind();
 
-    //OGD("_vaoid:%i, _vboid:%i",_vaoId,_vboId);
+    LOGD("_vaoid:%i, _vboid1:%i,_vboId2:%i,ss:%i",_vaoId,_vboId1,_vboId2,sizeof(indices));
+
+
 }

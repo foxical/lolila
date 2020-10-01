@@ -21,6 +21,8 @@
         android:orientation="vertical"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true">
+
+        <!--
         <Button
             android:id="@+id/btn_use_f_prj"
             android:layout_width="100dp"
@@ -42,6 +44,29 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:text="远离近平面"/>
+        -->
+
+        <Button
+            android:id="@+id/btn_reset_step"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="复位"/>
+        <Button
+            android:id="@+id/btn_prev_step"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="上一步"/>
+        <Button
+            android:id="@+id/btn_next_step"
+            android:layout_width="120dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="下一步"/>
 
 
         <LinearLayout

@@ -22,6 +22,7 @@
 
 #include "course/TestCourse.h"
 #include "course/DrawingContext.h"
+#include "course/Course1.h"
 
 
 static GLsizei gl_viewport_width=-1;
@@ -56,7 +57,8 @@ static SimpleShader shader;
 //static SimpleVAO vao;
 //static SimpleLine lineVertex(1.0, 0.0, 0.0, 1.0);
 
-static TestCourse testCourse;
+static AbstractCourse* course=NULL;
+
 
 //////////////////////////////////
 
@@ -74,7 +76,7 @@ static void updateProjectMat(){
 
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
         JNIEnv *env,
-        jobject /* this */) {
+        jobject,jint prjType, jint courseNo /* this */) {
 
     LOGI("RenderApi_init begin");
 
@@ -86,15 +88,19 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
     camera.resetPos();
     camera.buildLookAtMatrix(viewMat);
 
-    projectType=0;
+    projectType=prjType;
     fov=60.f;
     near=1.0f;
 
     shader.init();
-    testCourse.load();
 
-    //vao.load(lineVertex);
-    //Translate::buildTranslateMatrix(Vector(0,0,-5.0),translateMat);
+    if(courseNo==0){
+        course = new Course1();
+    }
+
+    if(course!=NULL){
+        course->load();
+    }
 
     LOGI("RenderApi_init end.");
     return;
@@ -129,19 +135,11 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
     shader.setProjectMatrix(projectMat);
     shader.setViewMatrix(viewMat);
 
-    /*
-    shader.setModelMatrix(translateMat);
-    vao.bind();
-    lineVertex.draw();
-    Matrix M(4,4);
-    Translate::buildTranslateMatrix(Vector(0.0,1.0,-5.0),M);
-    shader.setModelMatrix(M);
-    lineVertex.draw();
-    vao.unBind();
-    */
 
     DrawingContext dc(shader);
-    testCourse.onDrawStep(dc);
+    if(course!=NULL) {
+        course->onDrawStep(dc);
+    }
 
     //LOGI("RenderApi_draw end");
 }
@@ -205,6 +203,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraPitchDown(
     camera.pitchDown();
     camera.buildLookAtMatrix(viewMat);
 }
+
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraYawLeft(
         JNIEnv *env,
         jobject /* this */) {
@@ -265,4 +264,43 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_pushNearPlane(
         jobject /* this */) {
     near+=1.0f;
     updateProjectMat();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_nextStep(
+        JNIEnv *env,
+        jobject /* this */) {
+    if(course!=NULL){
+        course->nextStep();
+    }
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_prevStep(
+        JNIEnv *env,
+        jobject /* this */) {
+    if(course!=NULL){
+        course->prevStep();
+    }
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resetStep(
+        JNIEnv *env,
+        jobject /* this */) {
+
+    camera.resetPos();
+    camera.buildLookAtMatrix(viewMat);
+    if(course!=NULL){
+        course->reset();
+    }
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_term(
+        JNIEnv *env,
+        jobject /* this */) {
+    if(course!=NULL){
+        delete course;
+    }
 }
