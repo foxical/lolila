@@ -49,6 +49,13 @@ static void makeTriangleMat2(Matrix& M,float a ){
     M.set(Matrix::multiply(am,bm));
 }
 
+Course1::Course1():a1(0.0f),a2(0.0f){
+
+}
+Course1::~Course1(){
+
+}
+
 void Course1::load(){
 
     _baseLine.load(0,0,0,1); // black line
@@ -64,11 +71,26 @@ void Course1::onDrawStep(DrawingContext& dc) {
     dc.setModelMatrix(m);
     _baseLine.draw();
 
-    makeTriangleMat1(m,-10);
+    makeTriangleMat1(m,a1);
     dc.setModelMatrix(m);
     _t1.draw();
 
-    makeTriangleMat2(m,-10);
+    makeTriangleMat2(m,a2);
     dc.setModelMatrix(m);
     _t2.draw();
+}
+
+void Course1::nextStep(){
+
+    a1 += (-2.0f);
+    a2 += (-3.0f);
+
+}
+void Course1::prevStep(){
+    a1 += (2.0f);
+    a2 += (3.0f);
+}
+void Course1::reset(){
+    a1=0.0f;
+    a2=0.0f;
 }

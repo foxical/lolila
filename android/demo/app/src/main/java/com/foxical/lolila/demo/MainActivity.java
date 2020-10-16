@@ -30,14 +30,16 @@ public class MainActivity extends Activity {
         Toast.makeText(this,"reqGlEsVersion = " + ver,Toast.LENGTH_LONG).show();
         */
 
-        findViewById(R.id.btn_enter_test).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_enter_course_1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if( !detectOpenGLES30()){
-                    Toast.makeText(MainActivity.this,"OpenGL ES 3.0 not supported on device. Aborting...",Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                OpenGLESActivity.start(MainActivity.this);
+                startCourse(1);
+            }
+        });
+        findViewById(R.id.btn_enter_course_test).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCourse(-1);
             }
         });
 
@@ -49,9 +51,18 @@ public class MainActivity extends Activity {
         });
     }
 
+
     private boolean detectOpenGLES30() {
         ActivityManager am = (ActivityManager)getSystemService(Context.ACTIVITY_SERVICE);
         ConfigurationInfo info = am.getDeviceConfigurationInfo();
         return (info.reqGlEsVersion >= 0x30000);
+    }
+
+    private void startCourse(int no){
+        if( !detectOpenGLES30()){
+            Toast.makeText(MainActivity.this,"OpenGL ES 3.0 not supported on device. Aborting...",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        OpenGLESActivity.start(MainActivity.this,no);
     }
 }

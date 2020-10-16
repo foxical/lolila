@@ -50,6 +50,8 @@ public:
 
     static Matrix createIdentityMatrix(const int n);
 
+    static Matrix createHomogeneousCoordinates(const float x,const float y,const float z);
+
 public:
 
     bool isSingular()const;

@@ -43,7 +43,8 @@ public:
      * 设置顶点坐标
      */
     void setPos(int posIdx, GLfloat x,GLfloat y ,GLfloat z);
-
+    void setPos(int posIdx, const GLfloat* r);
+    void getPos(int posIdx,GLfloat* r)const;
 
 public:
     static const GLint VERTEX_POS_SIZE; //3

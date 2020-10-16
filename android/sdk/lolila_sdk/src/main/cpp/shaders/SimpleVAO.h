@@ -19,6 +19,11 @@ public:
     void unBind()const;
     void load(const SimpleVertexSet &shapeVertex, const void* indices);
     void load(const SimpleVertexSet &shapeVertex);
+    void unLoad();
+
+    inline GLuint getVSCount()const{
+        return _vsCount;
+    }
 
 private:
     // VertexBufferObject Ids
@@ -26,6 +31,8 @@ private:
     GLuint _vboId2;
     // VertexArrayObject Id
     GLuint _vaoId;
+
+    GLuint _vsCount;
 };
 
 

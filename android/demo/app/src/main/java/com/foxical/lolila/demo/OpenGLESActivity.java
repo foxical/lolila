@@ -30,16 +30,21 @@ import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 public class OpenGLESActivity extends Activity implements View.OnTouchListener{
 
-    public static void start(Context ctx){
-        ctx.startActivity(new Intent(ctx,OpenGLESActivity.class));
+    public static void start(Context ctx,int no){
+        Intent intent = new Intent(ctx,OpenGLESActivity.class);
+        intent.putExtra("courseNo",no);
+        ctx.startActivity(intent);
     }
 
 
     private MyGLSurfaceView mGLView;
+    private int mCourseNo;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mCourseNo = getIntent().getIntExtra("courseNo",-1);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -128,7 +133,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
             // 设置背景色
             //GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-            RenderApi.init(0,0);
+            RenderApi.init(0,mCourseNo);
         }
 
         public void onSurfaceChanged(GL10 unused, int width, int height) {

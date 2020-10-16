@@ -6,19 +6,28 @@
 #include "SimpleVertexSet.h"
 #include "../base/utils/AndroidLog.h"
 
-SimpleVAO::SimpleVAO():_vboId1(0),_vboId2(0),_vaoId(0){
+SimpleVAO::SimpleVAO():_vboId1(0),_vboId2(0),_vaoId(0),_vsCount(0){
 
 }
 SimpleVAO::~SimpleVAO(){
+    unLoad();
+}
+
+void SimpleVAO::unLoad(){
     if(_vboId1!=0){
         glDeleteBuffers(1,&_vboId1);
+        _vboId1=0;
     }
     if(_vboId2!=0){
         glDeleteBuffers(1,&_vboId2);
+        _vboId2=0;
     }
     if(_vaoId!=0){
         glDeleteVertexArrays(1,&_vaoId);
+        _vaoId=0;
     }
+
+    _vsCount=0;
 }
 
 void SimpleVAO::bind()const{
@@ -42,6 +51,8 @@ void SimpleVAO::load(const SimpleVertexSet &shapeVertex, const void* indices){
     const void*  vertices = (const void*)shapeVertex.getRawVertexArrayPtr();
     const GLsizeiptr size = shapeVertex.getRawVertexArraySize();
     const GLsizei strider = shapeVertex.getStider();
+
+    _vsCount = shapeVertex.getRawVertexCount();
 
     glGenBuffers(1,&_vboId1);
     glBindBuffer ( GL_ARRAY_BUFFER, _vboId1 );
@@ -74,7 +85,7 @@ void SimpleVAO::load(const SimpleVertexSet &shapeVertex, const void* indices){
     // Reset to the default VAO
     unBind();
 
-    LOGD("_vaoid:%i, _vboid1:%i,_vboId2:%i,ss:%i",_vaoId,_vboId1,_vboId2,sizeof(indices));
+    //LOGD("_vaoid:%i, _vboid1:%i,_vboId2:%i,ss:%i",_vaoId,_vboId1,_vboId2,sizeof(indices));
 
 
 }

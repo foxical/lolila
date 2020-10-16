@@ -412,6 +412,16 @@ bool  Matrix::isMostSimplest(void)const{
     return true;
 }
 
+Matrix Matrix::createHomogeneousCoordinates(const float x,const float y,const float z){
+    Matrix v(4,1);
+    v.set(0,0,x);
+    v.set(1,0,y);
+    v.set(2,0,z);
+    v.set(3,0,1.0f);
+    return v;
+}
+
+
 /////////////////////////////////////////////////////////////////////////////////////////////////
 // static inner helper
 /////////////////////////////////////////////////////////////////////////////////////////////////

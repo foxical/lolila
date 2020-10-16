@@ -18,7 +18,9 @@
 #endif
 
 class Course1 : public AbstractCourse{
-
+public:
+    Course1();
+    virtual ~Course1();
 public:
 
     virtual void load();
@@ -30,20 +32,17 @@ public:
     virtual int getCurStepNum()const{
         return 1;
     };
-    virtual void nextStep(){
 
-    }
-    virtual void prevStep(){
-
-    }
-    virtual void reset(){
-
-    }
+    virtual void nextStep();
+    virtual void prevStep();
+    virtual void reset();
 
 private:
     SimpleLine _baseLine;
     HollowTriangle _t1;
     HollowTriangle _t2;
+    float a1;
+    float a2;
 };
 
 

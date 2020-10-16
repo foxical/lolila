@@ -24,14 +24,25 @@
                 android:layout_height="wrap_content" />
 
             <Button
-                android:id="@+id/btn_enter_test"
+                android:id="@+id/btn_enter_course_1"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
-                android:text="进入3D测试"/>
+                android:paddingLeft="20dp"
+                android:textAlignment="textStart"
+                android:text="课程1-《思维新观察》-P150-3"/>
+            <Button
+                android:id="@+id/btn_enter_course_test"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingLeft="20dp"
+                android:textAlignment="textStart"
+                android:text="进入测试课程"/>
             <Button
                 android:id="@+id/btn_enter_test_2d"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
+                android:paddingLeft="20dp"
+                android:textAlignment="textStart"
                 android:text="进入矩阵动画测试"/>
         </LinearLayout>
 

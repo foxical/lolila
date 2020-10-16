@@ -74,6 +74,18 @@ static void updateProjectMat(){
     }
 }
 
+static AbstractCourse* createCourse(int no){
+    switch (no){
+        case -1:
+            return new TestCourse();
+        case 1:
+            return new Course1();
+        default:
+            break;
+    }
+    return NULL;
+}
+
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
         JNIEnv *env,
         jobject,jint prjType, jint courseNo /* this */) {
@@ -94,10 +106,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
 
     shader.init();
 
-    if(courseNo==0){
-        course = new Course1();
-    }
-
+    course = createCourse(courseNo);
     if(course!=NULL){
         course->load();
     }

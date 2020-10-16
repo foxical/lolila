@@ -50,3 +50,14 @@ void SimpleVertexSet::setPos(int posIdx, GLfloat x, GLfloat y , GLfloat z){
     entry[1]=y;
     entry[2]=z;
 }
+
+void SimpleVertexSet::setPos(int posIdx, const GLfloat* r){
+    setPos(posIdx,r[0],r[1],r[2]);
+}
+
+void SimpleVertexSet::getPos(int posIdx,GLfloat* r)const{
+    GLfloat* entry = getPosEntry(posIdx);
+    r[0]=entry[0];
+    r[1]=entry[1];
+    r[2]=entry[2];
+}

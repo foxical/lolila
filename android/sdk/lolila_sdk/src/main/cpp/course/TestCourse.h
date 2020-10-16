@@ -23,6 +23,26 @@
 #include "../shapes/HollowTriangle.h"
 #endif
 
+#ifndef _HOLLOWCUBE_H
+#include "../shapes/HollowCube.h"
+#endif
+
+#ifndef _SIMPLEAXIS_H
+#include "../shapes/SimpleAxis.h"
+#endif
+
+#ifndef _SYMBLEM_H
+#include "../shapes/SymbleM.h"
+#endif
+
+#ifndef _SYMBLEN_H
+#include "../shapes/SymbleN.h"
+#endif
+
+#ifndef _SEMICIRCLE_H
+#include "../shapes/SemiCircle.h"
+#endif
+
 class TestCourse : public AbstractCourse{
 public:
     TestCourse();
@@ -54,6 +74,11 @@ private:
     SimpleLine _line2;
     SimplePlane _plane;
     HollowTriangle ht;
+    HollowCube hollowCube;
+    SimpleAxis _axis;
+    SymbleM _m;
+    SymbleN _n;
+    SemiCircle _sc;
 };
 
 
