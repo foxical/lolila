@@ -24,6 +24,8 @@ public:
      */
     static int semiCircleCount(float angleStrider);
 
+    static int circleCount(float angleStrider);
+
     /**
      * 设置圆顶点
      * @param vs

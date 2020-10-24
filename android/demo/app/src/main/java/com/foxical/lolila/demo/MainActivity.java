@@ -36,6 +36,18 @@ public class MainActivity extends Activity {
                 startCourse(1);
             }
         });
+        findViewById(R.id.btn_enter_course_2).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCourse(2);
+            }
+        });
+        findViewById(R.id.btn_enter_course_3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCourse(3);
+            }
+        });
         findViewById(R.id.btn_enter_course_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

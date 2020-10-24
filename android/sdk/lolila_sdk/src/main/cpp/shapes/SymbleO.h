@@ -2,19 +2,19 @@
 // Created by tam on 2020/10/16.
 //
 
-#ifndef _SYMBLEN_H
-#define _SYMBLEN_H
+#ifndef _SYMBLEO_H
+#define _SYMBLEO_H
 
 #ifndef __SIMPLEVAO_H__
 #include "../shaders/SimpleVAO.h"
 #endif
 
-class SymbleN {
+class SymbleO {
 public:
-    SymbleN(){
+    SymbleO(){
 
     }
-    ~SymbleN(){
+    ~SymbleO(){
 
     }
 
@@ -22,12 +22,13 @@ public:
 
     void draw()const;
 
+    //void getOutRect(GLfloat* rect)const;
+
     GLfloat getWidth()const;
     GLfloat getHeight()const;
-
 private:
     SimpleVAO _vao;
 };
 
 
-#endif //_SYMBLEN_H
+#endif //_SYMBLEO_H

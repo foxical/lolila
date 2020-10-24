@@ -43,6 +43,8 @@ public:
     static Matrix minus(const Matrix& ,const Matrix&);
     static Matrix scalarMultiply(const Matrix&,const float&);
     static Matrix multiply(const Matrix& ,const Matrix&);
+    static Matrix multiply(const Matrix& ,const Matrix&,const Matrix&);
+    static Matrix multiply(const Matrix& ,const Matrix&,const Matrix&,const Matrix&);
     static Matrix transpose(const Matrix&);
 
 

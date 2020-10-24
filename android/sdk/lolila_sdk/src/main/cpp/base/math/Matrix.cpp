@@ -209,6 +209,14 @@ Matrix  Matrix::multiply(const Matrix& A,const Matrix& B){
     return result;
 }
 
+Matrix Matrix::multiply(const Matrix& A,const Matrix& B,const Matrix& C){
+    return multiply(A,multiply(B,C));
+}
+
+Matrix Matrix::multiply(const Matrix& A,const Matrix& B,const Matrix& C,const Matrix& D){
+    return multiply(A,multiply(B,multiply(C,D)));
+}
+
 Matrix  Matrix::multiply(const Matrix& B)const{
     return multiply(*this,B);
 }

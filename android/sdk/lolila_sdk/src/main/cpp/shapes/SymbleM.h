@@ -22,6 +22,9 @@ public:
 
     void draw()const;
 
+    GLfloat getWidth()const;
+    GLfloat getHeight()const;
+
 private:
     SimpleVAO _vao;
 };

@@ -25,6 +25,18 @@ Vector::Vector(const float &x, const float &y, const float &z) {
     _components[2] = z;
 }
 
+bool Vector::isEqual(const Vector& c)const{
+    if(c._dim!=this->_dim){
+        return false;
+    }
+    for(int i=0;i<c._dim;++i){
+        if( !FloatUtils::isEqual(c._components[i],this->_components[i])){
+            return false;
+        }
+    }
+    return true;
+}
+
 Vector::Vector(const Vector& generalVector) {
     this->_dim= generalVector._dim;
     for(int d=0;d<_dim;++d){

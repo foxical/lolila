@@ -45,6 +45,8 @@ void SimpleVAO::load(const SimpleVertexSet &shapeVertex){
 
 void SimpleVAO::load(const SimpleVertexSet &shapeVertex, const void* indices){
 
+    unLoad();
+
     // 记得要在这里分配VAO，即必须在opengl context 初始化之后
     glGenVertexArrays(1, &_vaoId);
 

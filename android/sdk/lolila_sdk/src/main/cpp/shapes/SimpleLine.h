@@ -9,6 +9,7 @@
 #include "../shaders/SimpleVAO.h"
 #endif
 
+
 class SimpleLine{
 public:
     SimpleLine(){
@@ -19,6 +20,10 @@ public:
 public:
 
     void load(GLfloat r, GLfloat g, GLfloat b, GLfloat a);
+
+    void load(GLfloat x0,GLfloat y0,GLfloat z0,
+              GLfloat x1,GLfloat y1,GLfloat z1,
+              GLfloat r, GLfloat g, GLfloat b, GLfloat a);
 
     void draw()const;
 

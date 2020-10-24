@@ -29,6 +29,10 @@ int VertexSetTransform::semiCircleCount(float angleStrider){
     return (int)(180.0f/angleStrider) + 1;
 }
 
+int VertexSetTransform::circleCount(float angleStrider){
+    return (int)(360.0f/angleStrider) + 1;
+}
+
 void VertexSetTransform::setCirclePos(SimpleVertexSet& vs,float angleStrider, GLfloat radius){
     const int vsCount = vs.getRawVertexCount();
 

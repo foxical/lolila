@@ -31,6 +31,20 @@
                 android:textAlignment="textStart"
                 android:text="课程1-《思维新观察》-P150-3"/>
             <Button
+                android:id="@+id/btn_enter_course_2"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingLeft="20dp"
+                android:textAlignment="textStart"
+                android:text="课程2-"/>
+            <Button
+                android:id="@+id/btn_enter_course_3"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingLeft="20dp"
+                android:textAlignment="textStart"
+                android:text="课程3-空间射线方程"/>
+            <Button
                 android:id="@+id/btn_enter_course_test"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

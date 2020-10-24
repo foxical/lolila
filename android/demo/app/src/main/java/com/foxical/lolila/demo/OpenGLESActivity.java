@@ -10,11 +10,13 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
@@ -39,6 +41,10 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
 
     private MyGLSurfaceView mGLView;
     private int mCourseNo;
+    private Button btnNextStep;
+    private Button btnReset;
+    private int curStep=0;
+    private GestureDetector gestureDetector;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +56,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        gestureDetector = new GestureDetector(this,new MyGestureListener());
 
         setContentView(R.layout.activity_opengles);
         findViewById(R.id.btn_move_back).setOnTouchListener(this);
@@ -64,6 +71,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         findViewById(R.id.btn_yaw_right).setOnTouchListener(this);
         findViewById(R.id.btn_zoom_in).setOnTouchListener(this);
         findViewById(R.id.btn_zoom_out).setOnTouchListener(this);
+        findViewById(R.id.btn_sc).setOnTouchListener(this);
         //findViewById(R.id.btn_use_f_prj).setOnTouchListener(this);
         //findViewById(R.id.btn_use_o_prj).setOnTouchListener(this);
         //findViewById(R.id.btn_push_near_plane).setOnTouchListener(this);
@@ -76,9 +84,13 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         mGLView = new MyGLSurfaceView(this);
         FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(MATCH_PARENT,MATCH_PARENT);
         FrameLayout glViewContainer = (FrameLayout) findViewById(R.id.gl_view_container);
+        glViewContainer.setOnTouchListener(this);
         glViewContainer.addView(mGLView,layoutParams);
 
 
+        btnNextStep = findViewById(R.id.btn_next_step);
+        btnReset = findViewById(R.id.btn_reset_step);
+        updateCurStep();
     }
 
     @Override
@@ -96,6 +108,9 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
     }
 
 
+    private void updateCurStep(){
+        btnReset.setText("复位"+"("+curStep+")");
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //
@@ -177,6 +192,21 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         void cameraYawRight(){
             RenderApi.cameraYawRight();
         }
+        void cameraRotateLeft(){
+            RenderApi.cameraRotateLeft();
+        }
+        void cameraRotateRight(){
+            RenderApi.cameraRotateRight();
+        }
+        void cameraRotateUp(){
+            RenderApi.cameraRotateUp();
+        }
+        void cameraRotateDown(){
+            RenderApi.cameraRotateDown();
+        }
+        void cameraLookAtSceneCenter(){
+            RenderApi.cameraLookAtSceneCenter();
+        }
         void zoomIn(){RenderApi.zoomIn();}
         void zoomOut(){RenderApi.zoomOut();}
         void useFrustumPrj(){RenderApi.useFrustumPrj();}
@@ -193,18 +223,92 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
     //
     ////////////////////////////////////////////////////////////////////////////////////////
 
+    private final class MyGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            //Log.d("LOLILA","velocityX:"+velocityX+",velocityY:"+velocityY);
+            Runnable runnable = null;
+            float ax = Math.abs(velocityX);
+            float ay = Math.abs(velocityY);
+            final JNIRenderer renderer = mGLView.renderer;
+            if( ax >ay){
+                if( velocityX<0){
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.cameraRotateRight();
+                        }
+                    };
+                }else{
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.cameraRotateLeft();
+                        }
+                    };
+                }
+            }else if(ay>ax){
+                if( velocityY<0){
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.cameraRotateDown();
+                        }
+                    };
+                }else{
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.cameraRotateUp();
+                        }
+                    };
+                }
+            }
+            if(runnable!=null){
+                final Runnable runnableF=runnable;
+                new Thread(){
+                    @Override
+                    public void run(){
+                        for (int i=1;i<= 90;++i){
+                            mGLView.queueEvent(runnableF);
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }.start();
+            }
+            return true;
+        }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    //
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+
     private Object threadLock= new Object();
     private int pressedBtnId=-1;
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         final int action = event.getAction();
-        Log.d("LOLILA", "action:"+action);
         final int btnId = v.getId();
+        //Log.d("LOLILA", "btnId:"+btnId+",action:"+action);
+        if( btnId==R.id.gl_view_container){
+            //Log.d("LOLILA","hit on gl_view_container");
+            return false; // then will emit onTouchEvent
+        }
+
         if( action == MotionEvent.ACTION_DOWN) {
-
-
-
             final JNIRenderer renderer = mGLView.renderer;
             Runnable runnable = null;
             switch (btnId) {
@@ -288,6 +392,14 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
                         }
                     };
                     break;
+                case R.id.btn_sc:
+                    runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            renderer.cameraLookAtSceneCenter();
+                        }
+                    };
+                    break;
                 case R.id.btn_zoom_in:
                     runnable = new Runnable() {
                         @Override
@@ -333,6 +445,8 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
                  */
 
                 case R.id.btn_reset_step:
+                    curStep=0;
+                    updateCurStep();
                     runnable = new Runnable() {
                         @Override
                         public void run() {
@@ -341,6 +455,10 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
                     };
                     break;
                 case R.id.btn_prev_step:
+                    if(curStep>0) {
+                        --curStep;
+                    }
+                    updateCurStep();
                     runnable = new Runnable() {
                         @Override
                         public void run() {
@@ -349,6 +467,8 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
                     };
                     break;
                 case R.id.btn_next_step:
+                    ++curStep;
+                    updateCurStep();
                     runnable = new Runnable() {
                         @Override
                         public void run() {

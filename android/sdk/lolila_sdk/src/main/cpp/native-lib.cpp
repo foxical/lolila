@@ -144,6 +144,8 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
 
     try{
 
+        return env->NewStringUTF( "");
+
         LogQueue::clear();
 
         //testLineDistance();

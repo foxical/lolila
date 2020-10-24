@@ -161,14 +161,19 @@
             android:orientation="horizontal">
             <Button
                 android:id="@+id/btn_yaw_left"
-                android:layout_width="60dp"
+                android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:text="左转"/>
+                android:text="L"/>
+            <Button
+                android:id="@+id/btn_sc"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:text="中"/>
             <Button
                 android:id="@+id/btn_yaw_right"
-                android:layout_width="60dp"
+                android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:text="右转"/>
+                android:text="R"/>
         </LinearLayout>
         <Button
             android:id="@+id/btn_pitch_down"

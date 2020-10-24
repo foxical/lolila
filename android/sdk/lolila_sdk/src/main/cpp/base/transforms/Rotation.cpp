@@ -42,7 +42,7 @@ Vector Rotation::doTransform( const Vector& axis, const float& degree, const Vec
     Matrix M(4,4);
     buildRotationMatrix(axis,degree,M);
     Matrix P(4,1);
-    P.set(0,0,in.x());P.set(1,0,in.y());P.set(2,0,in.z());
+    P.set(0,0,in.x());P.set(1,0,in.y());P.set(2,0,in.z());P.set(3,0,1.0f);
     const Matrix PZ = Matrix::multiply(M,P);
     return Vector(PZ.get(0,0),PZ.get(1,0),PZ.get(2,0));
 }

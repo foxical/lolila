@@ -1,20 +1,20 @@
 //
-// Created by tam on 2020/10/16.
+// Created by tam on 2020/10/17.
 //
 
-#ifndef _SYMBLEN_H
-#define _SYMBLEN_H
+#ifndef _SYMBLEC_H
+#define _SYMBLEC_H
 
 #ifndef __SIMPLEVAO_H__
 #include "../shaders/SimpleVAO.h"
 #endif
 
-class SymbleN {
+class SymbleC {
 public:
-    SymbleN(){
+    SymbleC(){
 
     }
-    ~SymbleN(){
+    ~SymbleC(){
 
     }
 
@@ -30,4 +30,4 @@ private:
 };
 
 
-#endif //_SYMBLEN_H
+#endif //_SYMBLEC_H

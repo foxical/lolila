@@ -39,6 +39,10 @@
 #include "../shapes/SymbleN.h"
 #endif
 
+#ifndef _SYMBLEN_O
+#include "../shapes/SymbleO.h"
+#endif
+
 #ifndef _SEMICIRCLE_H
 #include "../shapes/SemiCircle.h"
 #endif
@@ -68,6 +72,8 @@ public:
 
     }
 
+    const Vector* getSceneCenterV()const;
+
 private:
 
     SimpleLine _line1;
@@ -78,6 +84,7 @@ private:
     SimpleAxis _axis;
     SymbleM _m;
     SymbleN _n;
+    SymbleO _o;
     SemiCircle _sc;
 };
 

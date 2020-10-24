@@ -32,6 +32,11 @@ public final class RenderApi {
     public static native void cameraPitchDown();
     public static native void cameraYawLeft();
     public static native void cameraYawRight();
+    public static native void cameraRotateLeft();
+    public static native void cameraRotateRight();
+    public static native void cameraRotateUp();
+    public static native void cameraRotateDown();
+    public static native void cameraLookAtSceneCenter();
 
     public static native void useFrustumPrj();
     public static native void useOrthoPrj();

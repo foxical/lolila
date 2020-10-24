@@ -36,6 +36,7 @@ public:
 
 public:
 
+    bool isEqual(const Vector&)const;
     string toString()const;
     const char* c_str()const;
 public:
@@ -47,7 +48,16 @@ public:
     static float dot(const Vector&, const Vector&);
 
 
-    static Vector cross(const Vector&,const Vector&);
+    /**
+     * 右手法则
+     * @param P
+     * 大拇指方向
+     * @param Q
+     * 四个手指方向
+     * @return
+     * PXQ -》 手心方向
+     */
+    static Vector cross(const Vector& P,const Vector& Q);
     static Vector scalarMultiply( const Vector&,const float&);
     static Vector proj(const Vector& P,const Vector& Q);
     static Vector perp(const Vector& P,const Vector& Q);

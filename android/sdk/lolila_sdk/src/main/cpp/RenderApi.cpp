@@ -20,10 +20,10 @@
 #include "shaders/SimpleVAO.h"
 #include "shapes/SimpleLine.h"
 
-#include "course/TestCourse.h"
-#include "course/DrawingContext.h"
-#include "course/Course1.h"
 
+#include "course/DrawingContext.h"
+#include "course/AbstractCourse.h"
+#include "course/CourseFactory.h"
 
 static GLsizei gl_viewport_width=-1;
 static GLsizei gl_viewport_height=-1;
@@ -50,6 +50,8 @@ static float fov=60.0f;
 
 static int projectType=0; // 0: 透视投影，1：正视投影
 
+static Vector def_sc(0,0,0-near-4);
+
 // for test only!!
 //////////////////////////////////
 
@@ -74,17 +76,7 @@ static void updateProjectMat(){
     }
 }
 
-static AbstractCourse* createCourse(int no){
-    switch (no){
-        case -1:
-            return new TestCourse();
-        case 1:
-            return new Course1();
-        default:
-            break;
-    }
-    return NULL;
-}
+
 
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
         JNIEnv *env,
@@ -97,19 +89,26 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
     glEnable(GL_DEPTH_TEST);
     glLineWidth(8.0);
 
-    camera.resetPos();
-    camera.buildLookAtMatrix(viewMat);
+
 
     projectType=prjType;
     fov=60.f;
     near=1.0f;
 
     shader.init();
+    camera.resetPos();
+    camera.setSceneCenterPos(&def_sc);
 
-    course = createCourse(courseNo);
+    course = CourseFactory::createCourse(courseNo);
     if(course!=NULL){
         course->load();
+        if( course->getSceneCenterV()!=NULL) {
+            camera.setSceneCenterPos(course->getSceneCenterV());
+        }
     }
+
+    camera.lookAtSceneCenter();
+    camera.buildLookAtMatrix(viewMat);
 
     LOGI("RenderApi_init end.");
     return;
@@ -227,6 +226,38 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraYawRight(
     camera.buildLookAtMatrix(viewMat);
 }
 
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateLeft(
+        JNIEnv *env,
+        jobject /* this */) {
+    LOGD("cameraRotateLeft");
+    camera.rotateAroundSceneCenter(camera.getCameraAxisU(),-1.0,false,false,true);
+    camera.buildLookAtMatrix(viewMat);
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateRight(
+        JNIEnv *env,
+        jobject /* this */) {
+    LOGD("cameraRotateRight");
+    camera.rotateAroundSceneCenter(camera.getCameraAxisU(),1.0,false,false,true);
+    camera.buildLookAtMatrix(viewMat);
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateUp(
+        JNIEnv *env,
+        jobject /* this */) {
+    //LOGD("cameraRotateUp");
+    camera.rotateAroundSceneCenter(camera.getCameraAxisR(),-1.0,true,false,false);
+    camera.buildLookAtMatrix(viewMat);
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateDown(
+        JNIEnv *env,
+        jobject /* this */) {
+    //LOGD("cameraRotateDown");
+    camera.rotateAroundSceneCenter(camera.getCameraAxisR(),1.0,true,false,false);
+    camera.buildLookAtMatrix(viewMat);
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 // 投影操作
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,6 +306,8 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_pushNearPlane(
     updateProjectMat();
 }
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////////////////
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -300,10 +333,16 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resetStep(
         jobject /* this */) {
 
     camera.resetPos();
-    camera.buildLookAtMatrix(viewMat);
-    if(course!=NULL){
+    camera.setSceneCenterPos(&def_sc);
+    if(course!=NULL) {
         course->reset();
+        if (course->getSceneCenterV() != NULL) {
+            camera.setSceneCenterPos(course->getSceneCenterV());
+        }
     }
+    camera.lookAtSceneCenter();
+    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_RenderApi_term(
@@ -312,4 +351,11 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_term(
     if(course!=NULL){
         delete course;
     }
+}
+
+extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraLookAtSceneCenter(
+        JNIEnv *env,
+        jobject /* this */) {
+    camera.lookAtSceneCenter();
+    camera.buildLookAtMatrix(viewMat);
 }

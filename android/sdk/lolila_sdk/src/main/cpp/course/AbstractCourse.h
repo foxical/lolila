@@ -5,7 +5,10 @@
 #ifndef __ABSTRACTCOURSE_H__
 #define __ABSTRACTCOURSE_H__
 
+#include <cstdlib>
+
 class DrawingContext;
+class Vector;
 
 class AbstractCourse{
 public:
@@ -16,6 +19,10 @@ public:
     virtual void nextStep()=0;
     virtual void prevStep()=0;
     virtual void reset()=0;
+
+    virtual const Vector* getSceneCenterV()const{
+        return NULL;
+    }
 };
 
 #endif //__ABSTRACTCOURSE_H__
