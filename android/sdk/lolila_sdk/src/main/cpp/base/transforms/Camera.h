@@ -56,13 +56,14 @@ public:
     void setSceneCenterPos(const Vector* cv);
     void lookAtSceneCenter();
     void rotateAroundSceneCenter(
-            const Vector& axis,
+
             float angle,
             bool lockCameraR= false,
             bool lockCameraD=false,
             bool lockCameraU= false
     );
 
+    void rotateAroundSceneCenterLockY(float angle);
 
 public:
 
@@ -82,6 +83,9 @@ public:
     }
     const Vector& getSceneCenterPos()const{
         return _sceneCenterPos;
+    }
+    const Vector& getCameraFront()const{
+        return _front;
     }
 
     float getYaw(const Vector& pos)const;

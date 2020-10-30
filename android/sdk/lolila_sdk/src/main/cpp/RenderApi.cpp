@@ -230,7 +230,8 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateLeft(
         JNIEnv *env,
         jobject /* this */) {
     LOGD("cameraRotateLeft");
-    camera.rotateAroundSceneCenter(camera.getCameraAxisU(),-1.0,false,false,true);
+    //camera.rotateAroundSceneCenter(-1.0,false,false,true);
+    camera.rotateAroundSceneCenterLockY(-1.0);
     camera.buildLookAtMatrix(viewMat);
 }
 
@@ -238,7 +239,8 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateRight(
         JNIEnv *env,
         jobject /* this */) {
     LOGD("cameraRotateRight");
-    camera.rotateAroundSceneCenter(camera.getCameraAxisU(),1.0,false,false,true);
+    //camera.rotateAroundSceneCenter(1.0,false,false,true);
+    camera.rotateAroundSceneCenterLockY(1.0);
     camera.buildLookAtMatrix(viewMat);
 }
 
@@ -246,7 +248,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateUp(
         JNIEnv *env,
         jobject /* this */) {
     //LOGD("cameraRotateUp");
-    camera.rotateAroundSceneCenter(camera.getCameraAxisR(),-1.0,true,false,false);
+    camera.rotateAroundSceneCenter(-1.0,true,false,false);
     camera.buildLookAtMatrix(viewMat);
 }
 
@@ -254,7 +256,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateDown(
         JNIEnv *env,
         jobject /* this */) {
     //LOGD("cameraRotateDown");
-    camera.rotateAroundSceneCenter(camera.getCameraAxisR(),1.0,true,false,false);
+    camera.rotateAroundSceneCenter(1.0,true,false,false);
     camera.buildLookAtMatrix(viewMat);
 }
 
@@ -358,4 +360,56 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraLookAtSceneCenter(
         jobject /* this */) {
     camera.lookAtSceneCenter();
     camera.buildLookAtMatrix(viewMat);
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraYawAngle(
+        JNIEnv *env,
+        jobject /* this */) {
+    return camera.getYaw(Vector(0,0,0));
+}
+
+extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraPitchAngle(
+        JNIEnv *env,
+        jobject /* this */) {
+    return camera.getPitch(Vector(0,0,0));
+}
+
+extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraPosX(
+        JNIEnv *env,
+        jobject /* this */) {
+    return camera.getPitch(Vector(0,0,0));
+}
+
+extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraPosY(
+        JNIEnv *env,
+        jobject /* this */) {
+    return camera.getPitch(Vector(0,0,0));
+}
+
+extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraPosZ(
+        JNIEnv *env,
+        jobject /* this */) {
+    return camera.getPitch(Vector(0,0,0));
+}
+
+extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getScenePosX(
+        JNIEnv *env,
+        jobject /* this */) {
+    return camera.getPitch(Vector(0,0,0));
+}
+
+extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getScenePosY(
+        JNIEnv *env,
+        jobject /* this */) {
+    return camera.getPitch(Vector(0,0,0));
+}
+
+extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getScenePosZ(
+        JNIEnv *env,
+        jobject /* this */) {
+    return camera.getPitch(Vector(0,0,0));
 }

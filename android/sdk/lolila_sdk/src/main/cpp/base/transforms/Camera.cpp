@@ -272,7 +272,33 @@ float Camera::getPitch(const Vector& scv)const{
     return pitch;
 }
 
-void Camera::rotateAroundSceneCenter(const Vector& axis,float angle,
+void Camera::rotateAroundSceneCenterLockY(float angle){
+    if(FloatUtils::isEqual(angle,0.0f)){
+        return;
+    }
+    if( _pos.isEqual(_sceneCenterPos)){
+        return;
+    }
+
+    const Vector axis(0,1,0);
+
+    const float ax = _sceneCenterPos.x();
+    const float ay = _sceneCenterPos.y();
+    const float az = _sceneCenterPos.z();
+    //LOGD("before rotate,px:%f,py:%f,pz:%f",_pos.x(),_pos.y(),_pos.z());
+    Vector before( _pos.x()-ax,_pos.y()-ay,_pos.z()-az);
+    Vector after = Rotation::doTransform(axis,angle,before);
+    _pos = Vector(after.x()+ax,after.y()+ay,after.z()+az);
+
+    _front = Rotation::doTransform(axis,angle,_front);
+    // Also re-calculate the Right and Up vector
+    _right = Vector::cross(_front,s_up).normalize();  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+    _up = Vector::cross(_right, _front).normalize();
+    Vector vDTemp = Vector::add(_pos,_front);
+    _direct = Vector::minus(_pos,vDTemp).normalize();
+}
+
+void Camera::rotateAroundSceneCenter(float angle,
                                      bool lockCameraR,
                                      bool lockCameraD,
                                      bool lockCameraU ){
@@ -284,13 +310,22 @@ void Camera::rotateAroundSceneCenter(const Vector& axis,float angle,
         return;
     }
 
+    const Vector* axis=NULL;
+    if( lockCameraR){
+        axis = &_right;
+    }else if(lockCameraU){
+        axis = &_up;
+    }else if(lockCameraD){
+        axis = &_direct;
+    }
+
 
     const float ax = _sceneCenterPos.x();
     const float ay = _sceneCenterPos.y();
     const float az = _sceneCenterPos.z();
     //LOGD("before rotate,px:%f,py:%f,pz:%f",_pos.x(),_pos.y(),_pos.z());
     Vector before( _pos.x()-ax,_pos.y()-ay,_pos.z()-az);
-    Vector after = Rotation::doTransform(axis,angle,before);
+    Vector after = Rotation::doTransform(*axis,angle,before);
     _pos = Vector(after.x()+ax,after.y()+ay,after.z()+az);
     //LOGD("  vPos:%s",_pos.c_str());
 

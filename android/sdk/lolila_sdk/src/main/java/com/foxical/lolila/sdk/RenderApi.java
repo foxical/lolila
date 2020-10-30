@@ -48,4 +48,14 @@ public final class RenderApi {
     public static native void prevStep();
     public static native void resetStep();
     public static native void term();
+
+
+    public static native float getCameraYawAngle();
+    public static native float getCameraPitchAngle();
+    public static native float getCameraPosX();
+    public static native float getCameraPosY();
+    public static native float getCameraPosZ();
+    public static native float getScenePosX();
+    public static native float getScenePosY();
+    public static native float getScenePosZ();
 }

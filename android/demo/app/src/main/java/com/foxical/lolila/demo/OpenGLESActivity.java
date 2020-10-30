@@ -12,6 +12,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.Window;
@@ -45,6 +46,8 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
     private Button btnReset;
     private int curStep=0;
     private GestureDetector gestureDetector;
+    private ScaleGestureDetector mScaleGestureDetector;
+    private float mScaleFactor = 1.0f;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,6 +60,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         gestureDetector = new GestureDetector(this,new MyGestureListener());
+        mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
         setContentView(R.layout.activity_opengles);
         findViewById(R.id.btn_move_back).setOnTouchListener(this);
@@ -227,6 +231,9 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if(isPT2Down){
+                return false;
+            }
             //Log.d("LOLILA","velocityX:"+velocityX+",velocityY:"+velocityY);
             Runnable runnable = null;
             float ax = Math.abs(velocityX);
@@ -285,9 +292,54 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         }
     }
 
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector scaleGestureDetector){
+            float curScale = scaleGestureDetector.getScaleFactor();
+            Log.d("LOLILA","curScale:"+curScale);
+            final JNIRenderer renderer = mGLView.renderer;
+            Runnable runnable=null;
+            if( curScale>1.0){
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.zoomOut();
+                    }
+                };
+            }else{
+                runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        renderer.zoomIn();
+                    }
+                };
+            }
+            mGLView.queueEvent(runnable);
+            return true;
+        }
+    }
+
+
+    boolean isPT2Down=false;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return gestureDetector.onTouchEvent(event);
+
+        int action = event.getAction();
+        if( action== MotionEvent.ACTION_DOWN){
+            isPT2Down=false;
+        }else if(action== MotionEvent.ACTION_POINTER_2_DOWN){
+            isPT2Down=true;
+        }
+
+        if(gestureDetector.onTouchEvent(event)){
+            //return true;
+        }
+
+
+        return mScaleGestureDetector.onTouchEvent(event);
+
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -304,7 +356,9 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         final int btnId = v.getId();
         //Log.d("LOLILA", "btnId:"+btnId+",action:"+action);
         if( btnId==R.id.gl_view_container){
-            //Log.d("LOLILA","hit on gl_view_container");
+
+            int pointerCount = event.getPointerCount();
+
             return false; // then will emit onTouchEvent
         }
 
