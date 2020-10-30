@@ -78,7 +78,7 @@ static void updateProjectMat(){
 
 
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_init(
         JNIEnv *env,
         jobject,jint prjType, jint courseNo /* this */) {
 
@@ -114,7 +114,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_init(
     return;
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resize(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_resize(
         JNIEnv *env,
         jobject obj, jint width, jint height ) {
     LOGI("RenderApi_resize w:%i,h:%i, aspect:%f",width,height,(float)width/(float)height);
@@ -127,7 +127,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resize(
 
 
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_draw(
         JNIEnv *env,
         jobject /* this */) {
     //LOGI("RenderApi_draw begin");
@@ -157,76 +157,76 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_draw(
 // 摄像机操作
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveForward(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveForward(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveForward();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveBack(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveBack(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveBack();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveLeft(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveLeft(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveLeft();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveRight(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveRight(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveRight();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveUp(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveUp(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveUp();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraMoveDown(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveDown(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveDown();
     camera.buildLookAtMatrix(viewMat);
 }
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraPitchUp(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraPitchUp(
         JNIEnv *env,
         jobject /* this */) {
     camera.pitchUp();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraPitchDown(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraPitchDown(
         JNIEnv *env,
         jobject /* this */) {
     camera.pitchDown();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraYawLeft(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraYawLeft(
         JNIEnv *env,
         jobject /* this */) {
     camera.yawLeft();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraYawRight(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraYawRight(
         JNIEnv *env,
         jobject /* this */) {
     camera.yawRight();
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateLeft(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateLeft(
         JNIEnv *env,
         jobject /* this */) {
     LOGD("cameraRotateLeft");
@@ -235,7 +235,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateLeft(
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateRight(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateRight(
         JNIEnv *env,
         jobject /* this */) {
     LOGD("cameraRotateRight");
@@ -244,7 +244,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateRight(
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateUp(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateUp(
         JNIEnv *env,
         jobject /* this */) {
     //LOGD("cameraRotateUp");
@@ -252,7 +252,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateUp(
     camera.buildLookAtMatrix(viewMat);
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateDown(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateDown(
         JNIEnv *env,
         jobject /* this */) {
     //LOGD("cameraRotateDown");
@@ -264,7 +264,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraRotateDown(
 // 投影操作
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_zoomIn(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_zoomIn(
         JNIEnv *env,
         jobject /* this */) {
     fov+=1.0f;
@@ -274,7 +274,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_zoomIn(
     updateProjectMat();
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_zoomOut(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_zoomOut(
         JNIEnv *env,
         jobject /* this */) {
     fov-=1.0f;
@@ -285,7 +285,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_zoomOut(
 }
 
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_useFrustumPrj(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_useFrustumPrj(
         JNIEnv *env,
         jobject /* this */) {
     projectType=0;
@@ -293,7 +293,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_useFrustumPrj(
     updateProjectMat();
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_useOrthoPrj(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_useOrthoPrj(
         JNIEnv *env,
         jobject /* this */) {
     projectType=1;
@@ -301,7 +301,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_useOrthoPrj(
     updateProjectMat();
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_pushNearPlane(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_pushNearPlane(
         JNIEnv *env,
         jobject /* this */) {
     near+=1.0f;
@@ -314,7 +314,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_pushNearPlane(
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_nextStep(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_nextStep(
         JNIEnv *env,
         jobject /* this */) {
     if(course!=NULL){
@@ -322,7 +322,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_nextStep(
     }
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_prevStep(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_prevStep(
         JNIEnv *env,
         jobject /* this */) {
     if(course!=NULL){
@@ -330,7 +330,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_prevStep(
     }
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resetStep(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_resetStep(
         JNIEnv *env,
         jobject /* this */) {
 
@@ -347,7 +347,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_resetStep(
 
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_term(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_term(
         JNIEnv *env,
         jobject /* this */) {
     if(course!=NULL){
@@ -355,7 +355,7 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_term(
     }
 }
 
-extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraLookAtSceneCenter(
+extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraLookAtSceneCenter(
         JNIEnv *env,
         jobject /* this */) {
     camera.lookAtSceneCenter();
@@ -366,49 +366,49 @@ extern "C" void Java_com_foxical_lolila_sdk_RenderApi_cameraLookAtSceneCenter(
 //
 //////////////////////////////////////////////////////////////////////////////////////////////////
 
-extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraYawAngle(
+extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraYawAngle(
         JNIEnv *env,
         jobject /* this */) {
     return camera.getYaw(Vector(0,0,0));
 }
 
-extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraPitchAngle(
+extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraPitchAngle(
         JNIEnv *env,
         jobject /* this */) {
     return camera.getPitch(Vector(0,0,0));
 }
 
-extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraPosX(
+extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraPosX(
         JNIEnv *env,
         jobject /* this */) {
     return camera.getPitch(Vector(0,0,0));
 }
 
-extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraPosY(
+extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraPosY(
         JNIEnv *env,
         jobject /* this */) {
     return camera.getPitch(Vector(0,0,0));
 }
 
-extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getCameraPosZ(
+extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraPosZ(
         JNIEnv *env,
         jobject /* this */) {
     return camera.getPitch(Vector(0,0,0));
 }
 
-extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getScenePosX(
+extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getScenePosX(
         JNIEnv *env,
         jobject /* this */) {
     return camera.getPitch(Vector(0,0,0));
 }
 
-extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getScenePosY(
+extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getScenePosY(
         JNIEnv *env,
         jobject /* this */) {
     return camera.getPitch(Vector(0,0,0));
 }
 
-extern "C" jfloat Java_com_foxical_lolila_sdk_RenderApi_getScenePosZ(
+extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getScenePosZ(
         JNIEnv *env,
         jobject /* this */) {
     return camera.getPitch(Vector(0,0,0));

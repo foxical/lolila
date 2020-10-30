@@ -4,7 +4,7 @@ package com.foxical.lolila.sdk;
  * Created by Administrator on 2017/10/10.
  */
 
-public final class RenderApi {
+public final class SceneApi {
 
     // Used to load the 'native-lib' library on application startup.
     static {

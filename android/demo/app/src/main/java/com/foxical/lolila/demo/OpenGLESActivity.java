@@ -22,7 +22,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 
-import com.foxical.lolila.sdk.RenderApi;
+import com.foxical.lolila.sdk.SceneApi;
 
 import java.io.File;
 
@@ -152,74 +152,74 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
             // 设置背景色
             //GLES20.glClearColor(0.5f, 0.5f, 0.5f, 1.0f);
-            RenderApi.init(0,mCourseNo);
+            SceneApi.init(0,mCourseNo);
         }
 
         public void onSurfaceChanged(GL10 unused, int width, int height) {
             //GLES20.glViewport(0, 0, width, height);
-            RenderApi.resize(width,height);
+            SceneApi.resize(width,height);
         }
 
         public void onDrawFrame(GL10 unused) {
             // 重绘背景色
             //GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
-            RenderApi.draw();
+            SceneApi.draw();
         }
 
         void cameraMoveForward(){
-            RenderApi.cameraMoveForward();
+            SceneApi.cameraMoveForward();
         }
         void cameraMoveBack(){
-            RenderApi.cameraMoveBack();
+            SceneApi.cameraMoveBack();
         }
         void cameraMoveLeft(){
-            RenderApi.cameraMoveLeft();
+            SceneApi.cameraMoveLeft();
         }
         void cameraMoveRight(){
-            RenderApi.cameraMoveRight();
+            SceneApi.cameraMoveRight();
         }
         void cameraMoveUp(){
-            RenderApi.cameraMoveUp();
+            SceneApi.cameraMoveUp();
         }
         void cameraMoveDown(){
-            RenderApi.cameraMoveDown();
+            SceneApi.cameraMoveDown();
         }
         void cameraPitchUp(){
-            RenderApi.cameraPitchUp();
+            SceneApi.cameraPitchUp();
         }
         void cameraPitchDown(){
-            RenderApi.cameraPitchDown();
+            SceneApi.cameraPitchDown();
         }
         void cameraYawLeft(){
-            RenderApi.cameraYawLeft();
+            SceneApi.cameraYawLeft();
         }
         void cameraYawRight(){
-            RenderApi.cameraYawRight();
+            SceneApi.cameraYawRight();
         }
         void cameraRotateLeft(){
-            RenderApi.cameraRotateLeft();
+            SceneApi.cameraRotateLeft();
         }
         void cameraRotateRight(){
-            RenderApi.cameraRotateRight();
+            SceneApi.cameraRotateRight();
         }
         void cameraRotateUp(){
-            RenderApi.cameraRotateUp();
+            SceneApi.cameraRotateUp();
         }
         void cameraRotateDown(){
-            RenderApi.cameraRotateDown();
+            SceneApi.cameraRotateDown();
         }
         void cameraLookAtSceneCenter(){
-            RenderApi.cameraLookAtSceneCenter();
+            SceneApi.cameraLookAtSceneCenter();
         }
-        void zoomIn(){RenderApi.zoomIn();}
-        void zoomOut(){RenderApi.zoomOut();}
-        void useFrustumPrj(){RenderApi.useFrustumPrj();}
-        void useOrthoPrj(){RenderApi.useOrthoPrj();}
-        void pushNearPlane(){RenderApi.pushNearPlane();}
-        void term(){RenderApi.term();}
-        void resetStep(){RenderApi.resetStep();}
-        void nextStep(){RenderApi.nextStep();}
-        void prevStep(){RenderApi.prevStep();}
+        void zoomIn(){SceneApi.zoomIn();}
+        void zoomOut(){SceneApi.zoomOut();}
+        void useFrustumPrj(){SceneApi.useFrustumPrj();}
+        void useOrthoPrj(){SceneApi.useOrthoPrj();}
+        void pushNearPlane(){SceneApi.pushNearPlane();}
+        void term(){SceneApi.term();}
+        void resetStep(){SceneApi.resetStep();}
+        void nextStep(){SceneApi.nextStep();}
+        void prevStep(){SceneApi.prevStep();}
     }
 
 
