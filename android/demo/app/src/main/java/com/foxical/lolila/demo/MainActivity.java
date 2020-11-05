@@ -48,6 +48,12 @@ public class MainActivity extends Activity {
                 startCourse(3);
             }
         });
+        findViewById(R.id.btn_enter_course_4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCourse(4);
+            }
+        });
         findViewById(R.id.btn_enter_course_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,6 +81,6 @@ public class MainActivity extends Activity {
             Toast.makeText(MainActivity.this,"OpenGL ES 3.0 not supported on device. Aborting...",Toast.LENGTH_SHORT).show();
             return;
         }
-        OpenGLESActivity.start(MainActivity.this,no);
+        SceneActivity.start(MainActivity.this,no);
     }
 }

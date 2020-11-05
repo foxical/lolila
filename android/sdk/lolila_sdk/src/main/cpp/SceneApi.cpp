@@ -230,8 +230,8 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateLeft(
         JNIEnv *env,
         jobject /* this */) {
     LOGD("cameraRotateLeft");
-    //camera.rotateAroundSceneCenter(-1.0,false,false,true);
-    camera.rotateAroundSceneCenterLockY(-1.0);
+    camera.rotateAroundSceneCenter(-1.0,false,false,true);
+    //camera.rotateAroundSceneCenterLockY(-1.0);
     camera.buildLookAtMatrix(viewMat);
 }
 
@@ -239,8 +239,8 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateRight(
         JNIEnv *env,
         jobject /* this */) {
     LOGD("cameraRotateRight");
-    //camera.rotateAroundSceneCenter(1.0,false,false,true);
-    camera.rotateAroundSceneCenterLockY(1.0);
+    camera.rotateAroundSceneCenter(1.0,false,false,true);
+    //camera.rotateAroundSceneCenterLockY(1.0);
     camera.buildLookAtMatrix(viewMat);
 }
 
@@ -381,35 +381,36 @@ extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraPitchAngle(
 extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraPosX(
         JNIEnv *env,
         jobject /* this */) {
-    return camera.getPitch(Vector(0,0,0));
+
+    return camera.getCameraPos().x();
 }
 
 extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraPosY(
         JNIEnv *env,
         jobject /* this */) {
-    return camera.getPitch(Vector(0,0,0));
+    return camera.getCameraPos().y();
 }
 
 extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getCameraPosZ(
         JNIEnv *env,
         jobject /* this */) {
-    return camera.getPitch(Vector(0,0,0));
+    return camera.getCameraPos().z();
 }
 
 extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getScenePosX(
         JNIEnv *env,
         jobject /* this */) {
-    return camera.getPitch(Vector(0,0,0));
+    return camera.getSceneCenterPos().x();
 }
 
 extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getScenePosY(
         JNIEnv *env,
         jobject /* this */) {
-    return camera.getPitch(Vector(0,0,0));
+    return camera.getSceneCenterPos().y();
 }
 
 extern "C" jfloat Java_com_foxical_lolila_sdk_SceneApi_getScenePosZ(
         JNIEnv *env,
         jobject /* this */) {
-    return camera.getPitch(Vector(0,0,0));
+    return camera.getSceneCenterPos().z();
 }

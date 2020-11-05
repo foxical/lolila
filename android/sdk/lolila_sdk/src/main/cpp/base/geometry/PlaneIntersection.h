@@ -17,6 +17,9 @@ public:
     static bool isParallel(const Plane&, const Plane& );
 
     static Vector  intersects(const Plane&, const Ray& );
+
+    static float  intersects_f(const Plane&, const Ray& );
+
     static Vector  intersects(const Plane&, const Line& );
 
     static Ray intersects(const Plane& plane1,const Plane& plane2);

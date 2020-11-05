@@ -148,21 +148,17 @@ float Camera::getYaw(const Vector& scv)const{
 
     // 四种特殊情况
     if( FloatUtils::isEqual(_pos.x(),scv.x()) ){
-        if( _pos.z()>scv.z()){
+        if( _pos.z()>=scv.z()){
             yaw = -90.0f;
         }else if( _pos.z()<scv.z()){
             yaw = -270.0f;
-        }else{
-            throw runtime_error(" lookAtSceneCenterYaw isEqual(_pos.z(),scv.z()) ");
         }
 
     }else if( FloatUtils::isEqual(_pos.z(),scv.z()) ){
-        if( _pos.x()>scv.x()){
+        if( _pos.x()>=scv.x()){
             yaw = -180.0f;
         }else if( _pos.x()<scv.x()){
             yaw = 0.0f;
-        }else{
-            throw runtime_error(" lookAtSceneCenterYaw isEqual(_pos.x(),scv.x())");
         }
 
     }else {
@@ -357,31 +353,21 @@ void Camera::rotateFront( float angle,
     }
 }
 
-
+static const int transform_type=2;
 
 void Camera::buildLookAtMatrix(Matrix& M)const{
 
     LOGD("---------------------------------------------------------------------");
-    //LOGD("yaw:%f, pitch:%f", _yaw,_pitch);
+    LOGD("vScene:%s",_sceneCenterPos.c_str());
     LOGD("  vPos:%s",_pos.c_str());
     LOGD("vFront:%s",_front.c_str());
     LOGD("    vD:%s",_direct.c_str());
     LOGD("    vR:%s",_right.c_str());
     LOGD("    vU:%s",_up.c_str());
 
-#if 0
 
-    Vector vecLookAt = Vector::add(_pos,_front);
-    MVPTransform::buildLookAtMatrix(
-            _pos.x(),    _pos.y(),    _pos.z(),
-            vecLookAt.x(), vecLookAt.y(), vecLookAt.z(),
-            _up,
-            M
-    );
 
-#endif
 
-#if 1
 
     // 上向量必须与方向向量垂直
     if( !FloatUtils::isEqual(Vector::dot(_direct,_up),0.0f) ){
@@ -404,20 +390,44 @@ void Camera::buildLookAtMatrix(Matrix& M)const{
     const float& posY=_pos.y();
     const float& posZ=_pos.z();
 
-    Matrix M0(4,4);
-    M0.set(0,0, vRight.x());   M0.set(0,1, vRight.y());   M0.set(0,2, vRight.z());   //M0.set(0,3, 0.0f);
-    M0.set(1,0, vU.x());       M0.set(1,1, vU.y());       M0.set(1,2, vU.z());       //M0.set(1,3, 0.0f);
-    M0.set(2,0, vDirect.x());  M0.set(2,1, vDirect.y());  M0.set(2,2, vDirect.z());  //M0.set(2,3, 0.0f);
-    /*M0.set(3,0, 0.0f);         M0.set(3,1,0.0f)         M0.set(3,2, 0.0f);*/         M0.set(3,3, 1.0f);
-    //LOGD("MO:%s",M0.c_str());
+
+    if(transform_type==1) {
+
+        Matrix M0(4, 4);
+        M0.set(0, 0, vRight.x());   M0.set(0, 1, vRight.y());   M0.set(0, 2, vRight.z());   //M0.set(0,3, 0.0f);
+        M0.set(1, 0, vU.x());       M0.set(1, 1, vU.y());       M0.set(1, 2, vU.z());       //M0.set(1,3, 0.0f);
+        M0.set(2, 0, vDirect.x());  M0.set(2, 1, vDirect.y());  M0.set(2, 2, vDirect.z());  //M0.set(2,3, 0.0f);
+        /*M0.set(3,0, 0.0f);         M0.set(3,1,0.0f)         M0.set(3,2, 0.0f);*/          M0.set(3,3,1.0f);
+        //LOGD("MO:%s",M0.c_str());
 
 
-    Matrix M1(4,4);
-    Translate::buildTranslateMatrix(Vector(-posX,-posY,-posZ),M1);
+        Matrix M1(4, 4);
+        Translate::buildTranslateMatrix(Vector(-posX, -posY, -posZ), M1);
 
-    //!!! 这里先平移，即先把坐标原点重合，再做变换
-    M.set(Matrix::multiply(M0,M1));
+        //!!! 这里先平移，即先把坐标原点重合，再做变换
+        M.set(Matrix::multiply(M0, M1));
 
-#endif
+    }
 
+
+    if(transform_type==2) {
+
+        ///// !!!
+        // 另外一种方法：根据基变换原理, 完全按照课本的通用线性变换公式  M的逆矩阵 * P'
+        // Test OK
+
+
+        Matrix M2(4, 4);
+        M2.set(0, 0, vRight.x());  M2.set(0, 1, vU.x());       M2.set(0, 2, vDirect.x());
+        M2.set(1, 0, vRight.y());  M2.set(1, 1, vU.y());       M2.set(1, 2, vDirect.y());
+        M2.set(2, 0, vRight.z());  M2.set(2, 1, vU.z());       M2.set(2, 2, vDirect.z());
+        /*M2.set(3, 0, 0.0f);        M2.set(3, 1, 0.0f);       M2.set(3, 2, 0.0f);*/          M2.set(3, 3, 1.0f);
+        //LOGD("M2-1:%s",M2.invert().c_str());
+
+        Matrix M1(4, 4);
+        Translate::buildTranslateMatrix(Vector(-posX, -posY, -posZ), M1);
+
+        M.set(Matrix::multiply(M2.invert(), M1));
+
+    }
 }

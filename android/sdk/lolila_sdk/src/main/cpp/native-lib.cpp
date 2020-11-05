@@ -31,7 +31,7 @@
 #include "base/math/TMatrix.hpp"
 #include "base/math/DoubleOutputAdapter.hpp"
 #include "base/math/FractionOutputAdapter.hpp"
-
+#include "base/geometry/Triangle.h"
 using namespace std;
 
 extern Vector v_perp_to_n_and_not_perp_to_m(const Vector& N, const Vector& M,const Vector& P,const float& dot );
@@ -144,10 +144,11 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
 
     try{
 
-        return env->NewStringUTF( "");
+
 
         LogQueue::clear();
 
+#if 0
         //testLineDistance();
         //testPointLies();
         //testPlanes();
@@ -365,6 +366,20 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
 
             LOGD("f1++ :%s", ((string)(++f1)).c_str());
             LOGD("f1-- :%s", ((string)(--f1)).c_str());
+        }
+
+#endif
+
+        {
+            Triangle triangle(0, 2, 0, 0, 0, 2, 2, 0, 0);
+            Ray ray(Vector(0,0,0),Vector(1,1,1));
+            Vector cp(0,0,0),w(0,0,0);
+            bool suc = triangle.surfaceIntersectionCheck(ray, cp, w);
+            LOGD("triangle.surfaceIntersectionCheck:%i", suc?1:0);
+            if(suc) {
+                LOGD("triangle.surfaceIntersectionCheck cp:%s", cp.c_str());
+                LOGD("triangle.surfaceIntersectionCheck w:%s", w.c_str());
+            }
         }
 
         return env->NewStringUTF( LogQueue::c_str());

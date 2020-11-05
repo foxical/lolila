@@ -27,8 +27,12 @@ bool PlaneIntersection::isParallel(const Plane& p1, const Plane& p2){
     return LineDistance::isParallel(p1.N(),p2.N());
 }
 
-Vector  PlaneIntersection::intersects(const Plane& plane, const Ray& ray){
+float  PlaneIntersection::intersects_f(const Plane& plane, const Ray& ray){
     const Vector& S = ray.endPoint();
+    if(plane.pointLiesInPlane(S)){
+        return 0.0f;
+    }
+
     const Vector& V = ray.direction();
     const Vector& N = plane.N();
     const Vector& P = plane.P();
@@ -36,10 +40,21 @@ Vector  PlaneIntersection::intersects(const Plane& plane, const Ray& ray){
 
     const float NV = Vector::dot(N,V);
     if( FloatUtils::isEqual(NV,0.0f)){
-        throw runtime_error("Line is parallel to plane!");
+        //throw runtime_error("Line is parallel to plane!");
+        return -1.0f;
     }
 
     const float t = -1.0f*(Vector::dot(N,S)+D)/NV;
+    //return ray.pointAt(t);
+    return t;
+}
+
+Vector  PlaneIntersection::intersects(const Plane& plane, const Ray& ray){
+
+    const float t = intersects_f(plane,ray);
+    if( FloatUtils::isEqual(t,-1.0f)){
+        throw runtime_error("Line is parallel to plane!");
+    }
     return ray.pointAt(t);
 }
 

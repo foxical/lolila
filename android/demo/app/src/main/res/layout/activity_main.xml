@@ -29,35 +29,42 @@
                 android:layout_height="40dp"
                 android:paddingLeft="20dp"
                 android:textAlignment="textStart"
-                android:text="课程1-《思维新观察》-P150-3"/>
+                android:text="course1-《new thing》-P150-3"/>
             <Button
                 android:id="@+id/btn_enter_course_2"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="20dp"
                 android:textAlignment="textStart"
-                android:text="课程2-"/>
+                android:text="course2-"/>
             <Button
                 android:id="@+id/btn_enter_course_3"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="20dp"
                 android:textAlignment="textStart"
-                android:text="课程3-空间射线方程"/>
+                android:text="course3-ray"/>
+            <Button
+                android:id="@+id/btn_enter_course_4"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingLeft="20dp"
+                android:textAlignment="textStart"
+                android:text="course4-Intersection of a Ray and a Triangle"/>
             <Button
                 android:id="@+id/btn_enter_course_test"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="20dp"
                 android:textAlignment="textStart"
-                android:text="进入测试课程"/>
+                android:text="demo course"/>
             <Button
                 android:id="@+id/btn_enter_test_2d"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="20dp"
                 android:textAlignment="textStart"
-                android:text="进入矩阵动画测试"/>
+                android:text="matrix animation test"/>
         </LinearLayout>
 
     </ScrollView>

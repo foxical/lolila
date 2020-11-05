@@ -20,8 +20,10 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 
+import com.foxical.lolila.demo.widget.RadarWidget;
 import com.foxical.lolila.sdk.SceneApi;
 
 import java.io.File;
@@ -31,10 +33,10 @@ import javax.microedition.khronos.opengles.GL10;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
-public class OpenGLESActivity extends Activity implements View.OnTouchListener{
+public class SceneActivity extends Activity implements View.OnTouchListener{
 
     public static void start(Context ctx,int no){
-        Intent intent = new Intent(ctx,OpenGLESActivity.class);
+        Intent intent = new Intent(ctx,SceneActivity.class);
         intent.putExtra("courseNo",no);
         ctx.startActivity(intent);
     }
@@ -49,6 +51,9 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
     private ScaleGestureDetector mScaleGestureDetector;
     private float mScaleFactor = 1.0f;
 
+    private RadarWidget radarWidget;
+    private Handler handler = new Handler();
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +67,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         gestureDetector = new GestureDetector(this,new MyGestureListener());
         mScaleGestureDetector = new ScaleGestureDetector(this, new ScaleListener());
 
-        setContentView(R.layout.activity_opengles);
+        setContentView(R.layout.activity_scene);
         findViewById(R.id.btn_move_back).setOnTouchListener(this);
         findViewById(R.id.btn_move_forward).setOnTouchListener(this);
         findViewById(R.id.btn_move_left).setOnTouchListener(this);
@@ -95,6 +100,8 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
         btnNextStep = findViewById(R.id.btn_next_step);
         btnReset = findViewById(R.id.btn_reset_step);
         updateCurStep();
+
+        radarWidget = findViewById(R.id.radar);
     }
 
     @Override
@@ -114,6 +121,23 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
 
     private void updateCurStep(){
         btnReset.setText("复位"+"("+curStep+")");
+    }
+
+    private void updateRadar(){
+        final RadarWidget radarWidgetRef = this.radarWidget;
+        final TextView yaw = findViewById(R.id.camera_yaw);
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                radarWidgetRef.setScenePosX(SceneApi.getScenePosX());
+                radarWidgetRef.setScenePoxZ(SceneApi.getScenePosZ());
+                radarWidgetRef.setCameraPosX(SceneApi.getCameraPosX());
+                radarWidgetRef.setCameraPoxZ(SceneApi.getCameraPosZ());
+                radarWidgetRef.setYaw(SceneApi.getCameraYawAngle());
+                radarWidgetRef.invalidate();
+                yaw.setText(""+SceneApi.getCameraYawAngle());
+            }
+        });
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -164,6 +188,7 @@ public class OpenGLESActivity extends Activity implements View.OnTouchListener{
             // 重绘背景色
             //GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
             SceneApi.draw();
+            updateRadar();
         }
 
         void cameraMoveForward(){

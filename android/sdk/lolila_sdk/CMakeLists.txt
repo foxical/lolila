@@ -24,6 +24,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/geometry/Line.cpp
              src/main/cpp/base/geometry/Ray.cpp
              src/main/cpp/base/geometry/LineDistance.cpp
+             src/main/cpp/base/geometry/Triangle.cpp
              src/main/cpp/base/math/Matrix.cpp
              src/main/cpp/base/math/Fraction.cpp
              src/main/cpp/base/math/TMatrix.hpp
@@ -55,6 +56,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/course/Course1.cpp
              src/main/cpp/course/Course2.cpp
              src/main/cpp/course/Course3.cpp
+             src/main/cpp/course/Course4.cpp
              src/main/cpp/shapes/SimpleLine.cpp
              src/main/cpp/shapes/SimplePlane.cpp
              src/main/cpp/shapes/HollowTriangle.cpp
@@ -65,6 +67,8 @@ add_library( # Sets the name of the library.
              src/main/cpp/shapes/SymbleO.cpp
              src/main/cpp/shapes/SymbleC.cpp
              src/main/cpp/shapes/SemiCircle.cpp
+             src/main/cpp/shapes/Simple3DCoordinate.cpp
+             src/main/cpp/shapes/SimpleTriangle.cpp
           )
 
 # Searches for a specified prebuilt library and stores the path as a

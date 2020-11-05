@@ -25,7 +25,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".OpenGLESActivity"
+        <activity android:name=".SceneActivity"
             android:launchMode="standard"
             android:screenOrientation="landscape" />
         <activity android:name=".MatrixTestActivity"

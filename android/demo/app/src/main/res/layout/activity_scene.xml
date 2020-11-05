@@ -184,4 +184,30 @@
             android:text="低头"/>
     </LinearLayout>
 
+    <FrameLayout
+        android:id="@+id/radar_wrap"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/prj_type_group"
+        android:background="#3e000000">
+
+        <com.foxical.lolila.demo.widget.RadarWidget
+            android:id="@+id/radar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/camera_yaw"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@id/prj_type_group"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="4dp"
+        android:text=""
+        android:textColor="@color/colorPrimary"
+        />
 </RelativeLayout>
