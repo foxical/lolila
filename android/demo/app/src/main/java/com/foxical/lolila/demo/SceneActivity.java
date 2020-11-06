@@ -302,7 +302,7 @@ public class SceneActivity extends Activity implements View.OnTouchListener{
                 new Thread(){
                     @Override
                     public void run(){
-                        for (int i=1;i<= 90;++i){
+                        for (int i=1;i<= 45;++i){
                             mGLView.queueEvent(runnableF);
                             try {
                                 Thread.sleep(10);

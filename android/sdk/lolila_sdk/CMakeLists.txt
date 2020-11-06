@@ -19,12 +19,14 @@ add_library( # Sets the name of the library.
              # Associated headers in the same location as their source
              # file are automatically included.
              src/main/cpp/native-lib.cpp
-        src/main/cpp/SceneApi.cpp
+             src/main/cpp/SceneApi.cpp
              src/main/cpp/base/geometry/Vector.cpp
              src/main/cpp/base/geometry/Line.cpp
              src/main/cpp/base/geometry/Ray.cpp
              src/main/cpp/base/geometry/LineDistance.cpp
              src/main/cpp/base/geometry/Triangle.cpp
+             src/main/cpp/base/geometry/Box.cpp
+             src/main/cpp/base/geometry/BoxPlane.cpp
              src/main/cpp/base/math/Matrix.cpp
              src/main/cpp/base/math/Fraction.cpp
              src/main/cpp/base/math/TMatrix.hpp
@@ -57,6 +59,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/course/Course2.cpp
              src/main/cpp/course/Course3.cpp
              src/main/cpp/course/Course4.cpp
+             src/main/cpp/course/Course5.cpp
              src/main/cpp/shapes/SimpleLine.cpp
              src/main/cpp/shapes/SimplePlane.cpp
              src/main/cpp/shapes/HollowTriangle.cpp
