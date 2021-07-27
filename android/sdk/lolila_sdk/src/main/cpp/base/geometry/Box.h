@@ -6,6 +6,8 @@
 #define _BOX_H
 
 #ifndef __VECTOR_H__
+
+
 #include "Vector.h"
 #endif
 
@@ -18,24 +20,24 @@
 #endif
 
 class Ray;
+#include <glm/glm.hpp>
 
 class Box {
 public:
-    Box(float w,float h,float d);
+    Box(const glm::mat4& mat4);
     ~Box();
-    float getWidth()const;
-    float getHeight()const;
-    float getDepth()const;
+//    float getWidth()const;
+//    float getHeight()const;
+//    float getDepth()const;
     bool  surfaceIntersectionCheck(const Ray& ray, Vector& crossPoint,Vector& weight)const;
-    void translate(const Vector& t);
-    void rotate(const Vector& axis,float angle);
-    inline const Matrix& geCurTransformMat()const{
-        return curTransformMat;
-    }
+//    void translate(const Vector& t);
+//    void rotate(const Vector& axis,float angle);
+//    inline const Matrix& geCurTransformMat()const{
+//        return curTransformMat;
+//    }
 private:
     Vector _p0,_p1,_p2,_p3,_p4,_p5,_p6,_p7;
     BoxPlane _plane0,_plane1,_plane2,_plane3,_plane4,_plane5;
-    Matrix curTransformMat;
 };
 
 

@@ -65,3 +65,19 @@ void SimpleShader::setMatrix(const GLchar* name, const Matrix& M)const{
     matLoc = glGetUniformLocation(_shaderProgram.getProgramObject(), name);
     glUniformMatrix4fv(matLoc, 1, GL_TRUE, M.value_ptr() );
 }
+
+void SimpleShader::setProjectMatrix(const glm::mat4& M)const{
+    setMatrix("projection",M);
+}
+void SimpleShader::setViewMatrix(const glm::mat4& M)const{
+    setMatrix("view",M);
+}
+void SimpleShader::setModelMatrix(const glm::mat4& M)const{
+    setMatrix("model",M);
+}
+void SimpleShader::setMatrix(const GLchar* name, const glm::mat4& M)const{
+    int matLoc = -1;
+    matLoc = glGetUniformLocation(_shaderProgram.getProgramObject(), name);
+    glUniformMatrix4fv(matLoc, 1, GL_FALSE, &M[0][0] );
+}
+

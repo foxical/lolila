@@ -6,6 +6,7 @@
 #define __ABSTRACTCOURSE_H__
 
 #include <cstdlib>
+#include "../base/math/Matrix.h"
 
 class DrawingContext;
 class Vector;
@@ -21,6 +22,10 @@ public:
     virtual void reset()=0;
 
     virtual const Vector* getSceneCenterV()const{
+        return NULL;
+    }
+
+    virtual const Matrix* getCustomProjection()const{
         return NULL;
     }
 };

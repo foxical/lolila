@@ -4,6 +4,9 @@
 
 cmake_minimum_required(VERSION 3.4.1)
 
+# Import the CMakeLists.txt for the glm library
+add_subdirectory(src/main/cpp/glm) # if your CMakeLists is at '../cpp'
+
 # Creates and names a library, sets it as either STATIC
 # or SHARED, and provides the relative paths to its source code.
 # You can define multiple libraries, and CMake builds it for you.
@@ -39,6 +42,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/utils/stb_image_wrap.cpp
              src/main/cpp/base/utils/Simple2DTexture.cpp
              src/main/cpp/base/utils/VBOHelper.cpp
+             src/main/cpp/base/utils/LinearlyIndependent.cpp
              src/main/cpp/base/geometry/Plane.cpp
              src/main/cpp/base/geometry/PlaneIntersection.cpp
              src/main/cpp/base/geometry/ViewFrustum.cpp
@@ -48,6 +52,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/transforms/Translate.cpp
              src/main/cpp/base/transforms/Camera.cpp
              src/main/cpp/base/transforms/Scaling.cpp
+             src/main/cpp/base/transforms/MultiTransform.cpp
              src/main/cpp/shaders/SimpleVertexSet.cpp
              src/main/cpp/shaders/ShaderProgram.cpp
              src/main/cpp/shaders/SimpleShader.cpp
@@ -60,6 +65,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/course/Course3.cpp
              src/main/cpp/course/Course4.cpp
              src/main/cpp/course/Course5.cpp
+             src/main/cpp/course/Course6.cpp
              src/main/cpp/shapes/SimpleLine.cpp
              src/main/cpp/shapes/SimplePlane.cpp
              src/main/cpp/shapes/HollowTriangle.cpp
@@ -102,4 +108,5 @@ target_link_libraries( # Specifies the target library.
                        ${log-lib}
                        android
                        EGL
-                       GLESv3 )
+                       GLESv3
+                       glm )

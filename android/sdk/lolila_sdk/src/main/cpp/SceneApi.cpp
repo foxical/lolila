@@ -6,6 +6,8 @@
 #include <GLES3/gl3.h>
 #include <malloc.h>
 #include <math.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include "base/utils/GLUtils.h"
 #include "base/utils/AndroidLog.h"
 #include "base/math/Matrix.h"
@@ -61,11 +63,21 @@ static SimpleShader shader;
 
 static AbstractCourse* course=NULL;
 
+static glm::mat4 mat4_projection;
+
 
 //////////////////////////////////
 
 
 static void updateProjectMat(){
+
+    if(course!=NULL){
+        const Matrix* customPrjMat = course->getCustomProjection();
+        if( customPrjMat!=NULL){
+            projectMat.set(*customPrjMat);
+            return;
+        }
+    }
 
     far = near + 20.0f;
 
@@ -74,6 +86,9 @@ static void updateProjectMat(){
     }else{
         MVPTransform::buildOrthoMatrix(gl_viewport_width, gl_viewport_height, near, far, fov, projectMat);
     }
+
+    // Projection matrix : 45° Field of View, 4:3 ratio, display range : 0.1 unit <-> 100 units
+    mat4_projection = glm::perspective(glm::radians(fov), (float) gl_viewport_width / (float)gl_viewport_height, 0.1f, 100.0f);
 }
 
 
@@ -135,14 +150,27 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_draw(
     // Set the viewport
     glViewport ( 0, 0, gl_viewport_width, gl_viewport_height  );
 
+
     // Clear the color buffer
     glClear ( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
 
     shader.use();
-    shader.setProjectMatrix(projectMat);
-    shader.setViewMatrix(viewMat);
+    //shader.setProjectMatrix(projectMat);
+    //shader.setViewMatrix(viewMat);
+    shader.setProjectMatrix(mat4_projection);
 
+    // Camera matrix
+    /*
+    glm::mat4 mat4_view = glm::lookAt(
+            glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
+            glm::vec3(0,0,0), // and looks at the origin
+            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
+    );
+    shader.setViewMatrix(mat4_view);
+    */
+
+    shader.setViewMatrix(viewMat);
 
     DrawingContext dc(shader);
     if(course!=NULL) {

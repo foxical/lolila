@@ -51,11 +51,11 @@ public:
     /**
      * 右手法则
      * @param P
-     * 大拇指方向
-     * @param Q
      * 四个手指方向
+     * @param Q
+     * 手心方向
      * @return
-     * PXQ -》 手心方向
+     * PXQ -》 大拇指方向
      */
     static Vector cross(const Vector& P,const Vector& Q);
     static Vector scalarMultiply( const Vector&,const float&);

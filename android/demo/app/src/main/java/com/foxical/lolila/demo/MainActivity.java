@@ -60,6 +60,12 @@ public class MainActivity extends Activity {
                 startCourse(5);
             }
         });
+        findViewById(R.id.btn_enter_course_6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCourse(6);
+            }
+        });
         findViewById(R.id.btn_enter_course_test).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

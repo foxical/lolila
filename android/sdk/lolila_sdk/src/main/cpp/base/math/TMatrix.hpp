@@ -72,7 +72,7 @@ public:
     * 对指定的行执行初等行变换
     * @param rowIdx
     */
-    void elementary_line_transformation(const int& rowIdx, const int& j,const T& Mkj);
+    void elementary_line_transformation(const int& rowIdx, const int& j);
 
     void elementary_line_transformation();
 

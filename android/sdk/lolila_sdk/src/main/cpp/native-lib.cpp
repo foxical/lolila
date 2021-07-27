@@ -14,6 +14,7 @@
 #include "base/utils/AndroidLog.h"
 #include "base/utils/LogQueue.h"
 #include "base/utils/FloatUtils.h"
+#include "base/utils/LinearlyIndependent.h"
 #include "base/geometry/Plane.h"
 #include "base/geometry/PlaneIntersection.h"
 #include "base/geometry/ViewFrustum.h"
@@ -126,16 +127,24 @@ static void testProjections(){
 }
 
 static void testMisc(){
-    double ddd[]={1.0f,2.0f,3.0f };
 
-    const double* pd = ddd;
+#if 0
+    Vector v1(-1,-1,0);
+    Vector v2(1,1,0);
+    LOGD("LinearlyIndependent result:%i\n",LinearlyIndependent::check2(v1,v2));
+#endif
 
-    LOGI("sizeof float:%d,sizeof double:%d", sizeof(float), sizeof(double));
+    Matrix M(4,4);
+    Projections::buildPerspectiveProjectionMatrix(-1,1,1,-1,1,2,M);
 
-    const float * pf = (const float *) pd;
-    for( int i=0;i< 3;++i){
-        LOGI("float:%.8lf, double:%.8lf",pf[i],pd[i]);
-    }
+    Matrix p1 = Matrix::createHomogeneousCoordinates(0,0,-1.5);
+    Matrix p2 = Matrix::createHomogeneousCoordinates(2,0,-1.5);
+
+    Matrix p1c = Matrix::multiply(M,p1);
+    Matrix p2c = Matrix::multiply(M,p2);
+
+    LogQueue::push("p1c: %s\n",p1c.toString().c_str());
+    LogQueue::push("p2c: %s\n", p2c.toString().c_str());
 }
 
 extern "C"
@@ -385,7 +394,7 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
         }
 #endif
 
-
+#if 0
         Box box(1,1,1);
         Ray ray(Vector(0,0,4),Vector(0.5,0.5,-0.5));
         Vector cp(0,0,0),w(0,0,0);
@@ -395,6 +404,10 @@ Java_com_foxical_lolila_sdk_IndexApi_stringFromJNI(
             LOGD("box.surfaceIntersectionCheck cp:%s", cp.c_str());
             LOGD("box.surfaceIntersectionCheck w:%s", w.c_str());
         }
+#endif
+
+
+        testMisc();
 
         return env->NewStringUTF( LogQueue::c_str());
 

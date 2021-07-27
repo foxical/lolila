@@ -61,6 +61,14 @@
                 android:textSize="14sp"
                 android:text="course5-Intersection of a Ray and a Box"/>
             <Button
+                android:id="@+id/btn_enter_course_6"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingLeft="20dp"
+                android:textAlignment="textStart"
+                android:textSize="14sp"
+                android:text="course6-Cutting"/>
+            <Button
                 android:id="@+id/btn_enter_course_test"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"

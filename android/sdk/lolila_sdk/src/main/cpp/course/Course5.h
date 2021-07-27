@@ -19,7 +19,11 @@
 
 #ifndef __SIMPLE_LINE_H__
 #include "../shapes/SimpleLine.h"
+#include "../shapes/SimpleTriangle.h"
+
 #endif
+
+
 
 class Course5 : public AbstractCourse{
 public:
@@ -46,6 +50,8 @@ public:
 private:
     Simple3DCoordinate _coordinate;
     HollowCube _cube;
+    SimpleTriangle _tri1;
+    SimpleTriangle _tri2;
 };
 
 

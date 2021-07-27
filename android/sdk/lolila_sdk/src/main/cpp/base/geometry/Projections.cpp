@@ -7,6 +7,7 @@
 #include "Vector.h"
 #include "../math/Matrix.h"
 #include "../utils/LogQueue.h"
+#include "../utils/AndroidLog.h"
 
 Vector Projections::perspectiveProjection(
         const float& l,const float& t,const float& r,const float& b,
@@ -35,6 +36,10 @@ void  Projections::buildPerspectiveProjectionMatrix(
     if( !M.isSquare() || M.col()!=4){
         throw runtime_error("Matrix must a 4x4 square!");
     }
+
+    LOGD("buildPerspectiveProjectionMatrix, l:%f,r:%f\n",l,r);
+    LOGD("buildPerspectiveProjectionMatrix, t:%f,b:%f\n",t,b);
+    LOGD("buildPerspectiveProjectionMatrix, n:%f,f:%f\n",n,f);
 
     const float       deltaX = r - l;
     const float       deltaY = t - b;

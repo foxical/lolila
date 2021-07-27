@@ -18,6 +18,9 @@ public:
     void setModelMatrix(const Matrix& m)const{
         _SimpleShaderRef.setModelMatrix(m);
     }
+    void setModelMatrix(const glm::mat4& m)const{
+        _SimpleShaderRef.setModelMatrix(m);
+    }
 private:
     SimpleShader& _SimpleShaderRef;
 };

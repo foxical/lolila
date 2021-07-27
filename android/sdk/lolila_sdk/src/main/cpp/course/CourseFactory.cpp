@@ -10,6 +10,7 @@
 #include "Course3.h"
 #include "Course4.h"
 #include "Course5.h"
+#include "Course6.h"
 
 AbstractCourse* CourseFactory::createCourse(int no){
     switch (no){
@@ -25,6 +26,8 @@ AbstractCourse* CourseFactory::createCourse(int no){
             return new Course4();
         case 5:
             return new Course5();
+        case 6:
+            return new Course6();
         default:
             break;
     }

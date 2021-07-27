@@ -1,0 +1,26 @@
+1. First, download OpenGL Mathematics library here
+https://github.com/g-truc/glm
+
+2. Second, extract and copy folder "../glm/glm" to your project location at "../app/src/main/cpp"
+
+3. Third, on CMakeList.txt, add the following:
+
+# Import the CMakeLists.txt for the glm library
+add_subdirectory(glm) # if your CMakeLists is at '../cpp'
+# add_subdirectory(src/main/cpp/glm) # if your CMakeLists is at '../app'
+
+# add lib dependencies
+target_link_libraries(
+# Specifies the target library.
+native-lib
+# Links the target library to the log library included in the NDK.
+GLESv2
+glm)
+
+4. Fourth, on 'build.gradle' (module app), make sure you have right path to your CMakeList
+
+ externalNativeBuild {
+        cmake {
+            path "src/main/cpp/CMakeLists.txt"
+        }
+ }

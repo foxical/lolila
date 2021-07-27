@@ -8,24 +8,26 @@
 #include "../transforms/Rotation.h"
 #include "../transforms/Scaling.h"
 #include "../utils/AndroidLog.h"
+#include "../transforms/MultiTransform.h"
 
 
-Box::Box(float w, float h, float d):
+
+
+Box::Box(const glm::mat4& mat4):
 _p0(0,0,0),
-_p1(w,0,0),
-_p2(w,h,0),
-_p3(0,h,0),
-_p4(0,0,-d),
-_p5(w,0,-d),
-_p6(w,h,-d),
-_p7(0,h,-d),
+_p1(1,0,0),
+_p2(1,1,0),
+_p3(0,1,0),
+_p4(0,0,-1),
+_p5(1,0,-1),
+_p6(1,1,-1),
+_p7(0,1,-1),
 _plane0(_p0,_p1,_p2,_p3),
 _plane1(_p1,_p5,_p6,_p2),
 _plane2(_p5,_p4,_p7,_p6),
 _plane3(_p4,_p0,_p3,_p7),
 _plane4(_p4,_p5,_p1,_p0),
-_plane5(_p3,_p2,_p6,_p7),
-curTransformMat(4,4)
+_plane5(_p3,_p2,_p6,_p7)
 {
     /*
     LOGD("w:%f,h:%f,d:%f",getWidth(),getHeight(),getDepth());
@@ -36,13 +38,22 @@ curTransformMat(4,4)
     LOGD("plane4,N:%s",_plane4.getN().c_str());
     LOGD("plane5,N:%s",_plane5.getN().c_str());
     */
-    Scaling::buildScalingMatrix(Vector(w,h,d),curTransformMat);
+
+    _p0 = MultiTransform::doTransform(mat4,_p0);
+    _p1 = MultiTransform::doTransform(mat4,_p1);
+    _p2 = MultiTransform::doTransform(mat4,_p2);
+    _p3 = MultiTransform::doTransform(mat4,_p3);
+    _p4 = MultiTransform::doTransform(mat4,_p4);
+    _p5 = MultiTransform::doTransform(mat4,_p5);
+    _p6 = MultiTransform::doTransform(mat4,_p6);
+    _p7 = MultiTransform::doTransform(mat4,_p7);
 }
 
 Box::~Box() {
 
 }
 
+#if 0
 float Box::getWidth()const{
     return Vector::minus(_p1,_p0).length();
 }
@@ -52,6 +63,7 @@ float Box::getHeight()const{
 float Box::getDepth()const{
     return Vector::minus(_p4,_p0).length();
 }
+#endif
 
 bool  Box::surfaceIntersectionCheck(const Ray& ray, Vector& crossPoint,Vector& weight)const{
 
@@ -75,6 +87,8 @@ bool  Box::surfaceIntersectionCheck(const Ray& ray, Vector& crossPoint,Vector& w
     LOGD("bingoCount:%i",bingoCount);
     return suc;
 }
+
+#if 0
 
 void Box::translate(const Vector& t){
     _p0 = Translate::doTransform(t,_p0);
@@ -104,3 +118,4 @@ void Box::rotate(const Vector& axis,float angle){
     Rotation::buildRotationMatrix(axis,angle,m);
     curTransformMat.set(Matrix::multiply(m,curTransformMat));
 }
+#endif
