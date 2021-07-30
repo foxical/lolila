@@ -51,65 +51,6 @@ void Course5::load(){
 }
 
 
-
-
-
-
-
-
-
-#if 0
-static bool drawRay(DrawingContext& dc){
-    c_count++;
-    if(c_count<cycle){
-        return false;
-    }
-    c_count=0;
-
-    const Vector rayVR = Rotation::doTransform(Vector(0,1,0),ray_rotate_angle,initRayV);
-    const Ray ray(initRayS,rayVR);
-
-
-    Box calcBox(box_w,box_h,box_d);
-    calcBox.translate(Vector(0,-(box_h)/2,box_d/2));
-    calcBox.rotate(Vector(1,0,0),ray_rotate_angle);
-    calcBox.translate(Vector(0,box_h/2,-(box_d)/2));
-    calcBox.translate(box_lt);
-    boxMat.set(calcBox.geCurTransformMat());
-    allowDrawCute=true;
-
-    Vector crossPoint(0,0,0);
-    Vector weight(0,0,0);
-    if( calcBox.surfaceIntersectionCheck(ray,crossPoint,weight)){
-
-    }else{
-        crossPoint = ray.pointAt(6);
-    }
-
-
-    /*
-    SimpleLine line;
-    line.load(0,0,0,crossPoint.x(),crossPoint.y(),crossPoint.z(),0,1,0,1);
-    Matrix t(4, 4);
-    Translate::buildTranslateMatrix(gt, t);
-    dc.setModelMatrix(t);
-    line.draw();
-    */
-
-    ray_rotate_angle -= -1.0f;
-
-    /* 不要这样直接比较大小，会出古怪问题
-    if( ray_rotate_angle<=-360.0f ){
-        ray_rotate_angle=0.0f;
-    }
-    */
-
-
-
-    return true;
-}
-#endif
-
 void Course5::onDrawStep(DrawingContext& dc){
 
 
@@ -166,7 +107,7 @@ void Course5::onDrawStep(DrawingContext& dc){
 
 }
 
-static const Vector cv(-5,0,-10);
+static const Vector cv(-3,2,-9);
 const Vector* Course5::getSceneCenterV()const{
     return &cv;
 }

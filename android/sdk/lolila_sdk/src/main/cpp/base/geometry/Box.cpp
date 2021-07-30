@@ -84,7 +84,7 @@ bool  Box::surfaceIntersectionCheck(const Ray& ray, Vector& crossPoint,Vector& w
             }
         }
     }
-    LOGD("bingoCount:%i",bingoCount);
+    //LOGD("bingoCount:%i",bingoCount);
     return suc;
 }
 

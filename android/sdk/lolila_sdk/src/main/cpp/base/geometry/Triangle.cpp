@@ -63,9 +63,9 @@ bool  Triangle::surfaceIntersectionCheck(const Ray& ray, Vector& crossPoint,Vect
             Q1Q2,Q2Q2,RQ2
     };
     TMatrix<float,FloatOutputAdapter> fm(T,2,3);
-    LOGD("before elementary_line_transformation:%s", fm.c_str() );
+    //LOGD("before elementary_line_transformation:%s", fm.c_str() );
     fm.elementary_line_transformation();
-    LOGD("after elementary_line_transformation:%s", fm.c_str() );
+    //LOGD("after elementary_line_transformation:%s", fm.c_str() );
 
     const float w1 = fm.get(0,2);
     const float w2 = fm.get(1,2);

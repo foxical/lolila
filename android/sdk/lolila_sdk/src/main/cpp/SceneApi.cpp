@@ -26,6 +26,7 @@
 #include "course/DrawingContext.h"
 #include "course/AbstractCourse.h"
 #include "course/CourseFactory.h"
+#include "base/transforms/Camera2.h"
 
 static GLsizei gl_viewport_width=-1;
 static GLsizei gl_viewport_height=-1;
@@ -36,7 +37,7 @@ static Matrix rotateMat1(4,4);
 static Matrix rotateMat2(4,4);
 static Matrix translateMat(4,4);
 static Matrix viewMat(4,4);
-static Camera camera;
+static Camera2 camera;
 
 
 
@@ -64,7 +65,7 @@ static SimpleShader shader;
 static AbstractCourse* course=NULL;
 
 static glm::mat4 mat4_projection;
-
+static glm::mat4 mat4_view;
 
 //////////////////////////////////
 
@@ -104,7 +105,13 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_init(
     glEnable(GL_DEPTH_TEST);
     glLineWidth(8.0);
 
+    // Enable depth test
+    glEnable(GL_DEPTH_TEST);
+// Accept fragment if it closer to the camera than the former one
+    glDepthFunc(GL_LESS);
 
+    // Cull triangles which normal is not towards the camera
+    glEnable(GL_CULL_FACE);
 
     projectType=prjType;
     fov=60.f;
@@ -123,7 +130,7 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_init(
     }
 
     camera.lookAtSceneCenter();
-    camera.buildLookAtMatrix(viewMat);
+    //camera.buildLookAtMatrix(viewMat);
 
     LOGI("RenderApi_init end.");
     return;
@@ -156,21 +163,8 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_draw(
 
 
     shader.use();
-    //shader.setProjectMatrix(projectMat);
-    //shader.setViewMatrix(viewMat);
     shader.setProjectMatrix(mat4_projection);
-
-    // Camera matrix
-    /*
-    glm::mat4 mat4_view = glm::lookAt(
-            glm::vec3(4,3,3), // Camera is at (4,3,3), in World Space
-            glm::vec3(0,0,0), // and looks at the origin
-            glm::vec3(0,1,0)  // Head is up (set to 0,-1,0 to look upside-down)
-    );
-    shader.setViewMatrix(mat4_view);
-    */
-
-    shader.setViewMatrix(viewMat);
+    shader.setViewMatrix( camera.buildLookAtMatrix() );
 
     DrawingContext dc(shader);
     if(course!=NULL) {
@@ -189,69 +183,68 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveForward(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveForward();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveBack(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveBack();
-    camera.buildLookAtMatrix(viewMat);
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveLeft(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveLeft();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveRight(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveRight();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveUp(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveUp();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraMoveDown(
         JNIEnv *env,
         jobject /* this */) {
     camera.moveDown();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraPitchUp(
         JNIEnv *env,
         jobject /* this */) {
     camera.pitchUp();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraPitchDown(
         JNIEnv *env,
         jobject /* this */) {
     camera.pitchDown();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraYawLeft(
         JNIEnv *env,
         jobject /* this */) {
     camera.yawLeft();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraYawRight(
         JNIEnv *env,
         jobject /* this */) {
     camera.yawRight();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateLeft(
@@ -260,7 +253,7 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateLeft(
     LOGD("cameraRotateLeft");
     camera.rotateAroundSceneCenter(-1.0,false,false,true);
     //camera.rotateAroundSceneCenterLockY(-1.0);
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateRight(
@@ -269,7 +262,7 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateRight(
     LOGD("cameraRotateRight");
     camera.rotateAroundSceneCenter(1.0,false,false,true);
     //camera.rotateAroundSceneCenterLockY(1.0);
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateUp(
@@ -277,7 +270,7 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateUp(
         jobject /* this */) {
     //LOGD("cameraRotateUp");
     camera.rotateAroundSceneCenter(-1.0,true,false,false);
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateDown(
@@ -285,7 +278,7 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraRotateDown(
         jobject /* this */) {
     //LOGD("cameraRotateDown");
     camera.rotateAroundSceneCenter(1.0,true,false,false);
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -371,7 +364,7 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_resetStep(
         }
     }
     camera.lookAtSceneCenter();
-    camera.buildLookAtMatrix(viewMat);
+
 
 }
 
@@ -387,7 +380,7 @@ extern "C" void Java_com_foxical_lolila_sdk_SceneApi_cameraLookAtSceneCenter(
         JNIEnv *env,
         jobject /* this */) {
     camera.lookAtSceneCenter();
-    camera.buildLookAtMatrix(viewMat);
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////

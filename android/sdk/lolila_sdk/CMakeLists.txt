@@ -51,6 +51,7 @@ add_library( # Sets the name of the library.
              src/main/cpp/base/transforms/Rotation.cpp
              src/main/cpp/base/transforms/Translate.cpp
              src/main/cpp/base/transforms/Camera.cpp
+             src/main/cpp/base/transforms/Camera2.cpp
              src/main/cpp/base/transforms/Scaling.cpp
              src/main/cpp/base/transforms/MultiTransform.cpp
              src/main/cpp/shaders/SimpleVertexSet.cpp
